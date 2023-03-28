@@ -24,8 +24,9 @@ if __name__ == "__main__":
 	L_lon = 360
 	
 	L = min(L_lat, L_lon) #We use this to make the wavevector an integer (to ease binning). All 'wavevectors' below then need to be multiplied by 2pi/L to get the actual wavevector.
-	k_lat = L*scipy.fft.fftfreq(n_lat, d=L_lat)
-	k_lon = L*scipy.fft.fftfreq(n_lon, d=L_lon)
+	nk = int(np.min(np.floor(np.array([n_lat,n_lon])/2))) #Maximum 'magnitude' of the wavevectors
+	k_lat = L*n_lat*scipy.fft.fftfreq(n_lat, d=L_lat)
+	k_lon = L*n_lon*scipy.fft.fftfreq(n_lon, d=L_lon)
 	
 	k_lon_g, k_lat_g = np.meshgrid(k_lon, k_lat, indexing='ij')
 	k_rad_g = np.zeros_like(k_lat_g)
@@ -38,7 +39,6 @@ if __name__ == "__main__":
 	k_mag = np.sqrt(np.sum(k_vec**2, axis=0))
 	
 	k_mag_round = np.round(k_mag) #Used to bin the spectra
-	nk = int(np.min(np.floor(np.array([n_lat,n_lon])/2)))
 	
 	E = np.zeros(nk, dtype=complex)
 	H = np.zeros(nk, dtype=complex)
