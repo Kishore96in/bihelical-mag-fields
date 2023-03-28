@@ -15,9 +15,10 @@ if __name__ == "__main__":
 	Bp = get_data_fft("hmi.b_synoptic_small.2267.Bp.fits")
 	
 	B_vec = np.stack([Br, Bp, -Bt]) #Equation 10 of {SinKapBra18}
+	B_vec = np.swapaxes(B_vec, -1, -2)
 	
 	#Approximate wavenumbers in both the directions
-	n_lat, n_lon = np.shape(Br)
+	_, n_lon, n_lat = np.shape(B_vec)
 	L_lat = 2
 	L_lon = 360
 	
@@ -25,9 +26,9 @@ if __name__ == "__main__":
 	k_lat = L*scipy.fft.fftfreq(n_lat, d=L_lat)
 	k_lon = L*scipy.fft.fftfreq(n_lon, d=L_lon)
 	
-	k_lat_g, k_lon_g = np.meshgrid(k_lat, k_lon, indexing='ij')
+	k_lon_g, k_lat_g = np.meshgrid(k_lon, k_lat, indexing='ij')
 	k_rad_g = np.zeros_like(k_lat_g)
-	k_vec = np.stack([k_rad_g, k_lat_g, k_lon_g])
+	k_vec = np.stack([k_rad_g, k_lon_g, k_lat_g])
 	k_mag = np.sqrt(np.sum(k_vec**2, axis=0))
 	
 	Mij = B_vec[:,None,:,:,None,None]*B_vec[None,:,None,None,:,:]
