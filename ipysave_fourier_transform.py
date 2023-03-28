@@ -3,7 +3,11 @@ from astropy.wcs import WCS
 import scipy.fft
 import numpy as np
 
-if __name__ == "__main__":
+def calc_spec(fname, K):
+	"""
+	fname: string of the form "hmi.b_synoptic_small.2267". The input file for Br should be called fname+".Br.fits" (and similar for Bt, Bp)
+	K: 2-element numpy array, large-scale wavevector to handle
+	"""
 	def get_data_fft(fname):
 		with fits.open(fname) as f:
 			hdu = f[0]
@@ -11,9 +15,9 @@ if __name__ == "__main__":
 		data = np.nan_to_num(data)
 		return scipy.fft.fft2(data)
 	
-	Br = get_data_fft("hmi.b_synoptic_small.2267.Br.fits")
-	Bt = get_data_fft("hmi.b_synoptic_small.2267.Bt.fits")
-	Bp = get_data_fft("hmi.b_synoptic_small.2267.Bp.fits")
+	Br = get_data_fft(f"{fname}.Br.fits")
+	Bt = get_data_fft(f"{fname}.Bt.fits")
+	Bp = get_data_fft(f"{fname}.Bp.fits")
 	
 	B_vec = np.stack([Br, Bp, -Bt]) #Equation 10 of {SinKapBra18}
 	B_vec = np.swapaxes(B_vec, -1, -2)
@@ -33,7 +37,6 @@ if __name__ == "__main__":
 	k_vec = np.stack([k_rad_g, k_lon_g, k_lat_g])
 	k_mag = np.sqrt(np.sum(k_vec**2, axis=0))
 	
-	K = np.array([0,1])
 	
 	Mij = np.roll(B_vec, shift=-np.round(K/2), axis=(1,2))[:,None,:,:]*np.roll(np.conj(B_vec), shift=np.round(K/2), axis=(1,2))[None,:,:,:]
 	k_mag = np.sqrt(np.sum(k_vec**2, axis=0))
@@ -49,3 +52,9 @@ if __name__ == "__main__":
 	for k in range(nk):
 		E[...,k] = np.sum(np.where(k_mag_round == k, E_integrand, 0), axis=(-1,-2))/2
 		H[...,k] = np.sum(np.where(k_mag_round == k, H_integrand, 0), axis=(-1,-2))/(2*(2*np.pi*k/L))
+	
+	return E, H
+
+if __name__ == "__main__":
+	E, H = calc_spec("hmi.b_synoptic_small.2267", 
+	K=np.array([0,1]))
