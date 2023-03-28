@@ -5,8 +5,9 @@ import numpy as np
 
 def calc_spec(fname, K):
 	"""
-	fname: string of the form "hmi.b_synoptic_small.2267". The input file for Br should be called fname+".Br.fits" (and similar for Bt, Bp)
-	K: 2-element numpy array, large-scale wavevector to handle
+	Arguments:
+		fname: string of the form "hmi.b_synoptic_small.2267". The input file for Br should be called fname+".Br.fits" (and similar for Bt, Bp). Resulting filename may be anything that is handled by astropy.io.fits.open
+		K: 2-element numpy array, large-scale wavevector to handle
 	"""
 	def get_data_fft(fname):
 		with fits.open(fname) as f:
