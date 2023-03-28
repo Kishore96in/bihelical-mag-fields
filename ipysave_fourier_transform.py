@@ -8,6 +8,7 @@ if __name__ == "__main__":
 		with fits.open(fname) as f:
 			hdu = f[0]
 			data = hdu.data
+		data = np.nan_to_num(data)
 		return scipy.fft.fft2(data)
 	
 	Br = get_data_fft("hmi.b_synoptic_small.2267.Br.fits")
