@@ -38,7 +38,7 @@ if __name__ == "__main__":
 	k_mag = np.sqrt(np.sum(k_vec**2, axis=0))
 	
 	k_mag_round = np.round(k_mag) #Used to bin the spectra
-	nk = int(np.min(np.floor(np.array([n_lat,n_long])/2)))
+	nk = int(np.min(np.floor(np.array([n_lat,n_lon])/2)))
 	
 	E = np.zeros([n_lat, n_long, nk])
 	H = np.zeros([n_lat, n_long, nk])
