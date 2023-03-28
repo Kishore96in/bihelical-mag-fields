@@ -47,5 +47,5 @@ if __name__ == "__main__":
 	H_integrand = np.einsum("ii...", np.cross(k_vec, Mij, axis=0))
 	
 	for k in range(nk):
-		E[...,nk] = np.sum(np.where(k_mag_round == k, E_integrand, 0), axis=(-1,-2))/2
-		H[...,nk] = np.sum(np.where(k_mag_round == k, H_integrand, 0), axis=(-1,-2))/(2*(2*np.pi*k/L_min))
+		E[...,k] = np.sum(np.where(k_mag_round == k, E_integrand, 0), axis=(-1,-2))/2
+		H[...,k] = np.sum(np.where(k_mag_round == k, H_integrand, 0), axis=(-1,-2))/(2*(2*np.pi*k/L))
