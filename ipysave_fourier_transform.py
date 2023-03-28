@@ -31,18 +31,16 @@ if __name__ == "__main__":
 	k_vec = np.stack([k_rad_g, k_lon_g, k_lat_g])
 	k_mag = np.sqrt(np.sum(k_vec**2, axis=0))
 	
-	Mij = B_vec[:,None,:,:,None,None]*B_vec[None,:,None,None,:,:]
-	k1_vec = k_vec[:,:,:,None,None]
-	k2_vec = k_vec[:,None,None,:,:]
-	K_vec = k1 + k2
-	k_vec = (k1 - k2)/2
+	K = np.array([0,1])
+	
+	Mij = np.roll(B_vec, shift=-np.round(K/2), axis=(1,2))[:,None,:,:]*np.roll(np.conj(B_vec), shift=np.round(K/2), axis=(1,2))[None,:,:,:]
 	k_mag = np.sqrt(np.sum(k_vec**2, axis=0))
 	
 	k_mag_round = np.round(k_mag) #Used to bin the spectra
 	nk = int(np.min(np.floor(np.array([n_lat,n_lon])/2)))
 	
-	E = np.zeros([n_lat, n_long, nk])
-	H = np.zeros([n_lat, n_long, nk])
+	E = np.zeros(nk)
+	H = np.zeros(nk)
 	
 	E_integrand = np.einsum("ii...", Mij)
 	H_integrand = np.einsum("ii...", np.cross(k_vec, Mij, axis=0))
