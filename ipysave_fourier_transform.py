@@ -3,22 +3,27 @@ from astropy.wcs import WCS
 import scipy.fft
 import numpy as np
 
-def calc_spec(fname, K):
+def get_data_fft(fname):
+	"""
+	Given the name of a FITS file, return the Fourier transform of the data in it
+	"""
+	with fits.open(fname) as f:
+		hdu = f[0]
+		data = hdu.data
+	data = np.nan_to_num(data)
+	return scipy.fft.fft2(data)
+
+def calc_spec(fname, K, get_fft=get_data_fft):
 	"""
 	Arguments:
 		fname: string of the form "hmi.b_synoptic_small.2267". The input file for Br should be called fname+".Br.fits" (and similar for Bt, Bp). Resulting filename may be anything that is handled by astropy.io.fits.open
 		K: 2-element numpy array, large-scale wavevector to handle
+		get_fft: function that when given the path to a FITS file, returns the Fourier transform of the data stored in it.
 	"""
-	def get_data_fft(fname):
-		with fits.open(fname) as f:
-			hdu = f[0]
-			data = hdu.data
-		data = np.nan_to_num(data)
-		return scipy.fft.fft2(data)
 	
-	Br = get_data_fft(f"{fname}.Br.fits")
-	Bt = get_data_fft(f"{fname}.Bt.fits")
-	Bp = get_data_fft(f"{fname}.Bp.fits")
+	Br = get_fft(f"{fname}.Br.fits")
+	Bt = get_fft(f"{fname}.Bt.fits")
+	Bp = get_fft(f"{fname}.Bp.fits")
 	
 	B_vec = np.stack([Br, Bp, -Bt]) #Equation 10 of {SinKapBra18}
 	B_vec = np.swapaxes(B_vec, -1, -2)
