@@ -54,8 +54,8 @@ def calc_spec(fname, K):
 		E[...,k] = np.sum(np.where(k_mag_round == k, E_integrand, 0), axis=(-1,-2))/2
 		H[...,k] = np.sum(np.where(k_mag_round == k, H_integrand, 0), axis=(-1,-2))/(2*np.pi*k/L)
 	
-	return E, H
+	k = (2*np.pi/L)*np.arange(nk)
+	return k, E, H
 
 if __name__ == "__main__":
-	E, H = calc_spec("hmi.b_synoptic_small.2267", 
-	K=np.array([0,1]))
+	_, E, H = calc_spec("hmi.b_synoptic_small.2267", K=np.array([0,1]))
