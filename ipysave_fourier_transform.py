@@ -62,5 +62,17 @@ def calc_spec(fname, K, get_fft=get_data_fft):
 	k = (2*np.pi/L)*np.arange(nk)
 	return k, E, H
 
+def signed_loglog_plot(k, spec, ax):
+	where_pos = np.where(spec>=0)[0]
+	where_neg = np.where(spec<0)[0]
+	spec = np.abs(spec)
+	
+	params_pos = {'facecolors':'none', 'edgecolors':'r', 'marker':'o'}
+	params_neg = {'c':'b', 'marker':'o'}
+	
+	ax.loglog(k, spec)
+	ax.scatter(k[where_pos], spec[where_pos], **params_pos, label="_")
+	ax.scatter(k[where_neg], spec[where_neg], **params_neg, label="_")
+
 if __name__ == "__main__":
 	_, E, H = calc_spec("hmi.b_synoptic_small.2267", K=np.array([0,1]))
