@@ -39,7 +39,7 @@ def calc_spec(fname, K):
 	k_mag = np.sqrt(np.sum(k_vec**2, axis=0))
 	
 	
-	Mij = np.roll(B_vec, shift=-np.round(K/2), axis=(1,2))[:,None,:,:]*np.roll(np.conj(B_vec), shift=np.round(K/2), axis=(1,2))[None,:,:,:]
+	Mij = np.roll(B_vec, shift=np.round(-K/2).astype(int), axis=(1,2))[:,None,:,:]*np.roll(np.conj(B_vec), shift=np.round(K/2).astype(int), axis=(1,2))[None,:,:,:]
 	k_mag = np.sqrt(np.sum(k_vec**2, axis=0))
 	
 	k_mag_round = np.round(k_mag) #Used to bin the spectra
