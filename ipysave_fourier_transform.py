@@ -17,7 +17,7 @@ def calc_spec(fname, K, get_fft=get_data_fft, L=None, shift_onesided=True):
 	"""
 	Arguments:
 		fname: string of the form "hmi.b_synoptic_small.2267". The input file for Br should be called fname+".Br.fits" (and similar for Bt, Bp). Resulting filename may be anything that is handled by astropy.io.fits.open
-		K: 2-element numpy array, large-scale wavevector to handle
+		K: 2-element numpy array, large-scale wavevector to handle. The true wavevector is 2*pi*K/min(L)
 		get_fft: function that when given the path to a FITS file, returns the Fourier transform of the data stored in it.
 		L: 2-element numpy array, length of the domain along the latitudinal and longitudinal directions. Default: np.array([2*np.pi, 2*np.pi])
 		shift_onesided: bool
