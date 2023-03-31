@@ -1,9 +1,7 @@
 from astropy.io import fits
-from astropy.wcs import WCS
 import scipy.fft
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.interpolate import RegularGridInterpolator as RGI
 
 def get_data_fft(fname):
 	"""
