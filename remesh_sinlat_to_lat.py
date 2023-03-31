@@ -34,7 +34,7 @@ def remesh(fname, out):
 	data_no_nan = np.nan_to_num(data)
 	lat = np.arcsin(sinlat)*180/np.pi #get latitude in degrees
 	interp = RGI((lat, lon), data_no_nan, method='cubic',bounds_error=False)
-	interp_where_nan = RGI((lat, lon), np.isnan(data), method='cubic',bounds_error=False)
+	interp_where_nan = RGI((lat, lon), np.where(np.isnan(data), 1, 0).astype(float), method='linear', bounds_error=False)
 	
 	lat_new = np.linspace(lat[0], lat[-1], len(lat))
 	new_grid = tuple(np.meshgrid(lat_new, lon, indexing='ij'))
