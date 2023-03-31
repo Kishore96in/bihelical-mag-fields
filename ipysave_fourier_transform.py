@@ -13,13 +13,17 @@ def get_data_fft(fname):
 	data = np.nan_to_num(data)
 	return scipy.fft.fft2(data)
 
-def calc_spec(fname, K, get_fft=get_data_fft):
+def calc_spec(fname, K, get_fft=get_data_fft, L=None):
 	"""
 	Arguments:
 		fname: string of the form "hmi.b_synoptic_small.2267". The input file for Br should be called fname+".Br.fits" (and similar for Bt, Bp). Resulting filename may be anything that is handled by astropy.io.fits.open
 		K: 2-element numpy array, large-scale wavevector to handle
 		get_fft: function that when given the path to a FITS file, returns the Fourier transform of the data stored in it.
+		L: 2-element numpy array, length of the domain along the latitudinal and longitudinal directions. Default: np.array([2*np.pi, 2*np.pi])
 	"""
+	
+	if L is none:
+		L = np.array([2*np.pi, 2*np.pi])
 	
 	Br = get_fft(f"{fname}.Br.fits")
 	Bt = get_fft(f"{fname}.Bt.fits")
@@ -30,10 +34,9 @@ def calc_spec(fname, K, get_fft=get_data_fft):
 	
 	#Approximate wavenumbers in both the directions
 	_, n_lon, n_lat = np.shape(B_vec)
-	L_lat = 2
-	L_lon = 360
+	L_lat, L_lon = L
 	
-	L_min = min(L_lat, L_lon) #We use this to make the wavevector an integer (to ease binning). All 'wavevectors' below then need to be multiplied by 2pi/L to get the actual wavevector.
+	L_min = min(L) #We use this to make the wavevector an integer (to ease binning). All 'wavevectors' below then need to be multiplied by 2pi/L to get the actual wavevector.
 	nk = int(np.min(np.floor(np.array([n_lat,n_lon])/2))) #Maximum 'magnitude' of the wavevectors
 	k_lat = L_min*n_lat*scipy.fft.fftfreq(n_lat, d=L_lat)
 	k_lon = L_min*n_lon*scipy.fft.fftfreq(n_lon, d=L_lon)
