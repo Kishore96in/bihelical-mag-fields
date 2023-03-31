@@ -13,13 +13,16 @@ def get_data_fft(fname):
 	data = np.nan_to_num(data)
 	return scipy.fft.fft2(data)
 
-def calc_spec(fname, K, get_fft=get_data_fft, L=None):
+def calc_spec(fname, K, get_fft=get_data_fft, L=None, shift_onesided=True):
 	"""
 	Arguments:
 		fname: string of the form "hmi.b_synoptic_small.2267". The input file for Br should be called fname+".Br.fits" (and similar for Bt, Bp). Resulting filename may be anything that is handled by astropy.io.fits.open
 		K: 2-element numpy array, large-scale wavevector to handle
 		get_fft: function that when given the path to a FITS file, returns the Fourier transform of the data stored in it.
 		L: 2-element numpy array, length of the domain along the latitudinal and longitudinal directions. Default: np.array([2*np.pi, 2*np.pi])
+		shift_onesided: bool
+			True: Mij = B_i(k+K)*B_j^*(k) (the one used in Nishant's 2018 paper)
+			False: Mij = B_i(k+K/2)*B_j^*(k-K/2) (the correct definition)
 	"""
 	
 	if L is None:
@@ -47,7 +50,11 @@ def calc_spec(fname, K, get_fft=get_data_fft, L=None):
 	k_mag = np.sqrt(np.sum(k_vec**2, axis=0))
 	
 	
-	Mij = np.roll(B_vec, shift=np.round(-K/2).astype(int), axis=(1,2))[:,None,:,:]*np.roll(np.conj(B_vec), shift=np.round(K/2).astype(int), axis=(1,2))[None,:,:,:]
+	if shift_onesided:
+		Mij = np.roll(B_vec, shift=np.round(-K).astype(int), axis=(1,2))[:,None,:,:]*np.conj(B_vec)[None,:,:,:]
+	else:
+		#NOTE: Below, if K=(0,1), it will just be rounded to 0,1, resulting in no shift being applied. The one-sided shift used above is a workaround for that
+		Mij = np.roll(B_vec, shift=np.round(-K/2).astype(int), axis=(1,2))[:,None,:,:]*np.roll(np.conj(B_vec), shift=np.round(K/2).astype(int), axis=(1,2))[None,:,:,:]
 	k_mag = np.sqrt(np.sum(k_vec**2, axis=0))
 	
 	k_mag_round = np.round(k_mag) #Used to bin the spectra
@@ -82,4 +89,5 @@ def signed_loglog_plot(k, spec, ax, line_params=None):
 	return [l1, l2, l3]
 
 if __name__ == "__main__":
-	_, E, H = calc_spec("hmi.b_synoptic_small.2267", K=np.array([0,1]))
+	L = np.array([2,360])
+	k, E1, H1 = calc_spec("hmi.b_synoptic_small.2267", K=np.array([0,1]), L=L, shift_onesided=False)
