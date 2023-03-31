@@ -21,8 +21,8 @@ def calc_spec(fname, K, get_fft=get_data_fft, L=None, shift_onesided=True):
 		get_fft: function that when given the path to a FITS file, returns the Fourier transform of the data stored in it.
 		L: 2-element numpy array, length of the domain along the latitudinal and longitudinal directions. Default: np.array([2*np.pi, 2*np.pi])
 		shift_onesided: bool
-			True: Mij = B_i(k+K)*B_j^*(k) (the one used in Nishant's 2018 paper)
-			False: Mij = B_i(k+K/2)*B_j^*(k-K/2) (the correct definition)
+			True: Mij = B_i(k+K) B_j^*(k) (the one used in Nishant's 2018 paper)
+			False: Mij = B_i(k+K/2) B_j^*(k-K/2) (the correct definition)
 	"""
 	
 	if L is None:
