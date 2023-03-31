@@ -49,7 +49,8 @@ def remesh(fname, out):
 	header['CDELT2'] = lat_new[1]-lat_new[0]
 	header.comments['CDELT2'] = "[degree/pixel]"
 	header['CUNIT2'] = "deg"
-	header.comments['CTYPE2'] = "Latitude"
+	header.comments['CUNIT2'] = "CUNIT2: degree"
+	header.comments['CTYPE2'] = "Carrington Latitude"
 	header.add_comment("  Rebinned to have the y-axis equispaced in degrees by Kishore G. (kishore96@gmail.com).")
 	
 	fits.writeto(out, data_remeshed, header=header)
