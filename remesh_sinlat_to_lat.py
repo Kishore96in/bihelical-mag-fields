@@ -71,5 +71,10 @@ def gen_out_name(fname):
 	return out
 
 if __name__ == "__main__":
-	fname = 'hmi.b_synoptic_small.2267.Br.fits'
-	remesh(fname, gen_out_name(fname))
+	series = ["hmi.b_synoptic_small.2267"]
+	components = ["Br", "Bt", "Bp"]
+	for cr in series:
+		for comp in components:
+			fname = f"{cr}.{comp}.fits"
+			print(f"Remeshing {fname}")
+			remesh(fname, gen_out_name(fname))
