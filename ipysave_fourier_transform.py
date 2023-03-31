@@ -2,6 +2,7 @@ from astropy.io import fits
 from astropy.wcs import WCS
 import scipy.fft
 import numpy as np
+import matplotlib.pyplot as plt
 from scipy.interpolate import RegularGridInterpolator as RGI
 
 def get_data_fft(fname):
@@ -100,4 +101,28 @@ def signed_loglog_plot(k, spec, ax, line_params=None):
 if __name__ == "__main__":
 	L = np.array([2,360])
 	B_vec = get_B_vec("hmi.b_synoptic_small.2267")
+	k, E0, H0 = calc_spec(B_vec, K=np.array([0,0]), L=L, shift_onesided=False)
 	k, E1, H1 = calc_spec(B_vec, K=np.array([0,1]), L=L, shift_onesided=False)
+	k, E2, H2 = calc_spec(B_vec, K=np.array([0,2]), L=L, shift_onesided=False)
+	
+	k, E1_I, H1_I = calc_spec(B_vec, K=np.array([0,1]), L=L)
+	k, E2_I, H2_I = calc_spec(B_vec, K=np.array([0,2]), L=L)
+	
+	fig,ax = plt.subplots()
+	handles = signed_loglog_plot(k, -np.imag(H1_I), ax, {'label':"-np.imag(H(k,1))"})
+	h = ax.loglog(k, E0, label="E(k,0)")
+	handles.extend(h)
+	ax.set_xlabel("k")
+	ax.legend(handles=handles)
+	fig.tight_layout()
+	
+	fig,ax = plt.subplots()
+	handles = signed_loglog_plot(k, -np.imag(H2), ax, {'label':"Python"})
+	h2, *_ = signed_loglog_plot(k, -np.imag(H2_I)/100, ax, {'label':"IDL/100"})
+	handles.append(h2)
+	ax.set_ylabel("-np.imag(H(k,2))")
+	ax.set_xlabel("k")
+	ax.legend(handles=handles)
+	fig.tight_layout()
+	
+	plt.show()
