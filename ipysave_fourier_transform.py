@@ -22,7 +22,7 @@ def calc_spec(fname, K, get_fft=get_data_fft, L=None):
 		L: 2-element numpy array, length of the domain along the latitudinal and longitudinal directions. Default: np.array([2*np.pi, 2*np.pi])
 	"""
 	
-	if L is none:
+	if L is None:
 		L = np.array([2*np.pi, 2*np.pi])
 	
 	Br = get_fft(f"{fname}.Br.fits")
