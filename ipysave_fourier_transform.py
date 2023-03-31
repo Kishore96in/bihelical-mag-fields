@@ -2,6 +2,7 @@ from astropy.io import fits
 from astropy.wcs import WCS
 import scipy.fft
 import numpy as np
+from scipy.interpolate import RegularGridInterpolator as RGI
 
 def get_data_fft(fname):
 	"""
@@ -12,6 +13,35 @@ def get_data_fft(fname):
 		data = hdu.data
 	data = np.nan_to_num(data)
 	return scipy.fft.fft2(data)
+
+def get_data_fft_degdeg(fname):
+	"""
+	Given the name of a FITS file, return the Fourier transform of the data in it. 
+	
+	This assumes the data was in [sin(latitude),longitude_degrees], and remaps the data to be equispaced in [latitude_degrees,longitude_degrees] before taking the FFT.
+	"""
+	with fits.open(fname) as f:
+		hdu = f[0]
+		hdu.header['CUNIT2'] = "" #sine(latitude) is dimensionless
+		w = WCS(hdu.header)
+		data = hdu.data
+	
+	i_sinlat = np.arange(np.shape(data)[0])
+	i_lon = np.arange(np.shape(data)[1])
+	
+	_, sinlat = w.array_index_to_world_values(i_sinlat, np.zeros_like(i_sinlat))
+	lon ,_ = w.array_index_to_world_values(np.zeros_like(i_lon), i_lon)
+	
+	#NOTE: removing nan because they will make everything nan on taking fft or interpolating.
+	data = np.nan_to_num(data)
+	lat = np.arcsin(sinlat)*180/np.pi #get latitude in degrees
+	r = RGI((lat, lon), data, method='cubic',bounds_error=False)
+	
+	lat_new = np.linspace(min(lat), max(lat), len(lat))
+	new_grid = tuple(np.meshgrid(lat_new, lon, indexing='ij'))
+	data_remeshed = r(new_grid)
+	
+	return scipy.fft.fft2(data_remeshed)
 
 def get_B_vec(fname):
 	"""
