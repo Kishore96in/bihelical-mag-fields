@@ -30,14 +30,16 @@ def remesh(fname, out):
 	_, sinlat = w.array_index_to_world_values(i_sinlat, np.zeros_like(i_sinlat))
 	lon ,_ = w.array_index_to_world_values(np.zeros_like(i_lon), i_lon)
 	
-	#NOTE: removing nan because they will make everything nan on taking fft or interpolating.
-	data = np.nan_to_num(data)
+	#See https://stackoverflow.com/questions/51474792/2d-interpolation-with-nan-values-in-python/51500842
+	data_no_nan = np.nan_to_num(data)
 	lat = np.arcsin(sinlat)*180/np.pi #get latitude in degrees
-	r = RGI((lat, lon), data, method='cubic',bounds_error=False)
+	interp = RGI((lat, lon), data_no_nan, method='cubic',bounds_error=False)
+	interp_where_nan = RGI((lat, lon), np.isnan(data), method='cubic',bounds_error=False)
 	
 	lat_new = np.linspace(lat[0], lat[-1], len(lat))
 	new_grid = tuple(np.meshgrid(lat_new, lon, indexing='ij'))
-	data_remeshed = r(new_grid)
+	data_remeshed = interp(new_grid)
+	data_remeshed[interp_where_nan(new_grid) > 0.5] = np.nan
 	
 	#Prepare header for the new FITS file
 	header['CRPIX2'] = 0.5
