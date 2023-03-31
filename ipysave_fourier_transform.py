@@ -33,10 +33,10 @@ def calc_spec(fname, K, get_fft=get_data_fft):
 	L_lat = 2
 	L_lon = 360
 	
-	L = min(L_lat, L_lon) #We use this to make the wavevector an integer (to ease binning). All 'wavevectors' below then need to be multiplied by 2pi/L to get the actual wavevector.
+	L_min = min(L_lat, L_lon) #We use this to make the wavevector an integer (to ease binning). All 'wavevectors' below then need to be multiplied by 2pi/L to get the actual wavevector.
 	nk = int(np.min(np.floor(np.array([n_lat,n_lon])/2))) #Maximum 'magnitude' of the wavevectors
-	k_lat = L*n_lat*scipy.fft.fftfreq(n_lat, d=L_lat)
-	k_lon = L*n_lon*scipy.fft.fftfreq(n_lon, d=L_lon)
+	k_lat = L_min*n_lat*scipy.fft.fftfreq(n_lat, d=L_lat)
+	k_lon = L_min*n_lon*scipy.fft.fftfreq(n_lon, d=L_lon)
 	
 	k_lon_g, k_lat_g = np.meshgrid(k_lon, k_lat, indexing='ij')
 	k_rad_g = np.zeros_like(k_lat_g)
@@ -57,9 +57,9 @@ def calc_spec(fname, K, get_fft=get_data_fft):
 	
 	for k in range(nk):
 		E[...,k] = np.sum(np.where(k_mag_round == k, E_integrand, 0), axis=(-1,-2))/2
-		H[...,k] = np.sum(np.where(k_mag_round == k, H_integrand, 0), axis=(-1,-2))/(2*np.pi*k/L)
+		H[...,k] = np.sum(np.where(k_mag_round == k, H_integrand, 0), axis=(-1,-2))/(2*np.pi*k/L_min)
 	
-	k = (2*np.pi/L)*np.arange(nk)
+	k = (2*np.pi/L_min)*np.arange(nk)
 	return k, E, H
 
 def signed_loglog_plot(k, spec, ax, line_params=None):
