@@ -77,8 +77,9 @@ def calc_spec(B_vec, K, L=None, shift_onesided=True):
 		E[...,k] = np.sum(np.where(k_mag_round == k, E_integrand, 0), axis=(-1,-2))
 		H[...,k] = np.sum(np.where(k_mag_round == k, H_integrand, 0), axis=(-1,-2))
 	
-	k = (2*np.pi/L_min)*np.arange(nk)
-	return k, E, H
+	scl = (2*np.pi/L_min)
+	k = np.arange(nk)
+	return k*scl, E/scl, H/scl**2
 
 def signed_loglog_plot(k, spec, ax, line_params=None):
 	where_pos = np.where(spec>=0)[0]
