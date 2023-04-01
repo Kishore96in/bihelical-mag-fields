@@ -72,10 +72,10 @@ def gen_out_name(fname):
 	return out
 
 if __name__ == "__main__":
-	series = ["images/hmi.b_synoptic_small.2267"]
-	components = ["Br", "Bt", "Bp"]
-	for cr in series:
-		for comp in components:
-			fname = f"{cr}.{comp}.fits"
+	for fname in sys.argv[1:]:
+		out = gen_out_name(fname)
+		if os.path.exists(out):
+			print(f"Skipping {fname}")
+		else:
 			print(f"Remeshing {fname}")
-			remesh(fname, gen_out_name(fname))
+			remesh(fname, out)
