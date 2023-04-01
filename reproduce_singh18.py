@@ -45,3 +45,5 @@ if __name__ == "__main__":
 	axs[1].set_xlabel("k")
 	
 	fig.tight_layout()
+	
+	plt.show()
