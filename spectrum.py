@@ -79,7 +79,7 @@ def calc_spec(B_vec, K, L=None, shift_onesided=True):
 	
 	scl = (2*np.pi/L_min)
 	k = np.arange(nk)
-	return k*scl, E/scl, H/scl**2
+	return k*scl, E/scl**3, H/scl**4
 
 def signed_loglog_plot(k, spec, ax, line_params=None):
 	where_pos = np.where(spec>=0)[0]
