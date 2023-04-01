@@ -1,5 +1,7 @@
 """
 Given a FITS file in which the data is equispaced in sine(latitude), remesh the data and save a FITS file where the data is equispaced in latitude
+
+Call this script by passing filenames of FITS files as arguments.
 """
 
 import numpy as np
