@@ -72,7 +72,7 @@ def gen_out_name(fname):
 	return out
 
 if __name__ == "__main__":
-	series = ["hmi.b_synoptic_small.2267"]
+	series = ["images/hmi.b_synoptic_small.2267"]
 	components = ["Br", "Bt", "Bp"]
 	for cr in series:
 		for comp in components:
