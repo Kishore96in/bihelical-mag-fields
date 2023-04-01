@@ -32,7 +32,7 @@ if __name__ == "__main__":
 	H1 = np.average(H1_list, axis=0)
 	H1_err = np.sqrt(np.average((H1_list - H1)**2, axis=0))
 	
-	fig,axs = plt.subplots(2,1,sharex=True)
+	fig,axs = plt.subplots(2, 1, sharex=True, gridspec_kw={'height_ratios': [2,1]})
 	
 	handles = signed_loglog_plot(k, -np.imag(k*H1), axs[0], {'label':"-np.imag(k*H(k,1))"})
 	h = axs[0].loglog(k, E0, label="E(k,0)")
@@ -45,6 +45,7 @@ if __name__ == "__main__":
 	axs[1].set_xlabel("k")
 	axs[1].legend()
 	
+	fig.set_size_inches(6.4,6.4)
 	fig.tight_layout()
 	
 	plt.show()
