@@ -108,7 +108,7 @@ if __name__ == "__main__":
 	k, E2_I, H2_I = calc_spec(B_vec, K=np.array([0,2]), L=L)
 	
 	fig,ax = plt.subplots()
-	handles = signed_loglog_plot(k, -np.imag(H1_I), ax, {'label':"-np.imag(H(k,1))"})
+	handles = signed_loglog_plot(k, -np.imag(k*H1_I), ax, {'label':"-np.imag(k*H(k,1))"})
 	h = ax.loglog(k, E0, label="E(k,0)")
 	handles.extend(h)
 	ax.set_xlabel("k")
