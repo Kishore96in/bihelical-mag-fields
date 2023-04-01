@@ -4,6 +4,7 @@ Given a FITS file in which the data is equispaced in sine(latitude), remesh the 
 Call this script by passing filenames of FITS files as arguments.
 """
 
+import sys
 import numpy as np
 import os
 from astropy.io import fits
