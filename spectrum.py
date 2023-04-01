@@ -70,12 +70,12 @@ def calc_spec(B_vec, K, L=None, shift_onesided=True):
 	E = np.zeros(nk, dtype=complex)
 	H = np.zeros(nk, dtype=complex)
 	
-	E_integrand = np.einsum("ii...", Mij)
-	H_integrand = 1j*np.einsum("ii...", np.cross(k_vec, Mij, axis=0))
+	E_integrand = np.einsum("ii...", Mij)/2
+	H_integrand = 1j*np.einsum("ii...", np.cross(k_vec, Mij, axis=0))/k_mag**2
 	
 	for k in range(nk):
-		E[...,k] = np.sum(np.where(k_mag_round == k, E_integrand, 0), axis=(-1,-2))/2
-		H[...,k] = np.sum(np.where(k_mag_round == k, H_integrand, 0), axis=(-1,-2))/(2*np.pi*k/L_min)
+		E[...,k] = np.sum(np.where(k_mag_round == k, E_integrand, 0), axis=(-1,-2))
+		H[...,k] = np.sum(np.where(k_mag_round == k, H_integrand, 0), axis=(-1,-2))
 	
 	k = (2*np.pi/L_min)*np.arange(nk)
 	return k, E, H
