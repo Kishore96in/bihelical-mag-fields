@@ -40,7 +40,7 @@ if __name__ == "__main__":
 	axs[0].legend(handles=handles)
 	
 	axs[1].loglog(k, E0_err, label="err, E")
-	axs[1].loglog(k, H1_err, label="err, H")
+	axs[1].loglog(k, k*H1_err, label="err, kH")
 	axs[1].set_ylabel("Error")
 	axs[1].set_xlabel("k")
 	
