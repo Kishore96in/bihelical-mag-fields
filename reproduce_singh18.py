@@ -43,6 +43,7 @@ if __name__ == "__main__":
 	axs[1].loglog(k, k*H1_err, label="err, kH")
 	axs[1].set_ylabel("Error")
 	axs[1].set_xlabel("k")
+	axs[1].legend()
 	
 	fig.tight_layout()
 	
