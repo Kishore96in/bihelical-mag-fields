@@ -17,8 +17,8 @@ if __name__ == "__main__":
 	H1_list = []
 	for cr in cr_list:
 		B_vec = get_B_vec(f"images/hmi.b_synoptic_small.rebinned.{cr}")
-		k_, E0_this, _ = calc_spec(B_vec, K=np.array([0,0]), L=L)
-		_, _, H1_this = calc_spec(B_vec, K=np.array([0,1]), L=L)
+		k_, E0, _ = calc_spec(B_vec, K=np.array([0,0]), L=L)
+		_, _, H1 = calc_spec(B_vec, K=np.array([0,1]), L=L)
 		
 		E0_list.append(E0)
 		H1_list.append(H1)
