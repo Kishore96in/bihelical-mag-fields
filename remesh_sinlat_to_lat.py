@@ -42,9 +42,9 @@ def remesh(fname, out):
 	data_remeshed[interp_where_nan(new_grid) > 0.5] = np.nan
 	
 	#Prepare header for the new FITS file
-	header['CRPIX2'] = 0.5
-	header.comments['CRPIX2'] = ""
-	header['CRVAL2'] = lat_new[0]
+	header['CRPIX2'] = len(lat_new)/2 + 0.5
+	header.comments['CRPIX2'] = "[pixel]"
+	header['CRVAL2'] = (lat_new[-1]+lat_new[0])/2
 	header.comments['CRVAL2'] = ""
 	header['CDELT2'] = lat_new[1]-lat_new[0]
 	header.comments['CDELT2'] = "[degree/pixel]"
