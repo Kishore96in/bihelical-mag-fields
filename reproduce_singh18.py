@@ -27,10 +27,10 @@ if __name__ == "__main__":
 	H1_list = np.array(H1_list)
 	
 	E0 = np.average(E0_list, axis=0)
-	E0_err = np.sqrt(np.average(E0_list - E0, axis=0))
+	E0_err = np.sqrt(np.average((E0_list - E0)**2, axis=0))
 	
-	H1 = np.average(E0_list, axis=0)
-	H1_err = np.sqrt(np.average(H1_list - H1, axis=0))
+	H1 = np.average(H1_list, axis=0)
+	H1_err = np.sqrt(np.average((H1_list - H1)**2, axis=0))
 	
 	fig,axs = plt.subplots(2,1,sharex=True)
 	
