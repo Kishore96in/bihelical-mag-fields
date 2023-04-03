@@ -63,7 +63,7 @@ def calc_spec(B_vec, K, L=None, shift_onesided=True):
 	if shift_onesided:
 		Mij = np.roll(B_vec, shift=np.round(-K).astype(int), axis=(1,2))[:,None,:,:]*np.conj(B_vec)[None,:,:,:]
 	else:
-		#NOTE: Below, if K=(0,1), it will just be rounded to 0,1, resulting in no shift being applied. The one-sided shift used above is a workaround for that
+		#NOTE: Below, if K=(0,1), it will just be rounded to (0,1), resulting in no shift being applied. The one-sided shift used above is a workaround for that
 		Mij = np.roll(B_vec, shift=np.round(-K/2).astype(int), axis=(1,2))[:,None,:,:]*np.roll(np.conj(B_vec), shift=np.round(K/2).astype(int), axis=(1,2))[None,:,:,:]
 	k_mag = np.sqrt(np.sum(k_vec**2, axis=0))
 	
