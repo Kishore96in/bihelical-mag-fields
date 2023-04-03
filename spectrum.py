@@ -5,13 +5,15 @@ import matplotlib.pyplot as plt
 
 def get_data_fft(fname):
 	"""
-	Given the name of a FITS file, return the Fourier transform of the data in it
+	Given the name of a FITS file, return the Fourier transform of the data in it.
+	
+	Normalization of the Fourier transform is chosen to match that of IDL.
 	"""
 	with fits.open(fname) as f:
 		hdu = f[0]
 		data = hdu.data
 	data = np.nan_to_num(data)
-	return scipy.fft.fft2(data)
+	return scipy.fft.fft2(data, norm='forward')
 
 def get_B_vec(fname):
 	"""
