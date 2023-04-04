@@ -23,8 +23,10 @@ axs[2].set_title("rebinned")
 fig.suptitle(r"$B_\phi$, CR 2161")
 
 for data, ax in zip([bp2161_petrie, bp2161, bp2161_rebin], axs):
-	im = ax.contourf(data, cmap='bwr', levels=100)
-	im.set_clim(np.array([-1,1])*np.max(np.abs(im.get_clim())))
+	vmin = -100
+	vmax = 100
+	levels = np.linspace(vmin,vmax,101)
+	im = ax.contourf(data, cmap='bwr', levels=levels, vmin=vmin, vmax=vmax, extend='both')
 	c = plt.colorbar(im, ax=ax)
 	nlat, nlon = np.shape(data)
 	
