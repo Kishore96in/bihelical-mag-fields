@@ -35,4 +35,4 @@ for data, ax in zip([bp2161_petrie, bp2161, bp2161_rebin], axs):
 fig.set_size_inches(6.4,11)
 fig.tight_layout()
 
-fig.savefig("what_is_axel3rots.pdf")
+fig.savefig("what_is_axel3rots.png", dpi=500)
