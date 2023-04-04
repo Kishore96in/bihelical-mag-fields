@@ -18,8 +18,8 @@ bp2161_rebin = fits.getdata("../images/hmi.b_synoptic_small.rebinned.2161.Bp.fit
 
 fig,axs = plt.subplots(3, 1)
 axs[0].set_title("axel3rots")
-axs[1].set_title("hmi.b_synoptic_small (sin_latitude✕longitude)")
-axs[2].set_title("hmi.b_synoptic_small.rebinned (latitude✕longitude)")
+axs[1].set_title("hmi.b_synoptic_small")
+axs[2].set_title("rebinned")
 fig.suptitle(r"$B_\phi$, CR 2161")
 
 for data, ax in zip([bp2161_petrie, bp2161, bp2161_rebin], axs):
@@ -28,11 +28,11 @@ for data, ax in zip([bp2161_petrie, bp2161, bp2161_rebin], axs):
 	c = plt.colorbar(im, ax=ax)
 	nlat, nlon = np.shape(data)
 	
-	ax.axhline((nlat-1)/2, c='k', ls="--")
-	ax.axhline((nlat-1)*0.6, c='k', ls="--")
-	ax.axhline((nlat-1)*0.4, c='k', ls="--")
+	ax.axhline((nlat-1)/2, c='k', ls="--", lw=1)
+	ax.axhline((nlat-1)*0.6, c='k', ls="--", lw=1)
+	ax.axhline((nlat-1)*0.4, c='k', ls="--", lw=1)
 
-fig.set_size_inches(6.4,11)
+fig.set_size_inches(4,7)
 fig.tight_layout()
 
 fig.savefig("what_is_axel3rots.png", dpi=500)
