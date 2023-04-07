@@ -10,7 +10,7 @@ def get_B_vec(fname):
 	"""
 	Read B_vector from Nishant's IDL save files, Fourier-transform it, and return it as an array.
 	"""
-	sav = readsav("nishant_idl_scripts/sav2/bmaps_2148.sav")
+	sav = readsav(fname)
 	
 	fft = lambda arr: scipy.fft.fft2(arr, norm='forward') #Use the same normalization as IDL
 	Br = fft(sav['br'])
