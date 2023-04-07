@@ -2,6 +2,10 @@
 Read the FITS files provided by HMI
 """
 
+import numpy as np
+import scipt.fft
+from astropy.io import fits
+
 def get_data_fft(fname):
 	"""
 	Given the name of a FITS file, return the Fourier transform of the data in it.
