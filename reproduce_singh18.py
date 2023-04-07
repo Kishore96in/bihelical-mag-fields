@@ -11,7 +11,7 @@ if __name__ == "__main__":
 	#Figure 2
 	cr_list = ["2148", "2149", "2150", "2151"]
 	
-	L = np.array([180,360])
+	L = np.array([360,180])
 	
 	E0_list = []
 	H1_list = []

@@ -11,8 +11,8 @@ if __name__ == "__main__":
 	#Figure 2
 	cr_list = ["2161", "2162", "2163"]
 	
-	#NOTE: Nishant sets this as (2*R_sun, 4*R_sun) in his IDL scripts (search for `scl=!pi/Rphys`). This was apparently inherited from Gordon Petrie.
-	L = np.array([np.pi*700,2*np.pi*700])
+	#NOTE: Nishant sets this as (4*R_sun, 2*R_sun) in his IDL scripts (search for `scl=!pi/Rphys`). This was apparently inherited from Gordon Petrie.
+	L = np.array([2*np.pi*700,np.pi*700])
 	
 	E0_list = []
 	H1_list = []
