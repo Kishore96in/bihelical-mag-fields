@@ -12,7 +12,7 @@ if __name__ == "__main__":
 	#Figure 2
 	cr_list = ["2148", "2149", "2150", "2151"]
 	
-	L = np.array([360,180])
+	L = np.array([2*np.pi*700,np.pi*700])
 	
 	E0_list = []
 	H1_list = []
