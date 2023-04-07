@@ -3,7 +3,7 @@ Read the FITS files provided by HMI
 """
 
 import numpy as np
-import scipt.fft
+import scipy.fft
 from astropy.io import fits
 
 def get_data_fft(fname):

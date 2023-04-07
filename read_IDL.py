@@ -3,7 +3,7 @@ To read B_vec from Nishant's IDL save files.
 """
 
 from scipy.io import readsav
-import scipt.fft
+import scipy.fft
 import numpy as np
 
 def get_B_vec(fname):
