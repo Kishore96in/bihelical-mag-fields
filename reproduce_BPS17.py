@@ -5,7 +5,8 @@ Reproduce Figure 8a of Brandenburg et al 2017 (https://doi.org/10.3847/1538-4357
 import numpy as np
 import matplotlib.pyplot as plt
 
-from spectrum import get_B_vec, calc_spec, signed_loglog_plot
+from spectrum import calc_spec, signed_loglog_plot
+from read_FITS import get_B_vec
 
 if __name__ == "__main__":
 	#Figure 2
