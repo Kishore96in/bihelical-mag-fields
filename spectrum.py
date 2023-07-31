@@ -19,6 +19,12 @@ def calc_spec(B_vec, K, L=None, shift_onesided=True):
 	if L is None:
 		L = np.array([2*np.pi, 2*np.pi])
 	
+	if shift_onesided:
+		Mij = np.roll(B_vec, shift=np.round(-K).astype(int), axis=(1,2))[:,None,:,:]*np.conj(B_vec)[None,:,:,:]
+	else:
+		#NOTE: Below, if K=(0,1), K/2 will just be rounded to (0,0), resulting in no shift being applied. The one-sided shift used above is a workaround for that
+		Mij = np.roll(B_vec, shift=np.round(-K/2).astype(int), axis=(1,2))[:,None,:,:]*np.roll(np.conj(B_vec), shift=np.round(K/2).astype(int), axis=(1,2))[None,:,:,:]
+	
 	#Approximate wavenumbers in both the directions
 	_, n_lon, n_lat = np.shape(B_vec)
 	L_lon, L_lat = L
@@ -33,12 +39,6 @@ def calc_spec(B_vec, K, L=None, shift_onesided=True):
 	k_vec = np.stack([k_rad_g, k_lon_g, k_lat_g])
 	k_mag = np.sqrt(np.sum(k_vec**2, axis=0))
 	k_mag_round = np.round(k_mag) #Used to bin the spectra
-	
-	if shift_onesided:
-		Mij = np.roll(B_vec, shift=np.round(-K).astype(int), axis=(1,2))[:,None,:,:]*np.conj(B_vec)[None,:,:,:]
-	else:
-		#NOTE: Below, if K=(0,1), K/2 will just be rounded to (0,0), resulting in no shift being applied. The one-sided shift used above is a workaround for that
-		Mij = np.roll(B_vec, shift=np.round(-K/2).astype(int), axis=(1,2))[:,None,:,:]*np.roll(np.conj(B_vec), shift=np.round(K/2).astype(int), axis=(1,2))[None,:,:,:]
 	
 	E = np.zeros(nk, dtype=complex)
 	H = np.zeros(nk, dtype=complex)
