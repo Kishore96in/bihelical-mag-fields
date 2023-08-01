@@ -1,7 +1,7 @@
 # Scripts
 * `remesh_sinlat_to_lat.py`: remesh `sine-latitude*longitude` maps (downloaded from JSOC) to `latitude*longitude`.
 * `read_*.py`: functions to read FITS and IDL sav files and get the vector magnetic field
-* `reproduce_singh_SOLIS`: try to reproduce figure 2 of [Singh 18] using SOLIS data from Nishant's IDL sav files.
+* `reproduce_singh18_SOLIS.py`: try to reproduce figure 2 of [Singh 18] using SOLIS data from Nishant's IDL sav files.
 
 # Downloading and plotting data
 ## Synoptic map
