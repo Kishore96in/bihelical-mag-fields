@@ -8,7 +8,9 @@ def jackknife(arr, axis):
 		arr: numpy array
 		axis: int
 	"""
-	arr = np.swapaxes(arr, axis, 0)
+	tr = [axis]
+	tr.extend([i for i in range(arr.ndim) if i!=axis])
+	arr = np.transpose(arr, axes=tr)
 	
 	n = arr.shape[0]
 	if n < 2:
