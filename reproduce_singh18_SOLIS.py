@@ -1,6 +1,8 @@
 """
 Reproduce the results of Singh et al 2018 (https://doi.org/10.3847/1538-4357/aad0f2).
-Here, we read IDL .sav files (saved by Nishant, I think).
+Here, we read IDL .sav files (provided by Gordon Petrie, I think).
+
+NOTE: the sav files used here are in [sin(latitude),longitude], but I will not bother rebinning them.
 """
 
 import numpy as np
