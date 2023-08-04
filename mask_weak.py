@@ -13,7 +13,7 @@ def get_data(fname):
 	data = np.nan_to_num(data)
 	return data
 
-def get_Bvec(fname, threshold=0):
+def get_B_vec(fname, threshold=0):
 	"""
 	Read B_vector from FITS files, set all the weak-field regions to zero, Fourier-transform it, and return it as an array.
 	
