@@ -18,7 +18,7 @@ def jackknife(arr, axis):
 	
 	means = []
 	for i in range(n):
-		rest = [i for j in range(n) if j!=i]
+		rest = [j for j in range(n) if j!=i]
 		means.append(np.average(arr[rest], axis=0))
 	means = np.array(means)
 	
