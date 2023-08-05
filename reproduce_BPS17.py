@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 from spectrum import calc_spec, signed_loglog_plot
 from read_FITS import get_B_vec
-from stats import jackknife
+from utils import jackknife
 
 if __name__ == "__main__":
 	#Figure 2
