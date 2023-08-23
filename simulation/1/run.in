@@ -1,0 +1,28 @@
+&run_pars
+  tmax=200.
+  it1=25
+  it1d=100
+  dsnap=1000000
+  dvid=5000000
+/
+&eos_run_pars
+/
+&hydro_run_pars
+  lupw_uu=T
+/
+&power_spectrum_run_pars
+/
+&density_run_pars
+  lupw_lnrho=T
+/
+&forcing_run_pars
+  iforce='helical', force=3e-2, relhel=-1.
+  iforce_profile='equator'
+/
+&magnetic_run_pars
+  lupw_aa=T
+  eta=3e-4
+/
+&viscosity_run_pars
+  nu=3e-4
+/

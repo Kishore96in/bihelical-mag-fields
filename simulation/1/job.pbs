@@ -1,0 +1,50 @@
+#!/bin/bash
+#PBS -l select=16:ncpus=16:mpiprocs=16:node_type=lenovo
+#PBS -l walltime=48:00:00
+#PBS -N SSD_strat
+#PBS -q expert
+#PBS -WMail_Points=ae
+#PBS -WMail_Users=kishoreg@iucaa.in
+cd $PBS_O_WORKDIR
+qalter -o "out_file_$PBS_JOBID.txt" -e "err_file_$PBS_JOBID.txt" $PBS_JOBID #To set the names of the output and log files.
+set -e
+
+timetorestart=42h
+
+function stopit {
+	#Before starting your pencil job, run this as `stopit &`
+	#STOP is for pencil.
+	sleep $timetorestart
+	if ! test -e STOP; then
+		touch STOP 
+		qsuboutput=$(qsub -W depend=afterok:$PBS_JOBID job.pbs 2>&1)
+	else
+		qsuboutput="Stop file found. Not resubmitting."
+	fi
+}
+
+module purge
+
+# module load gcc-8.2.0 platform_mpi-9.1.4
+# module load gcc-8.2.0 openmpi-3.1.2_gnu
+# module load gcc-8.2.0 openmpi-4.1.5
+module load anaconda3-kishore gcc-8.2.0 openmpi-4.1.5 hdf5-1.14-kishore
+
+if ! test -e data; then
+	mkdir data
+	
+	python generate_kvectors.py
+fi
+
+stopit &
+
+date
+pc_run
+date
+
+echo "done!"
+
+#Now vomit the output of qsub (used to submit the next job)
+echo "........................"
+echo " "
+echo "$qsuboutput"

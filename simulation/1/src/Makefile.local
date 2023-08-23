@@ -1,0 +1,15 @@
+###                             -*-Makefile-*-
+### Makefile for modular pencil code -- local part
+### Included by `Makefile'
+###
+
+MPICOMM   =   mpicomm
+FORCING   =   forcing
+HYDRO     =   hydro
+MAGNETIC  =   magnetic
+DENSITY   =   density
+EOS       =   eos_idealgas
+FOURIER   =   fourier_fftpack
+POWER     =   power_spectrum
+IO        =   io_hdf5
+REAL_PRECISION = double
