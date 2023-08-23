@@ -1,9 +1,6 @@
-from astropy.io import fits
 import scipy.fft
 import numpy as np
 import matplotlib.pyplot as plt
-
-from read_FITS import get_B_vec
 
 def calc_spec(B_vec, K, L=None, shift_onesided=True):
 	"""
@@ -71,6 +68,8 @@ def signed_loglog_plot(k, spec, ax, line_params=None):
 	return [l1, l2, l3]
 
 if __name__ == "__main__":
+	from read_FITS import get_B_vec
+	
 	L = np.array([360,2])
 	B_vec = get_B_vec("images/hmi.b_synoptic_small.2267")
 	
