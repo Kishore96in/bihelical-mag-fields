@@ -41,7 +41,7 @@ def calc_spec(B_vec, K, L=None, shift_onesided=True):
 	H = np.zeros(nk, dtype=complex)
 	
 	E_integrand = np.einsum("ii...", Mij)/2
-	H_integrand = 1j*np.einsum("ii...", np.cross(k_vec, Mij, axis=0))/k_mag**2
+	H_integrand = np.where(k_mag!=0, 1j*np.einsum("ii...", np.cross(k_vec, Mij, axis=0))/k_mag**2, 0)
 	
 	for k in range(nk):
 		E[...,k] = np.sum(np.where(k_mag_round == k, E_integrand, 0), axis=(-1,-2))
