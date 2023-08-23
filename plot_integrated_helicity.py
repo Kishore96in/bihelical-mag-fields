@@ -4,6 +4,7 @@ Similar to figure 3 of Singh et al 2018.
 
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib as mpl
 from scipy.integrate import trapezoid
 
 from spectrum import calc_spec, signed_loglog_plot
@@ -34,7 +35,19 @@ if __name__ == "__main__":
 	l_list = trapezoid(E0_list[:,1:]/k[1:], k[1:], axis=1)/Eint_list
 	r_list = nimHint_list/(2*l_list*Eint_list)
 	
-	fig,axs = plt.subplots(nrows=5)
+	fig = plt.figure()
+	gs = mpl.gridspec.GridSpec(2,1, height_ratios=[1,4])
+	gs1 = mpl.gridspec.GridSpecFromSubplotSpec(4,1, subplot_spec=gs[1], hspace=0)
+	ax0 = fig.add_subplot(gs[0])
+	axl = fig.add_subplot(gs1[3])
+	
+	axs = [
+		ax0,
+		fig.add_subplot(gs1[0], sharex=axl),
+		fig.add_subplot(gs1[1], sharex=axl),
+		fig.add_subplot(gs1[2], sharex=axl),
+		axl,
+		]
 	
 	assert nimHint_list.ndim == 1
 	axs[0].hist(nimHint_list, bins=100)
@@ -43,8 +56,9 @@ if __name__ == "__main__":
 	handles = signed_loglog_plot(cr_list, nimHint_list, axs[1])
 	axs[1].legend(handles=handles)
 	axs[1].set_ylabel(r"$- im(\mathcal{H}_M)$")
+	axs[1].set_xscale('linear')
 	
-	axs[2].plot(cr_list, Eint_list)
+	axs[2].semilogy(cr_list, Eint_list)
 	axs[2].set_ylabel(r"$\mathcal{E}_M$")
 	
 	axs[3].plot(cr_list, l_list)
@@ -53,9 +67,13 @@ if __name__ == "__main__":
 	axs[4].plot(cr_list, np.abs(r_list))
 	axs[4].set_ylabel(r"$\left| r_M \right|$")
 	
-	for ax in axs[1:4]:
-		ax.sharex(axs[4])
+	f = mpl.ticker.ScalarFormatter()
+	f.set_scientific(False)
+	axs[4].xaxis.set_major_formatter(f)
+	
+	for ax in axs[1:]:
 		ax.label_outer()
+		ax.tick_params(direction='inout', axis='x', which='major', top=True, bottom=True)
 	
 	fig.set_size_inches(6.4,8.4)
 	fig.tight_layout()
