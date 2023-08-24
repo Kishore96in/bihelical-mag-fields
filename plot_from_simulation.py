@@ -58,6 +58,8 @@ for iy in np.round(np.linspace(0,sim.dim.ny-1,7))[:-1].astype(int):
 	"""
 	Coordinate system:
 	r,phi,mu in synoptic maps correspond to y,x,z in our simulation.
+	
+	TODO: This is what BPS17 did, but it seems more natural to me to take r,phi,mu -> x,y,z, in order to preserve the right-handedness of the coordinate system. This is in fact what we do for the synoptic maps. In that case, we would look at yz planes in the simulation, and it turns out that my functions predict the wrong sign if we do that. Need to figure out what is going on.
 	"""
 	Bvec = var.bb[[1,0,2],:,iy,:]
 	Bvec = np.swapaxes(Bvec, 1,2)
