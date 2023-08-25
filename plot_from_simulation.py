@@ -59,6 +59,8 @@ for iy in np.round(np.linspace(0,sim.dim.ny-1,7))[:-1].astype(int):
 	Coordinate system:
 	r,phi,mu in synoptic maps correspond to y,x,z in our simulation.
 	
+	TODO: why do we not flip the sign of the vector even here, if we are just mapping to the coordinate system of synoptic maps? It seems Axel indeed flips the sign of the theta component (see https://lcd-www.colorado.edu/~axbr9098/projects/LShelicityspec/576b/ptst.pro ).
+	TODO: from https://lcd-www.colorado.edu/~axbr9098/projects/LShelicityspec/576b/ptst.pro (the IDL script used for figure 6b of BPS19), it looks like Axel considered the POSITIVE imaginary part (even though the plot legend says it is the negative imaginary)!
 	TODO: This is what BPS17 did, but it seems more natural to me to take r,phi,mu -> x,y,z, in order to preserve the right-handedness of the coordinate system. This is in fact what we do for the synoptic maps. In that case, we would look at yz planes in the simulation, and it turns out that my functions predict the wrong sign if we do that. Need to figure out what is going on.
 	"""
 	Bvec = var.bb[[1,0,2],:,iy,:]
