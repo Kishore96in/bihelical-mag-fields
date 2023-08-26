@@ -20,7 +20,7 @@ def get_data_fft(fname):
 
 def get_B_vec(fname):
 	"""
-	Read B_vector from FITS files, Fourier-transform it, and return it as an array.
+	Read B_vector from FITS files (synoptic vector magnetograms), Fourier-transform it, and return it as an array. A pseudo-Cartesian coordinate system is used, where we map r,phi,mu=cos(theta) to x,y,z (a right-handed coordinate system).
 	
 	Arguments:
 		fname: string of the form "hmi.b_synoptic_small.2267". The input file for Br should be called fname+".Br.fits" (and similar for Bt, Bp). Resulting filename may be anything that is handled by astropy.io.fits.open
@@ -31,6 +31,6 @@ def get_B_vec(fname):
 	Bp = get_data_fft(f"{fname}.Bp.fits")
 	
 	B_vec = np.stack([Br, Bp, -Bt]) #Equation 10 of {SinKapBra18}
-	B_vec = np.swapaxes(B_vec, -1, -2)
+	B_vec = np.swapaxes(B_vec, -1, -2) #The FITS files would've had spatial coordinates latitude,longitude.
 	
 	return B_vec
