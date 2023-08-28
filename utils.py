@@ -69,3 +69,33 @@ class fig_saver():
 		if not os.path.exists(loc_dir):
 			os.makedirs(loc_dir)
 		fig.savefig(loc, **kwargs)
+
+def rebin(k_vec, spec, bin_boundaries, axis):
+	"""
+	Given an array spec such that the values along axis correspond to values at corresponding entries of k_vec, rebin those values into bins specified by the list bin_boundaries.
+	
+	Arguments:
+		k_vec: array
+		spec: array
+		bin_boundaries: array
+		axis: int
+	
+	TODO: test
+	"""
+	
+	spec = np.swapaxes(spec, 0, axis)
+	
+	n_bins = len(bin_boundaries)-1
+	rebinned = np.zeros([n_bins, *np.shape(spec)[1:]])
+	ib = 0
+	for ik, k in enumerate(k_vec):
+		if bin_boundaries[ib+1] >= k:
+			ib += 1
+		if ib >= n_bins:
+			break
+		assert bin_boundaries[ib] <= k < bin_boundaries[ib+1]
+		
+		rebinned[ib] += spec[ik]
+	
+	rebinned = np.swapaxes(rebinned, 0, axis)
+	return rebinned
