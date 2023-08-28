@@ -1,0 +1,16 @@
+&init_pars
+  xyz_units='pi','pi','pi'
+  xyz0 = -1, -1, -1
+  Lxyz = 2, 2, 2
+/
+&eos_init_pars
+  gamma=1.
+/
+&hydro_init_pars
+/
+&density_init_pars
+  initlnrho='isothermal'
+/
+&magnetic_init_pars
+  initaa='gaussian-noise', amplaa=4e-6
+/
