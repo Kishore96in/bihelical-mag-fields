@@ -1,4 +1,6 @@
 import numpy as np
+import os
+import warnings
 
 def jackknife(arr, axis):
 	"""
@@ -28,3 +30,42 @@ def jackknife(arr, axis):
 	std = np.sqrt(var*n/(n-1.5)) #less biased estimator of standard deviation, assuming errors are Gaussian and uncorrelated between samples. Correction factor copied from Wikipedia (https://en.wikipedia.org/wiki/Standard_deviation#Unbiased_sample_standard_deviation ; accessed 1:55 PM IST, 04-Aug-2023)
 	
 	return m1, std
+
+class fig_saver():
+	def __init__(self, savefig, savedir):
+		self.savefig = savefig
+		self.savedir = savedir
+	
+	def __call__(self, fig, name, **kwargs):
+		if not self.savefig:
+			return
+		
+		if not os.path.exists(self.savedir):
+			#Create directory if it does not exist
+			os.makedirs(self.savedir)
+		elif not os.path.isdir(self.savedir):
+			raise FileExistsError(f"Save location {self.savedir} exists but is not a directory.")
+		
+		try:
+			import git
+			repo = git.Repo(path = os.path.dirname(__file__), search_parent_directories = True)
+			
+			if "metadata" in kwargs.keys():
+				raise ValueError("Git was found. Do not specify metadata manually.")
+			
+			id_str = f"{os.path.basename(__file__)} at git commit {repo.head.object.hexsha}"
+			
+			if name[-4:] == ".pdf":
+				kwargs['metadata'] = {'Creator': id_str}
+			elif name[-4:] == ".png":
+				kwargs['metadata'] = {'Software': id_str}
+			else:
+				raise ValueError(f"Could not infer file type for name {name}")
+		except Exception as e:
+			warnings.warn(f"Git info will not be saved in the image. {repr(e)}")
+		
+		loc = os.path.join(self.savedir, name)
+		loc_dir = os.path.dirname(loc)
+		if not os.path.exists(loc_dir):
+			os.makedirs(loc_dir)
+		fig.savefig(loc, **kwargs)
