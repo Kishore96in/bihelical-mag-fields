@@ -3,7 +3,6 @@ import pencil as pc
 import numpy as np
 import scipy.fft
 import os
-import warnings
 
 from spectrum import calc_spec, signed_loglog_plot
 from utils import fig_saver
