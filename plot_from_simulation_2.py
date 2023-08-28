@@ -40,7 +40,7 @@ fig,axs = plt.subplots(ncols=2)
 
 axs[0].plot(grid.z, av.xy.abmz[-1])
 axs[0].set_xlabel(r"$z$")
-axs[0].set_ylabel(r"$\left< \vec{A}\cdot\vec{B} \right>$")
+axs[0].set_ylabel(r"$\left< \vec{A}\cdot\vec{B} \right>_{xy}$")
 axs[0].set_xlim(min(grid.z), max(grid.z))
 axs[0].axhline(0, ls=':', c='k')
 
