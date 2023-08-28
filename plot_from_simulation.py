@@ -6,45 +6,14 @@ import os
 import warnings
 
 from spectrum import calc_spec, signed_loglog_plot
+from utils import fig_saver
 
 savefig = True #whether to save plots
 simpath = "simulation/1"
 savedir = os.path.join(simpath, "plots") #Where to save plots
 iter_list = None
 
-def save(fig, name, **kwargs):
-	if not savefig:
-		return
-	
-	if not os.path.exists(savedir):
-		#Create directory if it does not exist
-		os.makedirs(savedir)
-	elif not os.path.isdir(savedir):
-		raise FileExistsError(f"Save location {savedir} exists but is not a directory.")
-	
-	try:
-		import git
-		repo = git.Repo(path = os.path.dirname(__file__), search_parent_directories = True)
-		
-		if "metadata" in kwargs.keys():
-			raise ValueError("Git was found. Do not specify metadata manually.")
-		
-		id_str = f"{os.path.basename(__file__)} at git commit {repo.head.object.hexsha}"
-		
-		if name[-4:] == ".pdf":
-			kwargs['metadata'] = {'Creator': id_str}
-		elif name[-4:] == ".png":
-			kwargs['metadata'] = {'Software': id_str}
-		else:
-			raise ValueError(f"Could not infer file type for name {name}")
-	except Exception as e:
-		warnings.warn(f"Git info will not be saved in the image. {repr(e)}")
-	
-	loc = os.path.join(savedir, name)
-	loc_dir = os.path.dirname(loc)
-	if not os.path.exists(loc_dir):
-		os.makedirs(loc_dir)
-	fig.savefig(loc, **kwargs)
+save = fig_saver(savefig, savedir)
 
 sim = pc.sim.get(quiet=True, path=simpath)
 av = pc.read.aver(quiet=True, iter_list=iter_list, datadir=sim.datadir, simdir=sim.path)
