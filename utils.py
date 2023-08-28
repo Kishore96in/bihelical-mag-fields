@@ -1,6 +1,7 @@
 import numpy as np
 import os
 import warnings
+import sys
 
 def jackknife(arr, axis):
 	"""
@@ -53,7 +54,8 @@ class fig_saver():
 			if "metadata" in kwargs.keys():
 				raise ValueError("Git was found. Do not specify metadata manually.")
 			
-			id_str = f"{os.path.basename(__file__)} at git commit {repo.head.object.hexsha}"
+			scriptname = sys.argv[0]
+			id_str = f"{os.path.basename(scriptname)} at git commit {repo.head.object.hexsha}"
 			
 			if name[-4:] == ".pdf":
 				kwargs['metadata'] = {'Creator': id_str}
