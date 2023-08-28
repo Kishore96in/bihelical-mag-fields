@@ -33,6 +33,10 @@ def jackknife(arr, axis):
 	return m1, std
 
 class fig_saver():
+	"""
+	savefig: bool
+	savedir: string, path to save the figure
+	"""
 	def __init__(self, savefig, savedir):
 		self.savefig = savefig
 		self.savedir = savedir
