@@ -28,11 +28,11 @@ for ix in np.round(np.linspace(0,sim.dim.nx-1,7))[:-1].astype(int):
 	Bvec_fft = scipy.fft.fft2(Bvec, norm='forward', axes=(-2,-1))
 	
 	L = [grid.Ly, grid.Lz]
-	k, E0, H1 = calc_spec(Bvec_fft, K=np.array([0,0]), L=L)
+	k, E0, H0 = calc_spec(Bvec_fft, K=np.array([0,0]), L=L)
 	
-	res[varname].append({'k':k, 'E0': E0, 'H1': H1})
+	res[varname].append({'k':k, 'E0': E0, 'H0': H0})
 
-H1av = np.average(np.array([d['H1'] for d in res['var.h5']]), axis=0)
+H0av = np.average(np.array([d['H0'] for d in res['var.h5']]), axis=0)
 E0av = np.average(np.array([d['E0'] for d in res['var.h5']]), axis=0)
 k = res['var.h5'][0]['k']
 
@@ -45,7 +45,7 @@ axs[0].set_xlim(min(grid.z), max(grid.z))
 axs[0].axhline(0, ls=':', c='k')
 
 handles = []
-handles.extend( signed_loglog_plot(k, k*np.real(H1av), axs[1], {'label':"real(k*H(k,1))"}) ) #for the K=0 mode, we want the real part
+handles.extend( signed_loglog_plot(k, k*np.real(H0av), axs[1], {'label':"real(k*H(k,0))"}) ) #for the K=0 mode, we want the real part
 handles.extend( axs[1].loglog(k, E0av, label="E(k,0)") )
 axs[1].legend(handles=handles)
 axs[1].set_xlabel("k")
