@@ -76,7 +76,7 @@ class fig_saver():
 			os.makedirs(loc_dir)
 		fig.savefig(loc, **kwargs)
 
-def rebin(k_vec, spec, bin_boundaries, axis):
+def rebin(k_vec, spec, bin_boundaries, axis=0):
 	"""
 	Given an array spec such that the values along axis correspond to values at corresponding entries of k_vec, rebin those values into bins specified by the list bin_boundaries.
 	
