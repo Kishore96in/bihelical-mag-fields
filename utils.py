@@ -100,7 +100,7 @@ def rebin(k_vec, spec, bin_boundaries, axis=0):
 		if ib >= n_bins:
 			break
 		if not bin_boundaries[ib] <= k < bin_boundaries[ib+1]:
-			raise RuntimeError(f"Something wrong with specified bins.\n{ik = }\n{ib = }\n{bin_boundaries = }\n{k_vec = }")
+			raise RuntimeError(f"Something wrong with specified bins.\n{ik = }\n{ib = }\n{k = }\n{bin_boundaries = }\n{k_vec = }")
 		
 		rebinned[ib] += spec[ik]
 	
