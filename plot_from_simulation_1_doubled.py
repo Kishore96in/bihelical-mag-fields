@@ -11,7 +11,7 @@ import os
 from spectrum import calc_spec, signed_loglog_plot
 from utils import fig_saver, rebin
 
-savefig = False #whether to save plots
+savefig = True #whether to save plots
 simpath = "simulation/1"
 savedir = os.path.join(simpath, "plots") #Where to save plots
 iter_list = None
@@ -73,4 +73,4 @@ axs[1].set_xlabel("k")
 
 fig.set_size_inches(6.4,3)
 fig.tight_layout()
-save(fig, "check_helspec_calc.pdf")
+save(fig, "check_helspec_calc_doubledomain.pdf")
