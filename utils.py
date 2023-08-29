@@ -92,7 +92,7 @@ def rebin(k_vec, spec, bin_boundaries, axis=0):
 	spec = np.swapaxes(spec, 0, axis)
 	
 	n_bins = len(bin_boundaries)-1
-	rebinned = np.zeros([n_bins, *np.shape(spec)[1:]])
+	rebinned = np.zeros([n_bins, *np.shape(spec)[1:]], dtype=spec.dtype)
 	ib = 0
 	for ik, k in enumerate(k_vec):
 		if bin_boundaries[ib+1] <= k:
