@@ -95,7 +95,7 @@ def rebin(k_vec, spec, bin_boundaries, axis=0):
 	rebinned = np.zeros([n_bins, *np.shape(spec)[1:]])
 	ib = 0
 	for ik, k in enumerate(k_vec):
-		if bin_boundaries[ib+1] >= k:
+		if bin_boundaries[ib+1] <= k:
 			ib += 1
 		if ib >= n_bins:
 			break
