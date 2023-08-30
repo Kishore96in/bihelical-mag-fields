@@ -91,6 +91,12 @@ def rebin(k_vec, spec, bin_boundaries, axis=0):
 	
 	spec = np.swapaxes(spec, 0, axis)
 	
+	old_bin_widths = (np.roll(k_vec, -1) - np.roll(k_vec, 1))/2
+	old_bin_widths[0] = k_vec[1] - k_vec[0]
+	old_bin_widths[-1] = k_vec[-1] - k_vec[-2]
+	
+	new_bin_widths = bin_boundaries[1:] - bin_boundaries[:-1]
+	
 	n_bins = len(bin_boundaries)-1
 	rebinned = np.zeros([n_bins, *np.shape(spec)[1:]], dtype=spec.dtype)
 	ib = 0
@@ -102,7 +108,7 @@ def rebin(k_vec, spec, bin_boundaries, axis=0):
 		if not bin_boundaries[ib] <= k < bin_boundaries[ib+1]:
 			raise RuntimeError(f"Something wrong with specified bins.\n{ik = }\n{ib = }\n{k = }\n{bin_boundaries = }\n{k_vec = }")
 		
-		rebinned[ib] += spec[ik]
+		rebinned[ib] += spec[ik]*old_bin_widths[ik]/new_bin_widths[ib]
 	
 	rebinned = np.swapaxes(rebinned, 0, axis)
 	return rebinned
