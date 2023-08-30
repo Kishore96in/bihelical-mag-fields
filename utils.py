@@ -111,6 +111,22 @@ def rebin(k_vec, spec, bin_boundaries, axis=0):
 	rebinned = np.swapaxes(rebinned, 0, axis)
 	return rebinned
 
+def downsample_half(k, arr, axis=0):
+	"""
+	Given values of arr at wavenumbers k, rebin to double the k-spacing.
+	
+	Arguments:
+		k: numpy array
+		arr: numpy array
+		axis: int
+	"""
+	k_old = k
+	dk = k_old[1] - k_old[0] #assumes k are equispaced.
+	k = k_old[::2]
+	bin_bounds = np.linspace(-dk,k_old[-1]+dk,len(k)+1)
+	arr = rebin(k_old, arr, bin_bounds, axis=axis)
+	return k, arr
+
 if __name__ == "__main__":
 	from termcolor import cprint
 	
