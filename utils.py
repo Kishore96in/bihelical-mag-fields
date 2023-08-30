@@ -2,6 +2,7 @@ import numpy as np
 import os
 import warnings
 import sys
+from termcolor import cprint
 
 def jackknife(arr, axis):
 	"""
@@ -85,8 +86,6 @@ def rebin(k_vec, spec, bin_boundaries, axis=0):
 		spec: array
 		bin_boundaries: array
 		axis: int
-	
-	TODO: test
 	"""
 	
 	spec = np.swapaxes(spec, 0, axis)
@@ -112,3 +111,17 @@ def rebin(k_vec, spec, bin_boundaries, axis=0):
 	
 	rebinned = np.swapaxes(rebinned, 0, axis)
 	return rebinned
+
+if __name__ == "__main__":
+	k = np.linspace(0,9,10)
+	new_bin_boundaries = np.linspace(-0.5, 9.5, 11)
+	a = np.ones_like(k)
+	b = rebin(k, a, new_bin_boundaries)
+	assert np.all(np.isclose(a,b))
+	
+	new_bin_boundaries = np.array([0,2,4,6,8,10])
+	b = rebin(k, a, new_bin_boundaries)
+	assert np.all(b == 1)
+	
+	#####
+	cprint("All tests passed", attrs=['bold'])
