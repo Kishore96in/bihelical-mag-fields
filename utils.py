@@ -2,7 +2,6 @@ import numpy as np
 import os
 import warnings
 import sys
-from termcolor import cprint
 
 def jackknife(arr, axis):
 	"""
@@ -113,6 +112,8 @@ def rebin(k_vec, spec, bin_boundaries, axis=0):
 	return rebinned
 
 if __name__ == "__main__":
+	from termcolor import cprint
+	
 	k = np.linspace(0,9,10)
 	new_bin_boundaries = np.linspace(-0.5, 9.5, 11)
 	a = np.ones_like(k)
