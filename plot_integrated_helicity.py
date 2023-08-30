@@ -10,7 +10,7 @@ from scipy.integrate import trapezoid
 
 from spectrum import calc_spec, signed_loglog_plot
 from read_FITS import get_B_vec_dbllat
-from utils import downsample_half
+from utils import downsample_half, rebin
 
 if __name__ == "__main__":
 	cr_list = np.arange(2097,2269)
@@ -77,6 +77,34 @@ if __name__ == "__main__":
 	for ax in axs[1:]:
 		ax.label_outer()
 		ax.tick_params(direction='inout', axis='x', which='major', top=True, bottom=True)
+	
+	fig.set_size_inches(6.4,8.4)
+	fig.tight_layout()
+	
+	#TODO: Need to see how exactly Singh 2018 chose the scales at which to plot
+	#TODO: is there a good heuristic to figure out if (and at which scale) a (noisy) helicity spectrum switches sign?
+	#Similar to figure 4 of Singh et al 2018.
+	bin_boundaries = np.array([0, 0.01, 0.1, 0.5])
+	E0_rb = rebin(k, E0_list, bin_boundaries, axis=-1)
+	nimkH1_rb = rebin(k, -np.imag(k*H1_list), bin_boundaries, axis=-1)
+	
+	fig,axs = plt.subplots(3, sharex=True, sharey=True)
+	
+	for i in range(len(bin_boundaries)-1):
+		#TODO: Below, should I multiply by the bin width to account for the normalization?
+		handles = signed_loglog_plot(cr_list, nimkH1_rb[:,i], axs[i])
+		handles.extend(axs[i].semilogy(cr_list, E0_rb[:,i]))
+		
+		axs[i].set_title(rf"${bin_boundaries[i]} \leq k < {bin_boundaries[i+1]}$")
+		axs[i].legend(handles=handles)
+		# axs[i].set_ylabel(r"$\int E(k,0),\, -im(\int k H(k,1))$") # TODO: Figure out a nice way to denote what I mean
+		axs[i].set_yscale('log')
+		axs[i].set_xscale('linear')
+	
+	f = mpl.ticker.ScalarFormatter()
+	f.set_scientific(False)
+	axs[-1].xaxis.set_major_formatter(f)
+	axs[-1].set_xlabel("CR")
 	
 	fig.set_size_inches(6.4,8.4)
 	fig.tight_layout()
