@@ -22,7 +22,7 @@ if __name__ == "__main__":
 	for cr in cr_list:
 		B_vec = get_B_vec_dbllat(f"images/hmi.b_synoptic_small.rebinned.{cr}")
 		k, E0, _ = calc_spec(B_vec, K=np.array([0,0]), L=L)
-		_, _, H1 = calc_spec(B_vec, K=np.array([0,2]), L=L)
+		_, _, H1 = calc_spec(B_vec, K=np.array([0,2]), L=L, shift_onesided=0)
 		
 		E0_list.append(E0)
 		H1_list.append(H1)
