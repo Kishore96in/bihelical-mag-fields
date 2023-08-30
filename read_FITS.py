@@ -51,7 +51,7 @@ def get_data_fft_dbllat(fname):
 	if not n_lat%2 == 0:
 		raise RuntimeError("n_lat is odd, so unclear how to split into two for stacking.")
 	nlatb2 = int(n_lat/2)
-	data = np.concatenate((data[..., nlatb2:], data, data[..., :nlatb2]), axis=0)
+	data = np.concatenate((data[nlatb2:], data, data[:nlatb2]), axis=0)
 	if not np.shape(data) == (2*n_lat, n_lon):
 		raise RuntimeError(f"Something went wrong while stacking: {np.shape(data) = }; expected ({2*n_lat}, {n_lon})")
 	
