@@ -34,7 +34,6 @@ if __name__ == "__main__":
 	k, E0_list = downsample_half(k, E0_list, axis=1)
 	
 	Eint_list = trapezoid(E0_list, k, axis=1)
-	#TODO: the paper says it plots the total thing, not just the imaginary part. Need to check.
 	nimHint_list = -np.imag(trapezoid(H1_list, k, axis=1))
 	l_list = (np.pi/2) * trapezoid(E0_list[:,1:]/k[1:], k[1:], axis=1)/Eint_list
 	r_list = nimHint_list/(2*l_list*Eint_list)
