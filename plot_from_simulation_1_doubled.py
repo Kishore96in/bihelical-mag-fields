@@ -1,5 +1,5 @@
 """
-Here, we double the domain in the latitudinal direction before performing the shift, so that K/2 does not get rounded up or down.
+Test the two-scale method on a simulation where the sign of helicity flips across z=0. Here, we double the domain in the latitudinal direction before performing the shift, so that K/2 does not get rounded up or down.
 """
 
 import matplotlib.pyplot as plt

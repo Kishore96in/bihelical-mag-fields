@@ -1,3 +1,7 @@
+"""
+Test the two-scale method on a simulation where the sign of helicity is the same throughout the domain. Here, we extract the K=0 mode.
+"""
+
 import matplotlib.pyplot as plt
 import pencil as pc
 import numpy as np

@@ -1,3 +1,7 @@
+"""
+Test the two-scale method on a simulation where the sign of helicity flips across z=0. Here, we perform the one-sided shift that was used in earlier works.
+"""
+
 import matplotlib.pyplot as plt
 import pencil as pc
 import numpy as np
