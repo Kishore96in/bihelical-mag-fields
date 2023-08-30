@@ -78,7 +78,7 @@ class fig_saver():
 
 def rebin(k_vec, spec, bin_boundaries, axis=0):
 	"""
-	Given an array spec such that the values along axis correspond to values at corresponding entries of k_vec, rebin those values into bins specified by the list bin_boundaries.
+	Given an array spec such that the values along axis correspond to values at corresponding entries of k_vec, rebin those values into bins specified by the list bin_boundaries. Rebinned values are normalized assuming a uniform measure.
 	
 	Arguments:
 		k_vec: array
