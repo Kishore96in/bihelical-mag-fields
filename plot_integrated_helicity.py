@@ -1,5 +1,6 @@
 """
 Similar to figure 3 of Singh et al 2018.
+Here, we double the domain to apply the two-scale method.
 """
 
 import numpy as np
