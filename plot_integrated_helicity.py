@@ -9,25 +9,29 @@ import matplotlib as mpl
 from scipy.integrate import trapezoid
 
 from spectrum import calc_spec, signed_loglog_plot
-from read_FITS import get_B_vec
+from read_FITS import get_B_vec_dbllat
+from utils import downsample_half
 
 if __name__ == "__main__":
 	cr_list = np.arange(2097,2269)
 	
-	L = np.array([2*np.pi*700,np.pi*700])
+	L = np.array([2*np.pi*700,2*np.pi*700]) #data will be doubled in the latitudinal direction.
 	
 	E0_list = []
 	H1_list = []
 	for cr in cr_list:
-		B_vec = get_B_vec(f"images/hmi.b_synoptic_small.rebinned.{cr}")
+		B_vec = get_B_vec_dbllat(f"images/hmi.b_synoptic_small.rebinned.{cr}")
 		k, E0, _ = calc_spec(B_vec, K=np.array([0,0]), L=L)
-		_, _, H1 = calc_spec(B_vec, K=np.array([0,1]), L=L)
+		_, _, H1 = calc_spec(B_vec, K=np.array([0,2]), L=L, shift_onesided=0)
 		
 		E0_list.append(E0)
 		H1_list.append(H1)
 	
 	E0_list = np.array(E0_list)
 	H1_list = np.array(H1_list)
+	
+	_, H1_list = downsample_half(k, H1_list, axis=1)
+	k, E0_list = downsample_half(k, E0_list, axis=1)
 	
 	Eint_list = trapezoid(E0_list, k, axis=1)
 	#TODO: the paper says it plots the total thing, not just the imaginary part. Need to check.
