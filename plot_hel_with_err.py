@@ -64,7 +64,7 @@ def plot_hel_with_err(cr_list):
 	
 	cr_list_int = [int(cr) for cr in cr_list]
 	fig.suptitle(f"CR: {min(cr_list_int)}–{max(cr_list_int)}")
-	fig.set_size_inches(6.4,6.4)
+	fig.set_size_inches(4,4)
 	fig.tight_layout()
 	
 	return fig
