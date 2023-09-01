@@ -93,7 +93,7 @@ if __name__ == "__main__":
 	nt = np.shape(nimkH1_rb)[0]
 	pos_frac = np.sum(np.where(nimkH1_rb>0, 1, 0), axis=0)/nt
 	
-	fig,axs = plt.subplots(3, sharex=True, sharey=True)
+	fig,axs = plt.subplots(len(bin_boundaries)-1, sharex=True, sharey=True)
 	
 	for i in range(len(bin_boundaries)-1):
 		#TODO: Below, should I multiply by the bin width to account for the normalization?
