@@ -2,6 +2,7 @@
 Similar to the plot produced by reproduce_singh18_HMI_dbl, but for different CR.
 """
 
+import numpy as np
 import matplotlib.pyplot as plt
 
 from spectrum import calc_spec, signed_loglog_plot
