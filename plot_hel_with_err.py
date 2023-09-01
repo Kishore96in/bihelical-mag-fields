@@ -54,13 +54,13 @@ def plot_hel_with_err(cr_list):
 	handles = signed_loglog_plot(k, k*nimH1, axs[0], {'label':"$-im(k H(k,1))$"})
 	h = axs[0].loglog(k, E0, label="$E(k,0)$")
 	handles.extend(h)
-	axs[0].legend(handles=handles)
+	# axs[0].legend(handles=handles)
 	
 	axs[1].loglog(k, np.abs(nimH1)/nimH1_err, label="$-im(k H(k,1))$")
 	axs[1].loglog(k, E0/E0_err, label="$E(k,0)$")
 	axs[1].set_ylabel("|data/error|")
 	axs[1].set_xlabel("k")
-	axs[1].legend()
+	# axs[1].legend()
 	
 	cr_list_int = [int(cr) for cr in cr_list]
 	fig.suptitle(f"CR: {min(cr_list_int)}–{max(cr_list_int)}")
