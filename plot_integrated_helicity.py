@@ -90,8 +90,8 @@ if __name__ == "__main__":
 	E0_rb = rebin(k, E0_list, bin_boundaries, axis=-1)
 	nimkH1_rb = rebin(k, -np.imag(k*H1_list), bin_boundaries, axis=-1)
 	
-	nt = np.shape(nimHint_list)[0]
-	pos_frac = np.sum(np.where(nimHint_list>0, 1, 0))/nt
+	nt = np.shape(nimkH1_rb)[0]
+	pos_frac = np.sum(np.where(nimkH1_rb>0, 1, 0), axis=0)/nt
 	
 	fig,axs = plt.subplots(3, sharex=True, sharey=True)
 	
