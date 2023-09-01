@@ -63,7 +63,7 @@ if __name__ == "__main__":
 	save = fig_saver(savefig, savedir)
 	
 	cr_bins = np.arange(2097,2268,10)
-	for i in range(len(cr_bins)):
+	for i in range(len(cr_bins)-1):
 		cr_list = [f"{cr}" for cr in range(cr_bins[i], cr_bins[i+1])]
 		figname = f"{cr_bins[i]}-{cr_bins[i+1]}.pdf"
 		save(plot_hel_with_err(cr_list), figname)
