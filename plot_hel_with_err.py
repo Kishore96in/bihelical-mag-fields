@@ -38,13 +38,13 @@ def plot_hel_with_err(cr_list):
 	
 	fig,axs = plt.subplots(2, 1, sharex=True, gridspec_kw={'height_ratios': [2,1]})
 	
-	handles = signed_loglog_plot(k, k*nimH1, axs[0], {'label':"-np.imag(k*H(k,1))"})
-	h = axs[0].loglog(k, E0, label="E(k,0)")
+	handles = signed_loglog_plot(k, np.real_if_close(k*nimH1), axs[0], {'label':"-np.imag(k*H(k,1))"})
+	h = axs[0].loglog(k, np.real_if_close(E0), label="E(k,0)")
 	handles.extend(h)
 	axs[0].legend(handles=handles)
 	
-	axs[1].loglog(k, E0_err, label="err, E")
-	axs[1].loglog(k, k*nimH1_err, label="err, kH")
+	axs[1].loglog(k, np.real_if_close(E0_err), label="err, E")
+	axs[1].loglog(k, np.real_if_close(k*nimH1_err), label="err, kH")
 	axs[1].set_ylabel("Error")
 	axs[1].set_xlabel("k")
 	axs[1].legend()
