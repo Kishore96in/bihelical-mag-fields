@@ -1,6 +1,8 @@
 """
 Reproduce the results of Singh et al 2018 (https://doi.org/10.3847/1538-4357/aad0f2).
 Here, we use FITS files downloaded from JSOC.
+
+NOTE: the one-sided shift here produces the wrong sign of the helicity spectrum.
 """
 
 import numpy as np

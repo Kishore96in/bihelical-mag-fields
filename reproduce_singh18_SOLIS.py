@@ -3,6 +3,7 @@ Reproduce the results of Singh et al 2018 (https://doi.org/10.3847/1538-4357/aad
 Here, we read IDL .sav files (provided by Gordon Petrie, I think).
 
 NOTE: the sav files used here are in [sin(latitude),longitude], but I will not bother rebinning them.
+NOTE: the one-sided shift used here produces the wrong sign of the helicity spectrum
 """
 
 import numpy as np
