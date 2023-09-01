@@ -90,12 +90,17 @@ if __name__ == "__main__":
 	E0_rb = rebin(k, E0_list, bin_boundaries, axis=-1)
 	nimkH1_rb = rebin(k, -np.imag(k*H1_list), bin_boundaries, axis=-1)
 	
+	nt = np.shape(nimHint_list)[0]
+	pos_frac = np.sum(np.where(nimHint_list>0, 1, 0))/nt
+	
 	fig,axs = plt.subplots(3, sharex=True, sharey=True)
 	
 	for i in range(len(bin_boundaries)-1):
 		#TODO: Below, should I multiply by the bin width to account for the normalization?
 		handles = signed_loglog_plot(cr_list, nimkH1_rb[:,i], axs[i])
 		handles.extend(axs[i].semilogy(cr_list, E0_rb[:,i]))
+		
+		axs[i].add_artist(mpl.offsetbox.AnchoredText(f"$+$: {pos_frac[i]:.2f}", loc='upper right', frameon=False))
 		
 		axs[i].set_title(rf"${bin_boundaries[i]} \leq k < {bin_boundaries[i+1]}$")
 		axs[i].legend(handles=handles)
