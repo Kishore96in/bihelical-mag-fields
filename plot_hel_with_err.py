@@ -30,21 +30,34 @@ def E0H1_list_from_CR_list(cr_list):
 	
 	return k, E0_list, H1_list
 
+def test_small_im(arr):
+	assert max(np.abs(np.imag(arr)/np.real(arr))) < 1e-10
+
+def real(arr):
+	test_small_im(arr)
+	return np.real(arr)
+
 def plot_hel_with_err(cr_list):
 	k, E0_list, H1_list = E0H1_list_from_CR_list(cr_list)
 	
 	E0, E0_err = jackknife(E0_list, axis=0)
 	nimH1, nimH1_err = jackknife(-np.imag(H1_list), axis=0)
 	
+	#Avoid some annoying matplotlib warnings
+	E0 = real(E0)
+	E0_err = real(E0_err)
+	nimH1 = real(nimH1)
+	nimH1_err = real(nimH1_err)
+	
 	fig,axs = plt.subplots(2, 1, sharex=True, gridspec_kw={'height_ratios': [2,1]})
 	
-	handles = signed_loglog_plot(k, np.real_if_close(k*nimH1), axs[0], {'label':"-np.imag(k*H(k,1))"})
-	h = axs[0].loglog(k, np.real_if_close(E0), label="E(k,0)")
+	handles = signed_loglog_plot(k, k*nimH1, axs[0], {'label':"-np.imag(k*H(k,1))"})
+	h = axs[0].loglog(k, E0, label="E(k,0)")
 	handles.extend(h)
 	axs[0].legend(handles=handles)
 	
-	axs[1].loglog(k, np.real_if_close(E0_err), label="err, E")
-	axs[1].loglog(k, np.real_if_close(k*nimH1_err), label="err, kH")
+	axs[1].loglog(k, E0_err, label="err, E")
+	axs[1].loglog(k, k*nimH1_err, label="err, kH")
 	axs[1].set_ylabel("Error")
 	axs[1].set_xlabel("k")
 	axs[1].legend()
