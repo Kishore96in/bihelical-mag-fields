@@ -74,8 +74,8 @@ def signed_loglog_plot(k, spec, ax, line_params=None):
 		line_params = dict()
 	
 	l1 = ax.loglog(k, spec, **line_params)[0]
-	l2 = ax.scatter(k[where_pos], spec[where_pos], **params_pos, label="positive")
-	l3 = ax.scatter(k[where_neg], spec[where_neg], **params_neg, label="negative")
+	l2 = ax.scatter(k[where_pos], spec[where_pos], **params_pos, label="$+$")
+	l3 = ax.scatter(k[where_neg], spec[where_neg], **params_neg, label="$-$")
 	
 	return [l1, l2, l3]
 
