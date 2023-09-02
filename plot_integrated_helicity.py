@@ -103,7 +103,6 @@ if __name__ == "__main__":
 		
 		
 		axs[i].set_title(rf"${bin_boundaries[i]} \leq k < {bin_boundaries[i+1]}$")
-		axs[i].legend(handles=handles)
 		# axs[i].set_ylabel(r"$\int E(k,0),\, -im(\int k H(k,1))$") # TODO: Figure out a nice way to denote what I mean
 		axs[i].set_yscale('log')
 		axs[i].set_xscale('linear')
