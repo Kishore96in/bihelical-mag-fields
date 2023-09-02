@@ -10,10 +10,14 @@ from scipy.integrate import trapezoid
 
 from spectrum import calc_spec, signed_loglog_plot
 from read_FITS import get_B_vec_dbllat
-from utils import downsample_half, rebin
+from utils import downsample_half, rebin, fig_saver
 
 if __name__ == "__main__":
 	cr_list = np.arange(2097,2269)
+	savefig = True
+	savedir = "plots"
+	
+	save = fig_saver(savefig, savedir)
 	
 	L = np.array([2*np.pi*700,2*np.pi*700]) #data will be doubled in the latitudinal direction.
 	
@@ -83,6 +87,8 @@ if __name__ == "__main__":
 	fig.set_size_inches(6.4,8.4)
 	fig.tight_layout()
 	
+	save(fig, "plot_integrated_helicity.pdf")
+	
 	#TODO: Need to see how exactly Singh 2018 chose the scales at which to plot
 	#TODO: is there a good heuristic to figure out if (and at which scale) a (noisy) helicity spectrum switches sign?
 	#Similar to figure 4 of Singh et al 2018.
@@ -115,4 +121,4 @@ if __name__ == "__main__":
 	fig.set_size_inches(6.4,8.4)
 	fig.tight_layout()
 	
-	plt.show()
+	save(fig, "plot_binned_helicity.pdf"
