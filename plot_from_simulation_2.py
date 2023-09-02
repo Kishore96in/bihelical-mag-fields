@@ -49,7 +49,7 @@ axs[0].set_xlim(min(grid.z), max(grid.z))
 axs[0].axhline(0, ls=':', c='k')
 
 handles = []
-handles.extend( signed_loglog_plot(k, k*np.real(H0av), axs[1], {'label':"real(k*H(k,0))"}) ) #for the K=0 mode, we want the real part
+handles.extend( signed_loglog_plot(k, k*np.real(H0av), axs[1], {'label':"\mathrm{Re}(k H(k,0))"}) ) #for the K=0 mode, we want the real part
 handles.extend( axs[1].loglog(k, E0av, label="E(k,0)") )
 axs[1].legend(handles=handles)
 axs[1].set_xlabel("k")
