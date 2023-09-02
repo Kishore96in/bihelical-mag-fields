@@ -79,6 +79,7 @@ if __name__ == "__main__":
 	f = mpl.ticker.ScalarFormatter()
 	f.set_scientific(False)
 	axs[4].xaxis.set_major_formatter(f)
+	axs[4].set_xlim(min(cr_list), max(cr_list))
 	
 	for ax in axs[1:]:
 		ax.label_outer()
@@ -117,6 +118,7 @@ if __name__ == "__main__":
 	f.set_scientific(False)
 	axs[-1].xaxis.set_major_formatter(f)
 	axs[-1].set_xlabel("CR")
+	axs[-1].set_xlim(min(cr_list), max(cr_list))
 	
 	fig.set_size_inches(6.4,8.4)
 	fig.tight_layout()
