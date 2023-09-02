@@ -87,8 +87,9 @@ if __name__ == "__main__":
 	#TODO: is there a good heuristic to figure out if (and at which scale) a (noisy) helicity spectrum switches sign?
 	#Similar to figure 4 of Singh et al 2018.
 	bin_boundaries = np.array([0, 0.01, 0.1, 0.5])
-	E0_rb = rebin(k, E0_list, bin_boundaries, axis=-1)
-	nimkH1_rb = rebin(k, -np.imag(k*H1_list), bin_boundaries, axis=-1)
+	bin_widths = bin_boundaries[1:] - bin_boundaries[:-1]
+	E0_rb = bin_widths*rebin(k, E0_list, bin_boundaries, axis=-1)
+	nimkH1_rb = bin_widths*rebin(k, -np.imag(k*H1_list), bin_boundaries, axis=-1)
 	
 	nt = np.shape(nimkH1_rb)[0]
 	pos_frac = np.sum(np.where(nimkH1_rb>0, 1, 0), axis=0)/nt
