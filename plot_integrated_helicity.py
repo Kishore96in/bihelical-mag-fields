@@ -60,11 +60,11 @@ if __name__ == "__main__":
 	
 	assert nimHint_list.ndim == 1
 	axs[0].hist(nimHint_list, bins=100)
-	axs[0].set_xlabel(r"$- im(\mathcal{H}_M)$")
+	axs[0].set_xlabel(r"$- Im(\mathcal{H}_M)$")
 	
 	handles = signed_loglog_plot(cr_list, nimHint_list, axs[1])
 	axs[1].legend(handles=handles)
-	axs[1].set_ylabel(r"$- im(\mathcal{H}_M)$")
+	axs[1].set_ylabel(r"$- Im(\mathcal{H}_M)$")
 	axs[1].set_xscale('linear')
 	
 	axs[2].semilogy(cr_list, Eint_list)
