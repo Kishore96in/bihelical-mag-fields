@@ -51,7 +51,7 @@ def plot_hel_with_err(cr_list):
 	
 	fig,axs = plt.subplots(2, 1, sharex=True, gridspec_kw={'height_ratios': [2,1]})
 	
-	handles = signed_loglog_plot(k, k*nimH1, axs[0], {'label':"$-\mathrm{Im}(k H(k,K_1))$"})
+	handles = signed_loglog_plot(k, k*nimH1, axs[0], {'label':"$-\mathrm{Im}(k\,H(k,K_1))$"})
 	h = axs[0].loglog(k, E0, label="$E(k,0)$")
 	handles.extend(h)
 	# axs[0].legend(handles=handles)
