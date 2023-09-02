@@ -37,7 +37,7 @@ if __name__ == "__main__":
 	Eint_list = trapezoid(E0_list, k, axis=1)
 	nimHint_list = -np.imag(trapezoid(H1_list, k, axis=1))
 	#TODO: interestingly, it seems l_M increases during the quiet Sun phase (but unclear how significant the increase is). Probably just means that the active regions contribute more at large k than at small k.
-	l_list = (np.pi/2) * trapezoid(E0_list[:,1:]/k[1:], k[1:], axis=1)/Eint_list
+	l_list = (3*np.pi/4) * trapezoid(E0_list[:,1:]/k[1:], k[1:], axis=1)/Eint_list
 	r_list = nimHint_list/(2*l_list*Eint_list)
 	
 	fig = plt.figure()
