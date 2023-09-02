@@ -101,7 +101,6 @@ if __name__ == "__main__":
 		handles = signed_loglog_plot(cr_list, nimkH1_rb[:,i], axs[i])
 		handles.extend(axs[i].semilogy(cr_list, E0_rb[:,i]))
 		
-		axs[i].add_artist(mpl.offsetbox.AnchoredText(f"$+$: {pos_frac[i]:.2f}", loc='upper right', frameon=False))
 		
 		axs[i].set_title(rf"${bin_boundaries[i]} \leq k < {bin_boundaries[i+1]}$")
 		axs[i].legend(handles=handles)
