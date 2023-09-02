@@ -79,6 +79,7 @@ if __name__ == "__main__":
 	f = mpl.ticker.ScalarFormatter()
 	f.set_scientific(False)
 	axs[4].xaxis.set_major_formatter(f)
+	axs[4].set_xlabel("CR")
 	axs[4].set_xlim(min(cr_list), max(cr_list))
 	
 	for ax in axs[1:]:
