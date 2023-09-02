@@ -121,4 +121,4 @@ if __name__ == "__main__":
 	fig.set_size_inches(6.4,8.4)
 	fig.tight_layout()
 	
-	save(fig, "plot_binned_helicity.pdf"
+	save(fig, "plot_binned_helicity.pdf")
