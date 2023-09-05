@@ -14,6 +14,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from read_FITS import get_B_vec as get_HMI
+from mask_weak import get_B_vec as get_HMI_msk
 from read_FITS_SOLIS import get_B_vec_dbllat as get_SOLIS2
 from plot_hel_with_err import E0H1_list_from_CR_list as E0H1_list_from_CR_list_HMI2, real
 from spectrum import calc_spec, signed_loglog_plot
@@ -40,6 +41,34 @@ def E0H1_HMIsgl(cr_list):
 	H1_list = []
 	for cr in cr_list:
 		B_vec = get_HMI(f"images/hmi.b_synoptic_small.rebinned.{cr}")
+		k, E0, _ = calc_spec(B_vec, K=np.array([0,0]), L=L)
+		_, _, H1 = calc_spec(B_vec, K=np.array([0,1]), L=L)
+		
+		E0_list.append(E0)
+		H1_list.append(H1)
+	
+	E0_list = np.array(E0_list)
+	H1_list = np.array(H1_list)
+	
+	E0, E0_err = jackknife(E0_list, axis=0)
+	nimH1, nimH1_err = jackknife(-np.imag(H1_list), axis=0)
+	
+	#Avoid some annoying matplotlib warnings
+	E0 = real(E0)
+	E0_err = real(E0_err)
+	nimH1 = real(nimH1)
+	nimH1_err = real(nimH1_err)
+	
+	return result(k, E0, E0_err, nimH1, nimH1_err)
+
+
+def E0H1_HMIsglmsk(cr_list):
+	L = np.array([2*np.pi*700,np.pi*700])
+	
+	E0_list = []
+	H1_list = []
+	for cr in cr_list:
+		B_vec = get_HMI_msk(f"images/hmi.b_synoptic_small.rebinned.{cr}", threshold=150)
 		k, E0, _ = calc_spec(B_vec, K=np.array([0,0]), L=L)
 		_, _, H1 = calc_spec(B_vec, K=np.array([0,1]), L=L)
 		
@@ -116,6 +145,7 @@ if __name__ == "__main__":
 	cr_list = np.arange(2177,2187)
 	
 	r_h1 = E0H1_HMIsgl(cr_list)
+	r_h1m = E0H1_HMIsglmsk(cr_list)
 	r_h2 = E0H1_HMIdbl(cr_list)
 	r_s2 = E0H1_SOLISdbl(cr_list)
 	
@@ -150,8 +180,11 @@ if __name__ == "__main__":
 	fig,ax = plt.subplots()
 	ax.loglog(r_h1.k, r_h1.E0, label="undoubled")
 	ax.loglog(r_h2.k, r_h2.E0, label="doubled", ls='--')
+	ax.loglog(r_h1m.k, r_h1m.E0, label="masked", ls=':')
 	ax.legend()
 	ax.set_ylabel("$E(k,0)$")
 	ax.set_xlabel("$k$")
+	
+	#TODO: Perhaps it is not surprising that the low-k peak disappears in the masked case. After all, the strong-field regions have very small length scales. But then, that means that this peak may just be an artefact of disambiguation.
 	
 	plt.show()
