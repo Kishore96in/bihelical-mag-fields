@@ -19,7 +19,7 @@ if __name__ == "__main__":
 	_, _, H1 = calc_spec(B_vec, K=np.array([0,1]), L=L)
 	_, E0m, _ = calc_spec(B_vec_masked, K=np.array([0,0]), L=L)
 	_, _, H1m = calc_spec(B_vec_masked, K=np.array([0,1]), L=L)
-		
+	
 	nimH1 = -np.imag(H1)
 	nimH1m = -np.imag(H1m)
 	
