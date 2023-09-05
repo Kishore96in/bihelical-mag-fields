@@ -11,7 +11,6 @@ if __name__ == "__main__":
 	
 	L = np.array([2*np.pi*700,np.pi*700])
 	
-	
 	B_vec = get_B_vec(f"images/hmi.b_synoptic_small.rebinned.{cr}")
 	B_vec_masked = get_B_vec_masked(f"images/hmi.b_synoptic_small.rebinned.{cr}", threshold=threshold)
 	
