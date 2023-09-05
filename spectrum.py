@@ -61,7 +61,13 @@ def calc_spec(B_vec, K, L=None, shift_onesided=1):
 	
 	scl = (2*np.pi/L_min)
 	k = np.arange(nk)
-	return k*scl, E/scl**3, H/scl**4
+	return k*scl, *scale_EH(E, H, scl)
+
+def scale_EH(E, H, scl=1):
+	"""
+	Dimensional scaling for E and H.
+	"""
+	return E/scl**3, H/scl**4
 
 def signed_loglog_plot(k, spec, ax, line_params=None):
 	where_pos = np.where(spec>=0)[0]
