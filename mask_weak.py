@@ -13,18 +13,42 @@ def get_data(fname):
 	data = np.nan_to_num(data)
 	return data
 
-def get_B_vec(fname, threshold=0):
+def get_data_dbllat(fname):
+	with fits.open(fname) as f:
+		hdu = f[0]
+		data = hdu.data
+	data = np.nan_to_num(data)
+	
+	n_lat, n_lon = np.shape(data)
+	if not n_lon == n_lat*2:
+		raise RuntimeError(f"Unexpected FITS data size: {np.shape(data)}")
+	if not n_lat%2 == 0:
+		raise RuntimeError("n_lat is odd, so unclear how to split into two for stacking.")
+	nlatb2 = int(n_lat/2)
+	data = np.concatenate((data[nlatb2:], data, data[:nlatb2]), axis=0)
+	if not np.shape(data) == (2*n_lat, n_lon):
+		raise RuntimeError(f"Something went wrong while stacking: {np.shape(data) = }; expected ({2*n_lat}, {n_lon})")
+	
+	return data
+
+def get_B_vec(fname, threshold=0, dbllat=False):
 	"""
 	Read B_vector from FITS files, set all the weak-field regions to zero, Fourier-transform it, and return it as an array.
 	
 	Arguments:
 		fname: string of the form "hmi.b_synoptic_small.2267". The input file for Br should be called fname+".Br.fits" (and similar for Bt, Bp). Resulting filename may be anything that is handled by astropy.io.fits.open
 		threshold: if the magnitude of the magnetic field is below this value, set it to zero.
+		dbllat: bool. Whether to double the domain in the latitudinal direction.
 	"""
+	if dbllat:
+		getter = get_data_dbllat
+	else:
+		getter = get_data
+	
 	#Below, the magnetic field has not been Fourier-transformed yet
-	Br = get_data(f"{fname}.Br.fits")
-	Bt = get_data(f"{fname}.Bt.fits")
-	Bp = get_data(f"{fname}.Bp.fits")
+	Br = getter(f"{fname}.Br.fits")
+	Bt = getter(f"{fname}.Bt.fits")
+	Bp = getter(f"{fname}.Bp.fits")
 	
 	Bmag = np.sqrt(Br**2 + Bt**2 + Bp**2)
 	
