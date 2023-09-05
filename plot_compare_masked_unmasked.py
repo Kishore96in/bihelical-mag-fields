@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from spectrum import calc_spec, signed_loglog_plot
-from read_FITS import get_B_vec_dbllat
+from read_FITS import get_B_vec
 from mask_weak import get_B_vec as get_B_vec_masked
 from utils import downsample_half
 
@@ -13,7 +13,7 @@ if __name__ == "__main__":
 	L = np.array([2*np.pi*700,2*np.pi*700]) #Latitudinal direction is doubled
 	
 	for cr in ["2148", "2180"]:
-		B_vec = get_B_vec_dbllat(f"images/hmi.b_synoptic_small.rebinned.{cr}")
+		B_vec = get_B_vec(f"images/hmi.b_synoptic_small.rebinned.{cr}", dbllat=True)
 		B_vec_masked = get_B_vec_masked(f"images/hmi.b_synoptic_small.rebinned.{cr}", threshold=threshold, dbllat=True)
 		
 		k, E0, _ = calc_spec(B_vec, K=np.array([0,0]), L=L)

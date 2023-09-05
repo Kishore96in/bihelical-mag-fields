@@ -8,7 +8,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from spectrum import calc_spec, signed_loglog_plot
-from read_FITS import get_B_vec_dbllat
+from read_FITS import get_B_vec
 from utils import jackknife, downsample_half
 
 if __name__ == "__main__":
@@ -20,7 +20,7 @@ if __name__ == "__main__":
 	E0_list = []
 	H1_list = []
 	for cr in cr_list:
-		B_vec = get_B_vec_dbllat(f"images/hmi.b_synoptic_small.rebinned.{cr}")
+		B_vec = get_B_vec(f"images/hmi.b_synoptic_small.rebinned.{cr}", dbllat=True)
 		k, E0, _ = calc_spec(B_vec, K=np.array([0,0]), L=L)
 		_, _, H1 = calc_spec(B_vec, K=np.array([0,2]), L=L, shift_onesided=0)
 		
