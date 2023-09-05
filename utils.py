@@ -76,15 +76,16 @@ class fig_saver():
 			os.makedirs(loc_dir)
 		fig.savefig(loc, **kwargs)
 
-def rebin(k_vec, spec, bin_boundaries, axis=0):
+def rebin(k_vec, spec, bin_boundaries, axis=0, norm=True):
 	"""
-	Given an array spec such that the values along axis correspond to values at corresponding entries of k_vec, rebin those values into bins specified by the list bin_boundaries. Rebinned values are normalized assuming a uniform measure.
+	Given an array spec such that the values along axis correspond to values at corresponding entries of k_vec, rebin those values into bins specified by the list bin_boundaries. If norm=True, rebinned values are normalized assuming a uniform measure.
 	
 	Arguments:
 		k_vec: array
 		spec: array
 		bin_boundaries: array
 		axis: int
+		norm: bool
 	"""
 	
 	spec = np.swapaxes(spec, 0, axis)
@@ -106,7 +107,10 @@ def rebin(k_vec, spec, bin_boundaries, axis=0):
 		if not bin_boundaries[ib] <= k < bin_boundaries[ib+1]:
 			raise RuntimeError(f"Something wrong with specified bins.\n{ik = }\n{ib = }\n{k = }\n{bin_boundaries = }\n{k_vec = }")
 		
-		rebinned[ib] += spec[ik]*old_bin_widths[ik]/new_bin_widths[ib]
+		if norm:
+			rebinned[ib] += spec[ik]*old_bin_widths[ik]/new_bin_widths[ib]
+		else:
+			rebinned[ib] += spec[ik]
 	
 	rebinned = np.swapaxes(rebinned, 0, axis)
 	return rebinned
