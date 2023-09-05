@@ -134,7 +134,7 @@ def downsample_half(k, E, H, axis=0):
 	E = rebin(k_old, E, bin_bounds, axis=axis, norm=False)
 	H = rebin(k_old, H, bin_bounds, axis=axis, norm=False)
 	
-	return k, scale_EH(E,H,2)
+	return k, *scale_EH(E,H,2)
 
 if __name__ == "__main__":
 	from termcolor import cprint
