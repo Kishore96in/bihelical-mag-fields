@@ -39,3 +39,9 @@ h = f[0].header
 coord = lambda i: (i+1-h['CRPIX?'])*h['CDELT?'] + h['CRVAL?']
 ```
 
+## SOLIS synoptic maps
+Data download links are provided at <https://solis.nso.edu/0/solis_data.html>. Synoptic vector magnetograms only seem to be available through the "Alternative Interface".
+Naming scheme for files is described in <https://solis.nso.edu/pubkeep/DATAINFO_VSM.txt>.
+If we are interested in Carrington rotations 2177–2186, we need to look at the date range 2016-05-10 to 2017-02-06.
+Links to the maps we require seem to be directly available at <https://magmap.nso.edu/solis/v9g-int-maj_dim-180_cmp-phi-kc.html>.
+
