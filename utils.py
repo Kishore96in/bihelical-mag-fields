@@ -3,6 +3,8 @@ import os
 import warnings
 import sys
 
+from spectrum import scale_EH
+
 def jackknife(arr, axis):
 	"""
 	Jackknife estimate of the error in the mean of arr (along axis)
@@ -115,21 +117,24 @@ def rebin(k_vec, spec, bin_boundaries, axis=0, norm=True):
 	rebinned = np.swapaxes(rebinned, 0, axis)
 	return rebinned
 
-def downsample_half(k, arr, axis=0):
+def downsample_half(k, E, H, axis=0):
 	"""
-	Given values of arr at wavenumbers k, rebin to double the k-spacing.
+	Given values of E and H at wavenumbers k, rebin to double the k-spacing.
 	
 	Arguments:
 		k: numpy array
-		arr: numpy array
+		E: numpy array
+		H: numpy array
 		axis: int
 	"""
 	k_old = k
 	dk = k_old[1] - k_old[0] #assumes k are equispaced.
 	k = k_old[::2]
 	bin_bounds = np.linspace(-dk,k_old[-1]+dk,len(k)+1)
-	arr = rebin(k_old, arr, bin_bounds, axis=axis)
-	return k, arr
+	E = rebin(k_old, E, bin_bounds, axis=axis, norm=False)
+	H = rebin(k_old, H, bin_bounds, axis=axis, norm=False)
+	
+	return k, scale_EH(E,H,2)
 
 if __name__ == "__main__":
 	from termcolor import cprint

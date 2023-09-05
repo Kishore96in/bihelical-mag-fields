@@ -35,8 +35,7 @@ if __name__ == "__main__":
 	E0_list = np.array(E0_list)
 	H1_list = np.array(H1_list)
 	
-	_, H1_list = downsample_half(k, H1_list, axis=1)
-	k, E0_list = downsample_half(k, E0_list, axis=1)
+	k, E0_list, H1_list = downsample_half(k, E0_list, H1_list, axis=1)
 	
 	Eint_list = trapezoid(E0_list, k, axis=1)
 	nimHint_list = -np.imag(trapezoid(H1_list, k, axis=1))

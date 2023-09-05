@@ -25,10 +25,7 @@ def E0H1_list_from_CR_list(cr_list):
 	E0_list = np.array(E0_list)
 	H1_list = np.array(H1_list)
 	
-	_, H1_list = downsample_half(k, H1_list, axis=1)
-	k, E0_list = downsample_half(k, E0_list, axis=1)
-	
-	return k, E0_list, H1_list
+	return downsample_half(k, E0_list, H1_list, axis=1)
 
 def test_small_im(arr):
 	assert max(np.abs(np.imag(arr)/np.real(arr))) < 1e-10
