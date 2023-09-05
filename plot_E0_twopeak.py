@@ -176,7 +176,6 @@ if __name__ == "__main__":
 		ax.set_xlabel("k")
 	
 	#See if domain-doubling changes the energy spectrum for the HMI data
-	#TODO: normalization is off (see comment in utils.downsample_half)
 	fig,ax = plt.subplots()
 	ax.loglog(r_h1.k, r_h1.E0, label="undoubled")
 	ax.loglog(r_h2.k, r_h2.E0, label="doubled", ls='--')
