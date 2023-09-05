@@ -2,23 +2,27 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from spectrum import calc_spec, signed_loglog_plot
-from read_FITS import get_B_vec
+from read_FITS import get_B_vec_dbllat
 from mask_weak import get_B_vec as get_B_vec_masked
+from utils import downsample_half
 
 if __name__ == "__main__":
 	cr = "2148"
 	threshold=150 #If the magnetic field magnitude is below this value, set it to zero.
 	
-	L = np.array([2*np.pi*700,np.pi*700])
+	L = np.array([2*np.pi*700,2*np.pi*700]) #Latitudinal direction is doubled
 	
 	for cr in ["2148", "2180"]:
-		B_vec = get_B_vec(f"images/hmi.b_synoptic_small.rebinned.{cr}")
-		B_vec_masked = get_B_vec_masked(f"images/hmi.b_synoptic_small.rebinned.{cr}", threshold=threshold)
+		B_vec = get_B_vec_dbllat(f"images/hmi.b_synoptic_small.rebinned.{cr}")
+		B_vec_masked = get_B_vec_masked(f"images/hmi.b_synoptic_small.rebinned.{cr}", threshold=threshold, dbllat=True)
 		
 		k, E0, _ = calc_spec(B_vec, K=np.array([0,0]), L=L)
-		_, _, H1 = calc_spec(B_vec, K=np.array([0,1]), L=L)
+		_, _, H1 = calc_spec(B_vec, K=np.array([0,2]), L=L, shift_onesided=0)
 		_, E0m, _ = calc_spec(B_vec_masked, K=np.array([0,0]), L=L)
-		_, _, H1m = calc_spec(B_vec_masked, K=np.array([0,1]), L=L)
+		_, _, H1m = calc_spec(B_vec_masked, K=np.array([0,2]), L=L, shift_onesided=0)
+		
+		_, E0, H1 = downsample_half(k, E0, H1, axis=0)
+		k, E0m, H1m = downsample_half(k, E0m, H1m, axis=0)
 		
 		nimH1 = -np.imag(H1)
 		nimH1m = -np.imag(H1m)
