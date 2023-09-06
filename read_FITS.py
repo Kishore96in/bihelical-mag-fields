@@ -135,5 +135,5 @@ class SOLISreader(ExciseLatitudeMixin, FITSreader):
 		
 		return B_vec
 
-class SOLISreader_dbl(ExciseLatitudeMixin, StackLatitudeMixin, SOLISreader):
+class SOLISreader_dbl(StackLatitudeMixin, SOLISreader):
 	pass
