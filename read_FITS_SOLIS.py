@@ -6,19 +6,28 @@ import numpy as np
 import scipy.fft
 from astropy.io import fits
 
-def get_B_vec(fname, dbllat=False):
+def get_B_vec(fname, dbllat=False, excise=None):
 	"""
 	Read B_vector from FITS files (synoptic vector magnetograms), Fourier-transform it, and return it as an array. A pseudo-Cartesian coordinate system is used, where we map r,phi,mu=cos(theta) to x,y,z (a right-handed coordinate system).
 	
 	Arguments:
 		fname: string, filename that can be handled by astropy.io.fits.open
 		dbllat: bool. Whether to double the domain in the latitudinal direction.
+		excise: int. If set to any value, that many pixels will be removed from both the high-latitude ends. Nothing will be done if it is set to None.
 	
 	"""
 	with fits.open(fname) as f:
 		hdu = f[0]
 		data = hdu.data
 	data = np.nan_to_num(data)
+	
+	if excise is not None:
+		if not isinstance(excise, int):
+			raise TypeError(f"Argument excise should be int, but is actually {type(excise)}")
+		#TODO: https://magmap.nso.edu/solis/v9g-int-maj_dim-180_cmp-phi-kc.html seems to show some artefacts at high latitudes. I also see them while plotting the magnetic field from a single synoptic magnetogram. Need to cut them out?
+		#TODO: Even the HMI data has features in the high-latitude regions (but of course, they are not as prominent). Why am I not cutting those out as well? Does cutting those out kill the low-k peak?
+		data[:,:excise,:] = 0
+		data[:,-excise-1:,:] = 0
 	
 	if dbllat:
 		_, n_lat, n_lon = np.shape(data)
