@@ -53,28 +53,18 @@ def real(arr):
 	test_small_im(arr)
 	return np.real(arr)
 
-def plot_hel_with_err(cr_list):
-	read = HMIreader_dbl()
-	res = E0H1_dbl(cr_list, read)
-	
+def plot_hel_with_err(res):
 	fig,axs = plt.subplots(2, 1, sharex=True, gridspec_kw={'height_ratios': [2,1]})
 	
 	handles = signed_loglog_plot(res.k, res.k*res.nimH1, axs[0], {'label':"$-\mathrm{Im}(k\,H(k,K_1))$"})
 	h = axs[0].loglog(res.k, res.E0, label="$E(k,0)$")
 	handles.extend(h)
-	# axs[0].legend(handles=handles)
 	
 	axs[1].loglog(res.k, np.abs(res.nimH1)/res.nimH1_err, label="$-\mathrm{Im}(k H(k,K_1))$")
 	axs[1].loglog(res.k, res.E0/res.E0_err, label="$E(k,0)$")
 	axs[1].axhline(1, ls=':', c='k')
 	axs[1].set_ylabel("|data/error|")
 	axs[1].set_xlabel("k")
-	# axs[1].legend()
-	
-	cr_list_int = [int(cr) for cr in cr_list]
-	fig.suptitle(f"CR: {min(cr_list_int)}–{max(cr_list_int)}")
-	fig.set_size_inches(4,4)
-	fig.tight_layout()
 	
 	return fig
 
@@ -83,9 +73,17 @@ if __name__ == "__main__":
 	savedir = "plots/hel_with_err"
 	
 	save = fig_saver(savefig, savedir)
+	read = HMIreader_dbl()
 	
 	cr_bins = np.arange(2097,2268,10)
 	for i in range(len(cr_bins)-1):
 		cr_list = [f"{cr}" for cr in range(cr_bins[i], cr_bins[i+1])]
 		figname = f"{cr_bins[i]}-{cr_bins[i+1]-1}.pdf"
-		save(plot_hel_with_err(cr_list), figname)
+		
+		res = E0H1_dbl(cr_list, read)
+		fig = plot_hel_with_err(res)
+		fig.suptitle(f"CR: {min(cr_list_int)}–{max(cr_list_int)}")
+		fig.set_size_inches(4,4)
+		fig.tight_layout()
+		
+		save(fig, figname)
