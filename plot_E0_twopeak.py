@@ -13,12 +13,13 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 
-from read_FITS import get_B_vec as get_HMI
-from mask_weak import get_B_vec as get_HMI_msk
-from read_FITS_SOLIS import get_B_vec as get_SOLIS
+from read_FITS import HMIreader, MaskWeakMixin, SOLISreader_dbl
 from plot_hel_with_err import E0H1_list_from_CR_list as E0H1_list_from_CR_list_HMI2, real
 from spectrum import calc_spec, signed_loglog_plot
 from utils import jackknife, downsample_half, fig_saver
+
+class HMIreader_msk(MaskWeakMixin, HMIreader):
+	pass
 
 def E0H1_HMIdbl(cr_list):
 	k, E0_list, H1_list = E0H1_list_from_CR_list_HMI2(cr_list)
@@ -37,10 +38,11 @@ def E0H1_HMIdbl(cr_list):
 def E0H1_HMIsgl(cr_list):
 	L = np.array([2*np.pi*700,np.pi*700])
 	
+	read = HMIreader()
 	E0_list = []
 	H1_list = []
 	for cr in cr_list:
-		B_vec = get_HMI(f"images/hmi.b_synoptic_small.rebinned.{cr}")
+		B_vec = read(f"images/hmi.b_synoptic_small.rebinned.{cr}")
 		k, E0, _ = calc_spec(B_vec, K=np.array([0,0]), L=L)
 		_, _, H1 = calc_spec(B_vec, K=np.array([0,1]), L=L)
 		
@@ -65,10 +67,11 @@ def E0H1_HMIsgl(cr_list):
 def E0H1_HMIsglmsk(cr_list):
 	L = np.array([2*np.pi*700,np.pi*700])
 	
+	read = HMIreader_msk(threshold=150)
 	E0_list = []
 	H1_list = []
 	for cr in cr_list:
-		B_vec = get_HMI_msk(f"images/hmi.b_synoptic_small.rebinned.{cr}", threshold=150)
+		B_vec = read(f"images/hmi.b_synoptic_small.rebinned.{cr}")
 		k, E0, _ = calc_spec(B_vec, K=np.array([0,0]), L=L)
 		_, _, H1 = calc_spec(B_vec, K=np.array([0,1]), L=L)
 		
@@ -107,10 +110,11 @@ def get_fname_SOLIS(cr):
 def E0H1_SOLISdbl(cr_list):
 	L = np.array([2*np.pi*700,2*np.pi*700]) #data will be doubled in the latitudinal direction.
 	
+	read = SOLISreader_dbl(excise=20)
 	E0_list = []
 	H1_list = []
 	for cr in cr_list:
-		B_vec = get_SOLIS(get_fname_SOLIS(cr), dbllat=True, excise=20)
+		B_vec = read(get_fname_SOLIS(cr))
 		k, E0, _ = calc_spec(B_vec, K=np.array([0,0]), L=L)
 		_, _, H1 = calc_spec(B_vec, K=np.array([0,2]), L=L, shift_onesided=0)
 		
