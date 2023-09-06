@@ -6,19 +6,20 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from plot_hel_with_err import real
-from read_FITS import get_B_vec
+from read_FITS import HMIreader
 from spectrum import calc_spec
 from utils import jackknife, fig_saver
 
 def E0rpm_list_from_CR_list(cr_list):
 	L = np.array([2*np.pi*700,np.pi*700])
+	read = HMIreader()
 	
 	E0r_list = []
 	E0p_list = []
 	E0mu_list = []
 	for cr in cr_list:
 		#No need to double domain here, since we are only interested in the K=0 mode.
-		B_vec = get_B_vec(f"images/hmi.b_synoptic_small.rebinned.{cr}")
+		B_vec = read(f"images/hmi.b_synoptic_small.rebinned.{cr}")
 		
 		B_r = B_vec.copy()
 		B_p = B_vec.copy()
