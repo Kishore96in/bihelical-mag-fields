@@ -50,26 +50,3 @@ def get_B_vec(fname, dbllat=False):
 	B_vec = np.swapaxes(B_vec, -1, -2) #The FITS files would've had spatial coordinates latitude,longitude.
 	
 	return B_vec
-
-def get_data_fft_dbllat(fname):
-	"""
-	Given the name of a FITS file, double the domain in the latitudinal direction and return the Fourier transform of the data in it.
-	
-	Normalization of the Fourier transform is chosen to match that of IDL.
-	"""
-	with fits.open(fname) as f:
-		hdu = f[0]
-		data = hdu.data
-	
-	n_lat, n_lon = np.shape(data)
-	if not n_lon == n_lat*2:
-		raise RuntimeError(f"Unexpected FITS data size: {np.shape(data)}")
-	if not n_lat%2 == 0:
-		raise RuntimeError("n_lat is odd, so unclear how to split into two for stacking.")
-	nlatb2 = int(n_lat/2)
-	data = np.concatenate((data[nlatb2:], data, data[:nlatb2]), axis=0)
-	if not np.shape(data) == (2*n_lat, n_lon):
-		raise RuntimeError(f"Something went wrong while stacking: {np.shape(data) = }; expected ({2*n_lat}, {n_lon})")
-	
-	data = np.nan_to_num(data)
-	return scipy.fft.fft2(data, norm='forward')
