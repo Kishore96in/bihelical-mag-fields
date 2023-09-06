@@ -34,6 +34,9 @@ class FITSreader():
 		return data
 	
 	def fft(self, data):
+		"""
+		Normalization of the Fourier transform is chosen to match that of IDL.
+		"""
 		return scipy.fft.fft2(data, norm='forward')
 	
 	def __call__(self, fname):
