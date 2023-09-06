@@ -82,7 +82,7 @@ if __name__ == "__main__":
 		
 		res = E0H1_dbl(cr_list, read)
 		fig = plot_hel_with_err(res)
-		fig.suptitle(f"CR: {min(cr_list_int)}–{max(cr_list_int)}")
+		fig.suptitle(f"CR: {min(cr_list)}–{max(cr_list)}")
 		fig.set_size_inches(4,4)
 		fig.tight_layout()
 		
