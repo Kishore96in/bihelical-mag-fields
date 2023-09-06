@@ -13,16 +13,23 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 
-from read_FITS import HMIreader, HMIreader_dbl, MaskWeakMixin, SOLISreader_dbl
+from read_FITS import HMIreader, HMIreader_dbl, ExciseLatitudeMixin, MaskWeakMixin, SOLISreader_dbl
 from plot_hel_with_err import E0H1_dbl, real, result
 from spectrum import calc_spec, signed_loglog_plot
 from utils import jackknife, downsample_half, fig_saver
+
+class HMIreader_dblexc(ExciseLatitudeMixin, HMIreader_dbl):
+	pass
 
 class HMIreader_msk(MaskWeakMixin, HMIreader):
 	pass
 
 def E0H1_HMIdbl(cr_list):
 	read = HMIreader_dbl()
+	return E0H1_dbl(cr_list, read)
+
+def E0H1_HMIdblapod(cr_list):
+	read_apod = HMIreader_dblexc(max_lat=60)
 	return E0H1_dbl(cr_list, read)
 
 def E0H1_HMIsgl(cr_list):
@@ -137,6 +144,7 @@ if __name__ == "__main__":
 	r_h1m = E0H1_HMIsglmsk(cr_list)
 	r_h2 = E0H1_HMIdbl(cr_list)
 	r_s2 = E0H1_SOLISdbl(cr_list)
+	r_h2a = E0H1_HMIdblapod(cr_list)
 	
 	#Compare HMI with SOLIS
 	fig,axs = plt.subplots(2, 2, sharex='col', sharey='row', gridspec_kw={'height_ratios': [2,1]})
@@ -184,3 +192,35 @@ if __name__ == "__main__":
 	fig.set_size_inches(4,4)
 	fig.tight_layout()
 	save(fig, "effect_double_mask.pdf")
+	
+	#Effect of apodization on HMI data
+	fig,axs = plt.subplots(2, 2, sharex='col', sharey='row', gridspec_kw={'height_ratios': [2,1]})
+	
+	handles = signed_loglog_plot(r_h2.k, r_h2.k*r_h2.nimH1, axs[0,0], {'label':"$-\mathrm{Im}(k\,H(k,K_1))$"})
+	h = axs[0,0].loglog(r_h2.k, r_h2.E0, label="$E(k,0)$")
+	handles.extend(h)
+	
+	axs[1,0].loglog(r_h2.k, np.abs(r_h2.nimH1)/r_h2.nimH1_err, label="$-\mathrm{Im}(k H(k,K_1))$")
+	axs[1,0].loglog(r_h2.k, r_h2.E0/r_h2.E0_err, label="$E(k,0)$")
+	
+	
+	handles = signed_loglog_plot(r_h2a.k, r_h2a.k*r_h2a.nimH1, axs[0,1], {'label':"$-\mathrm{Im}(k\,H(k,K_1))$"})
+	h = axs[0,1].loglog(r_h2a.k, r_h2a.E0, label="$E(k,0)$")
+	handles.extend(h)
+	
+	axs[1,1].loglog(r_h2a.k, np.abs(r_h2a.nimH1)/r_h2a.nimH1_err, label="$-\mathrm{Im}(k H(k,K_1))$")
+	axs[1,1].loglog(r_h2a.k, r_h2a.E0/r_h2a.E0_err, label="$E(k,0)$")
+	
+	axs[0,0].set_title("Full")
+	axs[0,1].set_title(rf"$\left|\lambda\right| < {max_lat}^{{\circ}}$")
+	fig.suptitle(f"CR {min(cr_list)}–{max(cr_list)}")
+	
+	for ax in axs[1]:
+		ax.axhline(1, ls=':', c='k')
+		ax.set_ylabel("|data/error|")
+		ax.set_xlabel("k")
+	
+	fig.set_size_inches(6,4)
+	fig.tight_layout()
+	save(fig, "effect_HMI_apodization.pdf")
+
