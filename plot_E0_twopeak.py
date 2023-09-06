@@ -110,7 +110,7 @@ def E0H1_SOLISdbl(cr_list):
 	E0_list = []
 	H1_list = []
 	for cr in cr_list:
-		B_vec = get_SOLIS(get_fname_SOLIS(cr), dbllat=True)
+		B_vec = get_SOLIS(get_fname_SOLIS(cr), dbllat=True, excise=20)
 		k, E0, _ = calc_spec(B_vec, K=np.array([0,0]), L=L)
 		_, _, H1 = calc_spec(B_vec, K=np.array([0,2]), L=L, shift_onesided=0)
 		
