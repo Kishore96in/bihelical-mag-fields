@@ -9,7 +9,7 @@ import matplotlib as mpl
 from scipy.integrate import trapezoid
 
 from spectrum import calc_spec, signed_loglog_plot
-from read_FITS import get_B_vec
+from read_FITS import HMIreader_dbl
 from utils import downsample_half, rebin, fig_saver
 
 if __name__ == "__main__":
@@ -18,6 +18,7 @@ if __name__ == "__main__":
 	savedir = "plots"
 	
 	save = fig_saver(savefig, savedir)
+	read = HMIreader_dbl()
 	
 	L = np.array([2*np.pi*700,2*np.pi*700]) #data will be doubled in the latitudinal direction.
 	
@@ -25,7 +26,7 @@ if __name__ == "__main__":
 	H1_list = []
 	for cr in cr_list:
 		#TODO: perhaps make a wrapper, handle_cr (think of better name), that does the stuff inside the loop and has signature (fname,L)->(k,E0,H1); it looks like something I'll be doing quite often in many scripts.
-		B_vec = get_B_vec(f"images/hmi.b_synoptic_small.rebinned.{cr}", dbllat=True)
+		B_vec = read(f"images/hmi.b_synoptic_small.rebinned.{cr}")
 		k, E0, _ = calc_spec(B_vec, K=np.array([0,0]), L=L)
 		_, _, H1 = calc_spec(B_vec, K=np.array([0,2]), L=L, shift_onesided=0)
 		
