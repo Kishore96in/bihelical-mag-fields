@@ -73,16 +73,8 @@ def real(arr):
 	return np.real(arr)
 
 def plot_hel_with_err(cr_list):
-	k, E0_list, H1_list = E0H1_list_from_CR_list(cr_list)
-	
-	E0, E0_err = jackknife(E0_list, axis=0)
-	nimH1, nimH1_err = jackknife(-np.imag(H1_list), axis=0)
-	
-	#Avoid some annoying matplotlib warnings
-	E0 = real(E0)
-	E0_err = real(E0_err)
-	nimH1 = real(nimH1)
-	nimH1_err = real(nimH1_err)
+	read = HMIreader_dbl()
+	res = E0H1_dbl(cr_list, read)
 	
 	fig,axs = plt.subplots(2, 1, sharex=True, gridspec_kw={'height_ratios': [2,1]})
 	
