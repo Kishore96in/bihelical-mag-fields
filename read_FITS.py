@@ -59,7 +59,7 @@ class FITSreader():
 	B_vec = r(fname)
 	```
 	"""
-	def __init__(**kwargs):
+	def __init__(self, **kwargs):
 		for key, value in kwargs.items():
 			setattr(self, key, value)
 	
