@@ -221,4 +221,3 @@ if __name__ == "__main__":
 	fig.set_size_inches(6,4)
 	fig.tight_layout()
 	save(fig, "effect_HMI_apodization.pdf")
-
