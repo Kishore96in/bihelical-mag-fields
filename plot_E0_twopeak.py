@@ -156,7 +156,6 @@ if __name__ == "__main__":
 	axs[1,0].loglog(r_h2.k, np.abs(r_h2.nimH1)/r_h2.nimH1_err, label="$-\mathrm{Im}(k H(k,K_1))$")
 	axs[1,0].loglog(r_h2.k, r_h2.E0/r_h2.E0_err, label="$E(k,0)$")
 	
-	
 	handles = signed_loglog_plot(r_s2.k, r_s2.k*r_s2.nimH1, axs[0,1], {'label':"$-\mathrm{Im}(k\,H(k,K_1))$"})
 	h = axs[0,1].loglog(r_s2.k, r_s2.E0, label="$E(k,0)$")
 	handles.extend(h)
@@ -201,7 +200,6 @@ if __name__ == "__main__":
 	
 	axs[1,0].loglog(r_h2.k, np.abs(r_h2.nimH1)/r_h2.nimH1_err, label="$-\mathrm{Im}(k H(k,K_1))$")
 	axs[1,0].loglog(r_h2.k, r_h2.E0/r_h2.E0_err, label="$E(k,0)$")
-	
 	
 	handles = signed_loglog_plot(r_h2a.k, r_h2a.k*r_h2a.nimH1, axs[0,1], {'label':"$-\mathrm{Im}(k\,H(k,K_1))$"})
 	h = axs[0,1].loglog(r_h2a.k, r_h2a.E0, label="$E(k,0)$")
