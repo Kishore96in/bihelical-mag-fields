@@ -6,16 +6,32 @@ import numpy as np
 import scipy.fft
 from astropy.io import fits
 
-def get_data_fft(fname):
+def get_data_fft(fname, dbllat=False):
 	"""
 	Given the name of a FITS file, return the Fourier transform of the data in it.
 	
 	Normalization of the Fourier transform is chosen to match that of IDL.
+	
+	Arguments:
+		fname: string, name of the file
+		dbllat: bool, whether to double the domain in the latitudinal direction
 	"""
 	with fits.open(fname) as f:
 		hdu = f[0]
 		data = hdu.data
 	data = np.nan_to_num(data)
+	
+	if dbllat:
+		n_lat, n_lon = np.shape(data)
+		if not n_lon == n_lat*2:
+			raise RuntimeError(f"Unexpected FITS data size: {np.shape(data)}")
+		if not n_lat%2 == 0:
+			raise RuntimeError("n_lat is odd, so unclear how to split into two for stacking.")
+		nlatb2 = int(n_lat/2)
+		data = np.concatenate((data[nlatb2:], data, data[:nlatb2]), axis=0)
+		if not np.shape(data) == (2*n_lat, n_lon):
+			raise RuntimeError(f"Something went wrong while stacking: {np.shape(data) = }; expected ({2*n_lat}, {n_lon})")
+	
 	return scipy.fft.fft2(data, norm='forward')
 
 def get_B_vec(fname, dbllat=False):
