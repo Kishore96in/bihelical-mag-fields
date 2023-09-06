@@ -14,7 +14,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from read_FITS import HMIreader, HMIreader_dbl, MaskWeakMixin, SOLISreader_dbl
-from plot_hel_with_Err import E0H1_dbl, real, result
+from plot_hel_with_err import E0H1_dbl, real, result
 from spectrum import calc_spec, signed_loglog_plot
 from utils import jackknife, downsample_half, fig_saver
 
