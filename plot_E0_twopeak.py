@@ -143,6 +143,10 @@ class result():
 
 if __name__ == "__main__":
 	cr_list = np.arange(2177,2187)
+	savefig = True
+	savedir = "plots/test_twopeak"
+	
+	save = fig_saver(savefig, savedir)
 	
 	r_h1 = E0H1_HMIsgl(cr_list)
 	r_h1m = E0H1_HMIsglmsk(cr_list)
@@ -175,6 +179,8 @@ if __name__ == "__main__":
 		ax.set_ylabel("|data/error|")
 		ax.set_xlabel("k")
 	
+	save(fig, "compare_HMI_SOLIS.pdf")
+	
 	#See if domain-doubling changes the energy spectrum for the HMI data
 	fig,ax = plt.subplots()
 	ax.loglog(r_h1.k, r_h1.E0, label="undoubled")
@@ -186,4 +192,4 @@ if __name__ == "__main__":
 	
 	#TODO: Perhaps it is not surprising that the low-k peak disappears in the masked case. After all, the strong-field regions have very small length scales. But then, that means that this peak may just be an artefact of disambiguation.
 	
-	plt.show()
+	save(fig, "effect_double_mask.pdf")
