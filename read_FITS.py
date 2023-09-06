@@ -99,6 +99,14 @@ class StackLatitudeMixin():
 		if not np.shape(data) == (n_vec, n_lon, 2*n_lat):
 			raise RuntimeError(f"Something went wrong while stacking: {np.shape(data) = }; expected ({n_vec}, {n_lon}, {2*n_lat})")
 
+class MaskWeakMixin():
+	def mask(self, B_vec):
+		if not hasattr(self, "threshold"):
+			raise AttributeError("Set threshold to use this class.")
+		
+		Bmag = np.sqrt(np.sum(B_vec**2, axis=0, keepdims=True))
+		return np.where(Bmag>self.threshold, B_vec, 0)
+
 class ExciseLatitudeMixin():
 	def mask(self, data):
 		#Assumes the last axis is latitude, and that it extends from -90 to 90.
