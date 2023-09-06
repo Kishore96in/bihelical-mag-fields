@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 
 from read_FITS import get_B_vec as get_HMI
 from mask_weak import get_B_vec as get_HMI_msk
-from read_FITS_SOLIS import get_B_vec_dbllat as get_SOLIS2
+from read_FITS_SOLIS import get_B_vec as get_SOLIS
 from plot_hel_with_err import E0H1_list_from_CR_list as E0H1_list_from_CR_list_HMI2, real
 from spectrum import calc_spec, signed_loglog_plot
 from utils import jackknife, downsample_half, fig_saver
@@ -110,7 +110,7 @@ def E0H1_SOLISdbl(cr_list):
 	E0_list = []
 	H1_list = []
 	for cr in cr_list:
-		B_vec = get_SOLIS2(get_fname_SOLIS(cr))
+		B_vec = get_SOLIS(get_fname_SOLIS(cr), dbllat=True)
 		k, E0, _ = calc_spec(B_vec, K=np.array([0,0]), L=L)
 		_, _, H1 = calc_spec(B_vec, K=np.array([0,2]), L=L, shift_onesided=0)
 		
