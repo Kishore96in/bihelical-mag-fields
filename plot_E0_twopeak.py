@@ -29,7 +29,7 @@ def E0H1_HMIdbl(cr_list):
 	return E0H1_dbl(cr_list, read)
 
 def E0H1_HMIdblapod(cr_list):
-	read_apod = HMIreader_dblexc(max_lat=60)
+	read = HMIreader_dblexc(max_lat=60)
 	return E0H1_dbl(cr_list, read)
 
 def E0H1_HMIsgl(cr_list):
