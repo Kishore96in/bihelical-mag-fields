@@ -145,7 +145,9 @@ class SOLISreader(ExciseLatitudeMixin, FITSreader):
 			hdu = f[0]
 			data = hdu.data
 		data = np.nan_to_num(data)
-	
+		
+		Br, Bt, Bp, _ = data
+		
 		B_vec = np.stack([Br, Bp, -Bt]) #Equation 10 of {SinKapBra18}
 		B_vec = np.swapaxes(B_vec, -1, -2) #The FITS files would've had spatial coordinates latitude,longitude.
 		
