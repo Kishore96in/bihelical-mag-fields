@@ -173,6 +173,7 @@ if __name__ == "__main__":
 	
 	axs[0,0].set_title("HMI")
 	axs[0,1].set_title("SOLIS")
+	fig.suptitle(f"CR {min(cr_list)}–{max(cr_list)}")
 	
 	for ax in axs[1]:
 		ax.axhline(1, ls=':', c='k')
@@ -189,6 +190,7 @@ if __name__ == "__main__":
 	ax.legend()
 	ax.set_ylabel("$E(k,0)$")
 	ax.set_xlabel("$k$")
+	fig.suptitle(f"CR {min(cr_list)}–{max(cr_list)}")
 	
 	#TODO: Perhaps it is not surprising that the low-k peak disappears in the masked case. After all, the strong-field regions have very small length scales. But then, that means that this peak may just be an artefact of disambiguation.
 	
