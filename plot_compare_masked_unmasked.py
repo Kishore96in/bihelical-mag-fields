@@ -2,19 +2,24 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from spectrum import calc_spec, signed_loglog_plot
-from read_FITS import get_B_vec
-from mask_weak import get_B_vec as get_B_vec_masked
+from read_FITS import HMIreader_dbl, MaskWeakMixin
 from utils import downsample_half
+
+class HMIreader_dblmsk(MaskWeakMixin, HMIreader_dbl):
+	pass
 
 if __name__ == "__main__":
 	cr_list = ["2148", "2180"]
 	threshold=150 #If the magnetic field magnitude is below this value, set it to zero.
 	
+	read = HMIreader_dbl()
+	read_m = HMIreader_dblmsk(threshold=threshold)
+	
 	L = np.array([2*np.pi*700,2*np.pi*700]) #Latitudinal direction is doubled
 	
 	for cr in cr_list:
-		B_vec = get_B_vec(f"images/hmi.b_synoptic_small.rebinned.{cr}", dbllat=True)
-		B_vec_masked = get_B_vec_masked(f"images/hmi.b_synoptic_small.rebinned.{cr}", threshold=threshold, dbllat=True)
+		B_vec = read(f"images/hmi.b_synoptic_small.rebinned.{cr}")
+		B_vec_masked = read_m(f"images/hmi.b_synoptic_small.rebinned.{cr}")
 		
 		k, E0, _ = calc_spec(B_vec, K=np.array([0,0]), L=L)
 		_, _, H1 = calc_spec(B_vec, K=np.array([0,2]), L=L, shift_onesided=0)
