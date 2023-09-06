@@ -28,8 +28,8 @@ def E0H1_HMIdbl(cr_list):
 	read = HMIreader_dbl()
 	return E0H1_dbl(cr_list, read)
 
-def E0H1_HMIdblapod(cr_list):
-	read = HMIreader_dblexc(max_lat=60)
+def E0H1_HMIdblapod(cr_list, max_lat):
+	read = HMIreader_dblexc(max_lat=max_lat)
 	return E0H1_dbl(cr_list, read)
 
 def E0H1_HMIsgl(cr_list):
@@ -135,6 +135,7 @@ def E0H1_SOLISdbl(cr_list):
 
 if __name__ == "__main__":
 	cr_list = np.arange(2177,2187)
+	max_lat = 60 #Used for HMI apodization
 	savefig = True
 	savedir = "plots/test_twopeak"
 	
@@ -144,7 +145,7 @@ if __name__ == "__main__":
 	r_h1m = E0H1_HMIsglmsk(cr_list)
 	r_h2 = E0H1_HMIdbl(cr_list)
 	r_s2 = E0H1_SOLISdbl(cr_list)
-	r_h2a = E0H1_HMIdblapod(cr_list)
+	r_h2a = E0H1_HMIdblapod(cr_list, max_lat)
 	
 	#Compare HMI with SOLIS
 	fig,axs = plt.subplots(2, 2, sharex='col', sharey='row', gridspec_kw={'height_ratios': [2,1]})
