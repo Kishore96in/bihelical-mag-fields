@@ -110,10 +110,17 @@ class ExciseLatitudeMixin():
 		return np.where(np.abs(lat) > self.max_lat, 0, data)
 
 class HMIreader(FITSreader):
+	def _get_data(self, fname):
+		with fits.open(fname) as f:
+			hdu = f[0]
+			data = hdu.data
+		data = np.nan_to_num(data)
+		return data
+	
 	def read(self, fname):
-		Br = get_data_fft(f"{fname}.Br.fits")
-		Bt = get_data_fft(f"{fname}.Bt.fits")
-		Bp = get_data_fft(f"{fname}.Bp.fits")
+		Br = self._get_data(f"{fname}.Br.fits")
+		Bt = self._get_data(f"{fname}.Bt.fits")
+		Bp = self._get_data(f"{fname}.Bp.fits")
 		
 		B_vec = np.stack([Br, Bp, -Bt]) #Equation 10 of {SinKapBra18}
 		B_vec = np.swapaxes(B_vec, -1, -2) #The FITS files would've had spatial coordinates latitude,longitude.
