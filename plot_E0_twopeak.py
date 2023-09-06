@@ -110,7 +110,7 @@ def get_fname_SOLIS(cr):
 def E0H1_SOLISdbl(cr_list):
 	L = np.array([2*np.pi*700,2*np.pi*700]) #data will be doubled in the latitudinal direction.
 	
-	read = SOLISreader_dbl(excise=20)
+	read = SOLISreader_dbl(max_lat=70)
 	E0_list = []
 	H1_list = []
 	for cr in cr_list:
