@@ -186,12 +186,11 @@ if __name__ == "__main__":
 	ax.set_ylabel("$E(k,0)$")
 	ax.set_xlabel("$k$")
 	fig.suptitle(f"CR {min(cr_list)}–{max(cr_list)}")
-	
-	#TODO: Perhaps it is not surprising that the low-k peak disappears in the masked case. After all, the strong-field regions have very small length scales. But then, that means that this peak may just be an artefact of disambiguation.
-	
 	fig.set_size_inches(4,4)
 	fig.tight_layout()
 	save(fig, "effect_double_mask.pdf")
+	
+	#TODO: Perhaps it is not surprising that the low-k peak disappears in the masked case. After all, the strong-field regions have very small length scales. But then, that means that this peak may just be an artefact of disambiguation.
 	
 	#Effect of apodization on HMI data
 	fig,axs = plt.subplots(2, 2, sharex='col', sharey='row', gridspec_kw={'height_ratios': [2,1]})
