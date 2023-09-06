@@ -6,7 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from spectrum import calc_spec, signed_loglog_plot
-from read_FITS import get_B_vec
+from read_FITS import HMIreader
 from utils import jackknife
 
 if __name__ == "__main__":
@@ -16,10 +16,11 @@ if __name__ == "__main__":
 	#NOTE: Nishant sets this as (4*R_sun, 2*R_sun) in his IDL scripts (search for `scl=!pi/Rphys`). This was apparently inherited from Gordon Petrie.
 	L = np.array([2*np.pi*700,np.pi*700])
 	
+	read = HMIreader()
 	E0_list = []
 	H1_list = []
 	for cr in cr_list:
-		B_vec = get_B_vec(f"images/hmi.b_synoptic_small.rebinned.{cr}")
+		B_vec = read(f"images/hmi.b_synoptic_small.rebinned.{cr}")
 		k, E0, _ = calc_spec(B_vec, K=np.array([0,0]), L=L)
 		_, _, H1 = calc_spec(B_vec, K=np.array([0,1]), L=L)
 		
