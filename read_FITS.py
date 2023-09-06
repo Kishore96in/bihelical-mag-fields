@@ -20,7 +20,7 @@ class FITSreader():
 	
 	def read(self, fname):
 		"""
-		Read FITS files, and return an array [Br, Bp, -Bt] (axis order r,phi,theta). This method does not perform a Fourier transform.
+		Read B_vector from FITS files (synoptic vector magnetograms) and return it as an array. A pseudo-Cartesian coordinate system is used, where we map r,phi,mu=cos(theta) to x,y,z (a right-handed coordinate system).
 		"""
 		raise NotImplementedError
 	
