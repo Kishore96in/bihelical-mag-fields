@@ -42,14 +42,9 @@ def get_B_vec(fname, dbllat=False):
 		fname: string of the form "hmi.b_synoptic_small.2267". The input file for Br should be called fname+".Br.fits" (and similar for Bt, Bp). Resulting filename may be anything that is handled by astropy.io.fits.open
 		dbllat: bool. whether to double the domain in the latitudinal direction
 	"""
-	if dbllat:
-		getter = get_data_fft_dbllat
-	else:
-		getter = get_data_fft
-	
-	Br = getter(f"{fname}.Br.fits")
-	Bt = getter(f"{fname}.Bt.fits")
-	Bp = getter(f"{fname}.Bp.fits")
+	Br = get_data_fft(f"{fname}.Br.fits", dbllat=dbllat)
+	Bt = get_data_fft(f"{fname}.Bt.fits", dbllat=dbllat)
+	Bp = get_data_fft(f"{fname}.Bp.fits", dbllat=dbllat)
 	
 	B_vec = np.stack([Br, Bp, -Bt]) #Equation 10 of {SinKapBra18}
 	B_vec = np.swapaxes(B_vec, -1, -2) #The FITS files would've had spatial coordinates latitude,longitude.
