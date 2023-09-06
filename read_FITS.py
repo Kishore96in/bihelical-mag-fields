@@ -98,6 +98,7 @@ class StackLatitudeMixin():
 		data = np.concatenate((data[:,:,nlatb2:], data, data[:,:,:nlatb2]), axis=-1)
 		if not np.shape(data) == (n_vec, n_lon, 2*n_lat):
 			raise RuntimeError(f"Something went wrong while stacking: {np.shape(data) = }; expected ({n_vec}, {n_lon}, {2*n_lat})")
+		return data
 
 class MaskWeakMixin():
 	def mask(self, B_vec):
