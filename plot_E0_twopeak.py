@@ -184,6 +184,8 @@ if __name__ == "__main__":
 		ax.set_ylabel("|data/error|")
 		ax.set_xlabel("k")
 	
+	fig.set_size_inches(4,4)
+	fig.tight_layout()
 	save(fig, "compare_HMI_SOLIS.pdf")
 	
 	#See if domain-doubling changes the energy spectrum for the HMI data
@@ -198,4 +200,6 @@ if __name__ == "__main__":
 	
 	#TODO: Perhaps it is not surprising that the low-k peak disappears in the masked case. After all, the strong-field regions have very small length scales. But then, that means that this peak may just be an artefact of disambiguation.
 	
+	fig.set_size_inches(4,4)
+	fig.tight_layout()
 	save(fig, "effect_double_mask.pdf")
