@@ -4,6 +4,7 @@ Main checks:
 1. Is it also visible in SOLIS data?
 2. Does it still persist when the weak-field regions are masked?
 3. Does it persist even when the domain is not doubled?
+4. Does it persist when the HMI maps are apodized?
 
 Secondary checks:
 4. Do we recover the same helicity spectra from SOLIS and HMI?
