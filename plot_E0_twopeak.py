@@ -2,7 +2,7 @@
 Look at Carrington rotations 2177-2186, and check the robustness of the two-peaked structure in the magnetic energy spectrum.
 Main checks:
 1. Is it also visible in SOLIS data?
-2. Does it still persist when the weak-field regions are masked
+2. Does it still persist when the weak-field regions are masked?
 3. Does it persist even when the domain is not doubled?
 
 Secondary checks:
