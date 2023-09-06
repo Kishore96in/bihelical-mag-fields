@@ -13,8 +13,8 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 
-from read_FITS import HMIreader, MaskWeakMixin, SOLISreader_dbl
-from plot_hel_with_err import E0H1_list_from_CR_list as E0H1_list_from_CR_list_HMI2, real
+from read_FITS import HMIreader, HMIreader_dbl, MaskWeakMixin, SOLISreader_dbl
+from plot_hel_with_Err import E0H1_dbl, real, result
 from spectrum import calc_spec, signed_loglog_plot
 from utils import jackknife, downsample_half, fig_saver
 
@@ -22,18 +22,8 @@ class HMIreader_msk(MaskWeakMixin, HMIreader):
 	pass
 
 def E0H1_HMIdbl(cr_list):
-	k, E0_list, H1_list = E0H1_list_from_CR_list_HMI2(cr_list)
-	
-	E0, E0_err = jackknife(E0_list, axis=0)
-	nimH1, nimH1_err = jackknife(-np.imag(H1_list), axis=0)
-	
-	#Avoid some annoying matplotlib warnings
-	E0 = real(E0)
-	E0_err = real(E0_err)
-	nimH1 = real(nimH1)
-	nimH1_err = real(nimH1_err)
-	
-	return result(k, E0, E0_err, nimH1, nimH1_err)
+	read = HMIreader_dbl()
+	return E0H1_dbl(cr_list, read)
 
 def E0H1_HMIsgl(cr_list):
 	L = np.array([2*np.pi*700,np.pi*700])
@@ -62,7 +52,6 @@ def E0H1_HMIsgl(cr_list):
 	nimH1_err = real(nimH1_err)
 	
 	return result(k, E0, E0_err, nimH1, nimH1_err)
-
 
 def E0H1_HMIsglmsk(cr_list):
 	L = np.array([2*np.pi*700,np.pi*700])
@@ -136,14 +125,6 @@ def E0H1_SOLISdbl(cr_list):
 	nimH1_err = real(nimH1_err)
 	
 	return result(k, E0, E0_err, nimH1, nimH1_err)
-
-class result():
-	def __init__(self, k, E0, E0_err, nimH1, nimH1_err):
-		self.k = k
-		self.E0 = E0
-		self.E0_err = E0_err
-		self.nimH1 = nimH1
-		self.nimH1_err = nimH1_err
 
 if __name__ == "__main__":
 	cr_list = np.arange(2177,2187)
