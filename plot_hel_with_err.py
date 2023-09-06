@@ -46,25 +46,6 @@ class result():
 		self.nimH1 = nimH1
 		self.nimH1_err = nimH1_err
 
-def E0H1_list_from_CR_list(cr_list):
-	L = np.array([2*np.pi*700,2*np.pi*700]) #data will be doubled in the latitudinal direction.
-	read = HMIreader_dbl()
-	
-	E0_list = []
-	H1_list = []
-	for cr in cr_list:
-		B_vec = read(f"images/hmi.b_synoptic_small.rebinned.{cr}")
-		k, E0, _ = calc_spec(B_vec, K=np.array([0,0]), L=L)
-		_, _, H1 = calc_spec(B_vec, K=np.array([0,2]), L=L, shift_onesided=0)
-		
-		E0_list.append(E0)
-		H1_list.append(H1)
-	
-	E0_list = np.array(E0_list)
-	H1_list = np.array(H1_list)
-	
-	return downsample_half(k, E0_list, H1_list, axis=1)
-
 def test_small_im(arr):
 	assert max(np.abs(np.imag(arr)/np.real(arr))) < 1e-10
 
