@@ -14,7 +14,7 @@ from utils import jackknife, downsample_half, fig_saver
 class HMIreader_dblexc(ExciseLatitudeMixin, HMIreader_dbl):
 	pass
 
-#TODO: This seems general enough that I might move it to another file. But note that the length is hardcoded. Can at least use in plot_hel_with_err, I guess.
+#TODO: This seems general enough that I might move it to another file. But note that the domain size is hardcoded. Can at least use in plot_hel_with_err, I guess.
 def E0H1_dbl(cr_list, read):
 	L = np.array([2*np.pi*700,2*np.pi*700]) #data will be doubled in the latitudinal direction.
 	
