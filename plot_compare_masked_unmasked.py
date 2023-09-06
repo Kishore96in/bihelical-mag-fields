@@ -7,12 +7,12 @@ from mask_weak import get_B_vec as get_B_vec_masked
 from utils import downsample_half
 
 if __name__ == "__main__":
-	cr = "2148"
+	cr_list = ["2148", "2180"]
 	threshold=150 #If the magnetic field magnitude is below this value, set it to zero.
 	
 	L = np.array([2*np.pi*700,2*np.pi*700]) #Latitudinal direction is doubled
 	
-	for cr in ["2148", "2180"]:
+	for cr in cr_list:
 		B_vec = get_B_vec(f"images/hmi.b_synoptic_small.rebinned.{cr}", dbllat=True)
 		B_vec_masked = get_B_vec_masked(f"images/hmi.b_synoptic_small.rebinned.{cr}", threshold=threshold, dbllat=True)
 		
