@@ -86,10 +86,11 @@ def signed_loglog_plot(k, spec, ax, line_params=None):
 	return [l1, l2, l3]
 
 if __name__ == "__main__":
-	from read_FITS import get_B_vec
+	from read_FITS import HMIreader
+	read = HMIreader()
 	
 	L = np.array([360,2])
-	B_vec = get_B_vec("images/hmi.b_synoptic_small.2267")
+	B_vec = read("images/hmi.b_synoptic_small.2267")
 	
 	k, E0, _ = calc_spec(B_vec, K=np.array([0,0]), L=L)
 	_, _, H1 = calc_spec(B_vec, K=np.array([0,1]), L=L)
@@ -117,7 +118,7 @@ if __name__ == "__main__":
 	fig.tight_layout()
 	
 	L_rebin = np.array([360,180])
-	B_vec_rebin = get_B_vec("images/hmi.b_synoptic_small.rebinned.2267")
+	B_vec_rebin = read("images/hmi.b_synoptic_small.rebinned.2267")
 	k_rebin, E0_rebin, _ = calc_spec(B_vec_rebin, K=np.array([0,0]), L=L)
 	_, _, H1_rebin = calc_spec(B_vec_rebin, K=np.array([0,1]), L=L)
 	
