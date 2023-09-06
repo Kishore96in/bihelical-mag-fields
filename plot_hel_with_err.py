@@ -84,7 +84,7 @@ def plot_hel_with_err(cr_list):
 	# axs[0].legend(handles=handles)
 	
 	axs[1].loglog(res.k, np.abs(res.nimH1)/res.nimH1_err, label="$-\mathrm{Im}(k H(k,K_1))$")
-	axs[1].loglog(k, res.E0/res.E0_err, label="$E(k,0)$")
+	axs[1].loglog(res.k, res.E0/res.E0_err, label="$E(k,0)$")
 	axs[1].axhline(1, ls=':', c='k')
 	axs[1].set_ylabel("|data/error|")
 	axs[1].set_xlabel("k")
