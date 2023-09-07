@@ -34,13 +34,12 @@ if __name__ == "__main__":
 	ax1 = fig.add_subplot(gsl[1])
 	ax_cbar = fig.add_subplot(gs[1])
 	
-	vmin = min(np.min(Bvec_h_filt), np.min(Bvec_s_filt))
-	vmax = max(np.max(Bvec_h_filt), np.max(Bvec_s_filt))
+	vmax = max(np.max(np.abs(Bvec_h_filt)), np.max(np.abs(Bvec_s_filt)))
 	
 	im_kwargs = {
 		'origin': 'lower',
 		'extent': [0,360,-90,90],
-		'vmin': vmin,
+		'vmin': -vmax,
 		'vmax': vmax,
 		'cmap': 'bwr',
 		}
