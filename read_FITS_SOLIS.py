@@ -24,8 +24,6 @@ def get_B_vec(fname, dbllat=False, excise=None):
 	if excise is not None:
 		if not isinstance(excise, int):
 			raise TypeError(f"Argument excise should be int, but is actually {type(excise)}")
-		#TODO: https://magmap.nso.edu/solis/v9g-int-maj_dim-180_cmp-phi-kc.html seems to show some artefacts at high latitudes. I also see them while plotting the magnetic field from a single synoptic magnetogram. Need to cut them out?
-		#TODO: Even the HMI data has features in the high-latitude regions (but of course, they are not as prominent). Why am I not cutting those out as well? Does cutting those out kill the low-k peak?
 		data[:,:excise,:] = 0
 		data[:,-excise-1:,:] = 0
 	
