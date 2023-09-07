@@ -1,5 +1,5 @@
 """
-Read the FITS files provided by HMI
+Classes to read HMI and SOLIS synoptic maps
 """
 
 import numpy as np
