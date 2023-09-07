@@ -121,6 +121,7 @@ if __name__ == "__main__":
 	cr_list = np.arange(2177,2187)
 	max_lat = 60 #Used for HMI apodization
 	threshold  = 200 #Used for HMI masking
+	#TODO: Interestingly, I see a bihelical spectrum when the threshold is 200, but not when it is 500. Does this suggest that the large-scale signatures are not carried only by active regions?
 	savefig = True
 	savedir = "plots/test_twopeak"
 	
