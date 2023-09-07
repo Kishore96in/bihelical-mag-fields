@@ -29,7 +29,7 @@ if __name__ == "__main__":
 	
 	fig = plt.figure()
 	gs = mpl.gridspec.GridSpec(1,2, width_ratios=[0.95, 0.05])
-	gsl = mpl.gridspec.GridSpecFromSubplotSpec(2,1, subplot_spec=gs[0], hspace=0.3)
+	gsl = mpl.gridspec.GridSpecFromSubplotSpec(2,1, subplot_spec=gs[0], hspace=0.5)
 	ax0 = fig.add_subplot(gsl[0])
 	ax1 = fig.add_subplot(gsl[1])
 	ax_cbar = fig.add_subplot(gs[1])
@@ -56,7 +56,8 @@ if __name__ == "__main__":
 	c = fig.colorbar(im1, cax=ax_cbar)
 	c.set_label(r"$B_r$")
 	
-	fig.suptitle(rf"CR: {cr:04d}, $0 \leq k < {k_max:.1e}$")
+	assert k_max == 1e-2
+	fig.suptitle(rf"CR: {cr:04d}, $0 \leq k < 10^{{-2}}$")
 	fig.set_size_inches(4,4)
 	fig.tight_layout()
 	
