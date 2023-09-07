@@ -57,7 +57,7 @@ if __name__ == "__main__":
 	c = fig.colorbar(im1, cax=ax_cbar)
 	c.set_label(r"$B_r$")
 	
-	fig.set_title(rf"CR: {cr:04d}, $0 \leq k < {k_max:.1e}$$")
+	fig.suptitle(rf"CR: {cr:04d}, $0 \leq k < {k_max:.1e}$$")
 	fig.set_size_inches(4,4)
 	fig.tight_layout()
 	
