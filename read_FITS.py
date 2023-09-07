@@ -84,31 +84,34 @@ class HMIreader(FITSreader):
 		data = np.nan_to_num(data)
 		return data
 	
-	def read(self, fname):
+	def get_Brtp(self, fname):
 		Br = self._get_data(f"{fname}.Br.fits")
 		Bt = self._get_data(f"{fname}.Bt.fits")
 		Bp = self._get_data(f"{fname}.Bp.fits")
-		
+		return np.array([Br, Bt, Bp])
+	
+	def read(self, fname):
+		Br, Bt, Bp = self.get_Brtp(fname)
 		B_vec = np.stack([Br, Bp, -Bt]) #Equation 10 of {SinKapBra18}
 		B_vec = np.swapaxes(B_vec, -1, -2) #The FITS files would've had spatial coordinates latitude,longitude.
-		
 		return B_vec
 
 class HMIreader_dbl(StackLatitudeMixin, HMIreader):
 	pass
 
 class SOLISreader(ExciseLatitudeMixin, FITSreader):
-	def read(self, fname):
+	def get_Brtp(self, fname):
 		with fits.open(fname) as f:
 			hdu = f[0]
 			data = hdu.data
 		data = np.nan_to_num(data)
-		
 		Br, Bt, Bp, _ = data
-		
+		return np.array([Br, Bt, Bp])
+	
+	def read(self, fname):
+		Br, Bt, Bp = self.get_Brtp(fname)
 		B_vec = np.stack([Br, Bp, -Bt]) #Equation 10 of {SinKapBra18}
 		B_vec = np.swapaxes(B_vec, -1, -2) #The FITS files would've had spatial coordinates latitude,longitude.
-		
 		return B_vec
 
 class SOLISreader_dbl(StackLatitudeMixin, SOLISreader):
