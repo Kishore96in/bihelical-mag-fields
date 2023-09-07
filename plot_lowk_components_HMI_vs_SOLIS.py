@@ -9,10 +9,14 @@ import matplotlib.pyplot as plt
 from read_FITS import HMIreader, SOLISreader
 from kishore_backpack.spectrum import filter_fourier
 from plot_E0_twopeak import get_fname_SOLIS
+from utils import fig_saver
 
 if __name__ == "__main__":
 	cr = 2180
+	savefig = True
+	savedir=  "plots/test_twopeak"
 	
+	save = fig_saver(savefig, savedir)
 	read_h = HMIreader()
 	read_s = SOLISreader()
 	
@@ -55,4 +59,4 @@ if __name__ == "__main__":
 	fig.set_size_inches(4,4)
 	fig.tight_layout()
 	
-	plt.show()
+	save(fig, "synoptic_lowpass.pdf")
