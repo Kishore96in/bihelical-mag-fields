@@ -48,3 +48,6 @@ Links to the maps we require seem to be directly available at <https://magmap.ns
 # Miscellany
 ## Date for a given Carrington rotation
 Sunpy provides the function `sunpy.coordinates.sun.carrington_rotation_time`.
+
+## West and east
+On the Sun, 'west' and 'east' are swapped as compared to the ones on the Earth (see <https://astronomy.stackexchange.com/questions/2203/how-are-east-and-west-defined-on-other-bodies-of-our-solar-system/2207#2207>). This is why many sources (e.g. the headers of the SOLIS synoptic maps) say that the coordinate $\phi$ increases in the westward direction. $r, \theta, \phi$ thus form a right-handed coordinate system, as expected.
