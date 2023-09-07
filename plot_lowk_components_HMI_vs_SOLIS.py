@@ -36,9 +36,12 @@ if __name__ == "__main__":
 	
 	im0 = axs[0].imshow(Bvec_h_filt[0], **im_kwargs)
 	axs[0].set_title("HMI")
+	axs[0].set_ylabel(r"$\lambda$ (degrees)")
 	
 	im1 = axs[1].imshow(Bvec_s_filt[0], **im_kwargs)
 	axs[1].set_title("SOLIS")
+	axs[1].set_ylabel(r"$\lambda$ (degrees)")
+	axs[1].set_xlabel(r"$\phi$ (degrees)")
 	
 	fig.tight_layout()
 	
