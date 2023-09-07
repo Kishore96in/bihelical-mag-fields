@@ -13,6 +13,7 @@ from utils import fig_saver
 
 if __name__ == "__main__":
 	cr = 2180
+	k_max = 1e-2
 	savefig = True
 	savedir=  "plots/test_twopeak"
 	
@@ -23,8 +24,8 @@ if __name__ == "__main__":
 	Bvec_h = read_h.get_Brtp(f"images/hmi.b_synoptic_small.rebinned.{cr}")
 	Bvec_s = read_s.get_Brtp(get_fname_SOLIS(cr))
 	
-	Bvec_h_filt = filter_fourier(Bvec_h, 0, 1e-2, k_axes=[-1,-2], L=[2*np.pi*700, np.pi*700])
-	Bvec_s_filt = filter_fourier(Bvec_s, 0, 1e-2, k_axes=[-1,-2], L=[2*np.pi*700, np.pi*700])
+	Bvec_h_filt = filter_fourier(Bvec_h, 0, k_max, k_axes=[-1,-2], L=[2*np.pi*700, np.pi*700])
+	Bvec_s_filt = filter_fourier(Bvec_s, 0, k_max, k_axes=[-1,-2], L=[2*np.pi*700, np.pi*700])
 	
 	fig = plt.figure()
 	gs = mpl.gridspec.GridSpec(1,2, width_ratios=[0.95, 0.05])
@@ -56,6 +57,7 @@ if __name__ == "__main__":
 	c = fig.colorbar(im1, cax=ax_cbar)
 	c.set_label(r"$B_r$")
 	
+	fig.set_title(rf"CR: {cr:04d}, $0 \leq k < {k_max:.1e}$$")
 	fig.set_size_inches(4,4)
 	fig.tight_layout()
 	
