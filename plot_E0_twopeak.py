@@ -25,12 +25,19 @@ class HMIreader_dblexc(ExciseLatitudeMixin, HMIreader_dbl):
 class HMIreader_msk(MaskWeakMixin, HMIreader):
 	pass
 
+class HMIreader_dblmsk(MaskWeakMixin, HMIreader_dbl):
+	pass
+
 def E0H1_HMIdbl(cr_list):
 	read = HMIreader_dbl()
 	return E0H1_dbl(cr_list, read)
 
 def E0H1_HMIdblapod(cr_list, max_lat):
 	read = HMIreader_dblexc(max_lat=max_lat)
+	return E0H1_dbl(cr_list, read)
+
+def E0H1_HMIdblmsk(cr_list, threshold):
+	read = HMIreader_dblmsk(threshold=threshold)
 	return E0H1_dbl(cr_list, read)
 
 def E0H1_HMIsgl(cr_list):
@@ -137,6 +144,7 @@ def E0H1_SOLISdbl(cr_list):
 if __name__ == "__main__":
 	cr_list = np.arange(2177,2187)
 	max_lat = 60 #Used for HMI apodization
+	threshold  = 200 #Used for HMI masking
 	savefig = True
 	savedir = "plots/test_twopeak"
 	
@@ -145,6 +153,7 @@ if __name__ == "__main__":
 	r_h1 = E0H1_HMIsgl(cr_list)
 	r_h1m = E0H1_HMIsglmsk(cr_list)
 	r_h2 = E0H1_HMIdbl(cr_list)
+	r_h2m = E0H1_HMIdblmsk(cr_list, threshold)
 	r_s2 = E0H1_SOLISdbl(cr_list)
 	r_h2a = E0H1_HMIdblapod(cr_list, max_lat)
 	
@@ -222,3 +231,33 @@ if __name__ == "__main__":
 	fig.set_size_inches(6,4)
 	fig.tight_layout()
 	save(fig, "effect_HMI_apodization.pdf")
+	
+	#Effect of masking weak-field regions on HMI data
+	fig,axs = plt.subplots(2, 2, sharex='col', sharey='row', gridspec_kw={'height_ratios': [2,1]})
+	
+	handles = signed_loglog_plot(r_h2.k, r_h2.k*r_h2.nimH1, axs[0,0], {'label':"$-\mathrm{Im}(k\,H(k,K_1))$"})
+	h = axs[0,0].loglog(r_h2.k, r_h2.E0, label="$E(k,0)$")
+	handles.extend(h)
+	
+	axs[1,0].loglog(r_h2.k, np.abs(r_h2.nimH1)/r_h2.nimH1_err, label="$-\mathrm{Im}(k H(k,K_1))$")
+	axs[1,0].loglog(r_h2.k, r_h2.E0/r_h2.E0_err, label="$E(k,0)$")
+	
+	handles = signed_loglog_plot(r_h2m.k, r_h2m.k*r_h2m.nimH1, axs[0,1], {'label':"$-\mathrm{Im}(k\,H(k,K_1))$"})
+	h = axs[0,1].loglog(r_h2m.k, r_h2m.E0, label="$E(k,0)$")
+	handles.extend(h)
+	
+	axs[1,1].loglog(r_h2m.k, np.abs(r_h2m.nimH1)/r_h2m.nimH1_err, label="$-\mathrm{Im}(k H(k,K_1))$")
+	axs[1,1].loglog(r_h2m.k, r_h2m.E0/r_h2m.E0_err, label="$E(k,0)$")
+	
+	axs[0,0].set_title("Full")
+	axs[0,1].set_title(rf"$\left|\vec{{B}}\right| > {threshold}$")
+	fig.suptitle(f"CR {min(cr_list)}–{max(cr_list)}")
+	
+	for ax in axs[1]:
+		ax.axhline(1, ls=':', c='k')
+		ax.set_ylabel("|data/error|")
+		ax.set_xlabel("k")
+	
+	fig.set_size_inches(6,4)
+	fig.tight_layout()
+	save(fig, "effect_HMI_mask.pdf")
