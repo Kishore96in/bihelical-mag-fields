@@ -27,8 +27,8 @@ if __name__ == "__main__":
 	vmax = max(np.max(Bvec_h_filt), np.max(Bvec_s_filt))
 	
 	im_kwargs = {
-		'origin': 'upper',
-		'extent': [0, 360,-90,90],
+		'origin': 'lower',
+		'extent': [0,360,-90,90],
 		'vmin': vmin,
 		'vmax': vmax,
 		'cmap': 'bwr',
