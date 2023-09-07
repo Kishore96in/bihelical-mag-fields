@@ -22,9 +22,6 @@ from utils import jackknife, downsample_half, fig_saver
 class HMIreader_dblexc(ExciseLatitudeMixin, HMIreader_dbl):
 	pass
 
-class HMIreader_msk(MaskWeakMixin, HMIreader):
-	pass
-
 class HMIreader_dblmsk(MaskWeakMixin, HMIreader_dbl):
 	pass
 
@@ -44,34 +41,6 @@ def E0H1_HMIsgl(cr_list):
 	L = np.array([2*np.pi*700,np.pi*700])
 	
 	read = HMIreader()
-	E0_list = []
-	H1_list = []
-	for cr in cr_list:
-		B_vec = read(f"images/hmi.b_synoptic_small.rebinned.{cr}")
-		k, E0, _ = calc_spec(B_vec, K=np.array([0,0]), L=L)
-		_, _, H1 = calc_spec(B_vec, K=np.array([0,1]), L=L)
-		
-		E0_list.append(E0)
-		H1_list.append(H1)
-	
-	E0_list = np.array(E0_list)
-	H1_list = np.array(H1_list)
-	
-	E0, E0_err = jackknife(E0_list, axis=0)
-	nimH1, nimH1_err = jackknife(-np.imag(H1_list), axis=0)
-	
-	#Avoid some annoying matplotlib warnings
-	E0 = real(E0)
-	E0_err = real(E0_err)
-	nimH1 = real(nimH1)
-	nimH1_err = real(nimH1_err)
-	
-	return result(k, E0, E0_err, nimH1, nimH1_err)
-
-def E0H1_HMIsglmsk(cr_list):
-	L = np.array([2*np.pi*700,np.pi*700])
-	
-	read = HMIreader_msk(threshold=150)
 	E0_list = []
 	H1_list = []
 	for cr in cr_list:
@@ -151,7 +120,6 @@ if __name__ == "__main__":
 	save = fig_saver(savefig, savedir)
 	
 	r_h1 = E0H1_HMIsgl(cr_list)
-	r_h1m = E0H1_HMIsglmsk(cr_list)
 	r_h2 = E0H1_HMIdbl(cr_list)
 	r_h2m = E0H1_HMIdblmsk(cr_list, threshold)
 	r_s2 = E0H1_SOLISdbl(cr_list)
@@ -191,7 +159,7 @@ if __name__ == "__main__":
 	fig,ax = plt.subplots()
 	ax.loglog(r_h1.k, r_h1.E0, label="undoubled")
 	ax.loglog(r_h2.k, r_h2.E0, label="doubled", ls='--')
-	ax.loglog(r_h1m.k, r_h1m.E0, label="masked", ls=':')
+	ax.loglog(r_h2m.k, r_h2m.E0, label="masked", ls=':')
 	ax.legend()
 	ax.set_ylabel("$E(k,0)$")
 	ax.set_xlabel("$k$")
