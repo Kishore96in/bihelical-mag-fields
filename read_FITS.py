@@ -33,6 +33,12 @@ class FITSreader():
 		"""
 		return data
 	
+	def apodize(self, data):
+		"""
+		This allows subclasses to perform any operations on B-vector before the domain is doubled or the FFT is taken.
+		"""
+		return data
+	
 	def fft(self, data):
 		"""
 		Normalization of the Fourier transform is chosen to match that of IDL.
@@ -42,6 +48,7 @@ class FITSreader():
 	def __call__(self, fname):
 		B_vec = self.read(fname)
 		B_vec = self.mask(B_vec)
+		B_vec = self.apodize(B_vec)
 		B_vec = self.stack_latitude(B_vec)
 		return self.fft(B_vec)
 
@@ -67,7 +74,7 @@ class MaskWeakMixin():
 		return np.where(Bmag>self.threshold, B_vec, 0)
 
 class ExciseLatitudeMixin():
-	def mask(self, data):
+	def apodize(self, data):
 		#Assumes the last axis is latitude, and that it extends from -90 to 90.
 		if not hasattr(self, "max_lat"):
 			raise AttributeError("Set max_lat to use this class.")
