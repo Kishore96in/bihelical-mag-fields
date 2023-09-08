@@ -44,7 +44,6 @@ if __name__ == "__main__":
 	
 	save = fig_saver(savefig, savedir)
 	for i in range(len(cr_bins)-1):
-		print(f"{cr_bins[i] = }") #debug
 		cr_list = [cr for cr in range(cr_bins[i], cr_bins[i+1]) if cr not in cr_exclude]
 		figname = f"{cr_bins[i]:04d}-{cr_bins[i+1]-1:04d}.pdf"
 		
