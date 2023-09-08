@@ -14,6 +14,13 @@ from plot_E0_twopeak import E0H1_SOLISdbl, E0H1_HMIdblapodmsk, E0H1_HMIdbl
 def plot_hel_with_err_compare(*res_list):
 	fig,axs = plt.subplots(2, len(res_list), sharex='col', sharey='row', gridspec_kw={'height_ratios': [2,1]})
 	
+	#Automatic limits don't work properly for some reason.
+	yvals = np.concatenate([np.abs(res.k*res.nimH1) for res in res_list])
+	ymin = np.min(yvals, where=np.logical_not(np.isclose(yvals, 0)), initial=np.max(yvals))
+	
+	yvals = np.concatenate([res.E0 for res in res_list])
+	ymax = np.max(yvals)
+	
 	for i, res in enumerate(res_list):
 		handles = signed_loglog_plot(res.k, res.k*res.nimH1, axs[0,i], {'label':"$-\mathrm{Im}(k\,H(k,K_1))$"})
 		h = axs[0,i].loglog(res.k, res.E0, label="$E(k,0)$")
@@ -23,6 +30,7 @@ def plot_hel_with_err_compare(*res_list):
 		axs[1,i].loglog(res.k, res.E0/res.E0_err, label="$E(k,0)$")
 		
 		axs[0,i].set_title(res.title)
+		axs[0,i].set_ylim(ymin, ymax)
 	
 	for ax in axs[1]:
 		ax.axhline(1, ls=':', c='k')
