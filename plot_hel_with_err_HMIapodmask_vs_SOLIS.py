@@ -9,7 +9,7 @@ from spectrum import calc_spec, signed_loglog_plot
 from read_FITS import HMIreader_dbl
 from utils import jackknife, downsample_half, fig_saver
 from plot_hel_with_err import E0H1_dbl
-from plot_E0_twopeak import E0H1_SOLISdbl, E0H1_HMIdblapodmsk
+from plot_E0_twopeak import E0H1_SOLISdbl, E0H1_HMIdblapodmsk, E0H1_HMIdbl
 
 def plot_hel_with_err_compare(*res_list):
 	fig,axs = plt.subplots(2, len(res_list), sharex='col', sharey='row', gridspec_kw={'height_ratios': [2,1]})
@@ -47,13 +47,16 @@ if __name__ == "__main__":
 		cr_list = [cr for cr in range(cr_bins[i], cr_bins[i+1]) if cr not in cr_exclude]
 		figname = f"{cr_bins[i]:04d}-{cr_bins[i+1]-1:04d}.pdf"
 		
-		res_h = E0H1_HMIdblapodmsk(cr_list, max_lat=max_lat, threshold=threshold)
+		res_h = E0H1_HMIdbl(cr_list)
 		res_h.title = "HMI"
+		
+		res_ham = E0H1_HMIdblapodmsk(cr_list, max_lat=max_lat, threshold=threshold)
+		res_ham.title = "HMI, a+m"
 		
 		res_s = E0H1_SOLISdbl(cr_list)
 		res_s.title = "SOLIS"
 		
-		fig = plot_hel_with_err_compare(res_h, res_s)
+		fig = plot_hel_with_err_compare(res_h, res_ham, res_s)
 		fig.suptitle(f"CR: {min(cr_list):04d}–{max(cr_list):04d}")
 		fig.set_size_inches(6.3,4)
 		fig.tight_layout()
