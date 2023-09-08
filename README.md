@@ -48,6 +48,8 @@ Links to the maps we require seem to be directly available at <https://magmap.ns
 As per <https://solis.nso.edu/pubkeep/DATAINFO_VSM.txt>, we need `kcv9g*t*_int-mas_dim-180.fits.gz`.
 These maps are in coordinates latitude vs longitude.
 An example of such a file is <https://magmap.nso.edu/solis//SV/v9g/201710/kcv9g171023/kcv9g171023t1526c2196_000_int-mas_dim-180.fits.gz>.
+A single file contains all three components of the magnetic field (see `hdu.header['IMTYPE{1,2,3}']`.
+`hdu.data` is a 4x180x360 array, with `[[0,1,2],:,:]` being r,theta,phi components.
 
 # Miscellany
 ## Date for a given Carrington rotation
