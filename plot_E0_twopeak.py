@@ -14,7 +14,7 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 
-from read_FITS import HMIreader, HMIreader_dbl, ExciseLatitudeMixin, MaskWeakMixin, SOLISreader_dbl
+from read_FITS import HMIreader, HMIreader_dbl, ExciseLatitudeMixin, MaskWeakMixin, SOLISreader_dbl, get_fname_SOLIS
 from plot_hel_with_err import E0H1_dbl, real, result
 from spectrum import calc_spec, signed_loglog_plot
 from utils import jackknife, downsample_half, fig_saver
@@ -71,21 +71,6 @@ def E0H1_HMIsgl(cr_list):
 	nimH1_err = real(nimH1_err)
 	
 	return result(k, E0, E0_err, nimH1, nimH1_err)
-
-def get_fname_SOLIS(cr):
-	"""
-	Get the filename of the FITS file for a given Carrington rotation.
-	
-	Arguments:
-		cr: int, Carrington rotation number
-	"""
-	img_loc = "images_SOLIS"
-	
-	match = lambda f: f[-30:] == f"c{cr:04d}_000_int-mas_dim-180.fits" and f[:5] == "kcv9g"
-	files = [f for f in os.listdir(img_loc) if match(f)]
-	if len(files) > 1:
-		raise RuntimeError(f"Too many matches for {cr = }; {files = }")
-	return os.path.join(img_loc, files[0])
 
 def E0H1_SOLISdbl(cr_list):
 	L = np.array([2*np.pi*700,2*np.pi*700]) #data will be doubled in the latitudinal direction.

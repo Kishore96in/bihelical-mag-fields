@@ -6,9 +6,8 @@ import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
-from read_FITS import HMIreader, SOLISreader
+from read_FITS import HMIreader, SOLISreader, get_fname_SOLIS
 from kishore_backpack.spectrum import filter_fourier
-from plot_E0_twopeak import get_fname_SOLIS
 from utils import fig_saver
 
 if __name__ == "__main__":
