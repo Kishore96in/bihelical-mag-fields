@@ -63,7 +63,7 @@ if __name__ == "__main__":
 		
 		fig = plot_hel_with_err_compare(res_h, res_s)
 		fig.suptitle(f"CR: {min(cr_list):04d}–{max(cr_list):04d}")
-		fig.set_size_inches(4,4)
+		fig.set_size_inches(6.3,4)
 		fig.tight_layout()
 		
 		save(fig, figname)
