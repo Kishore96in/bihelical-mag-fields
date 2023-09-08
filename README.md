@@ -45,6 +45,10 @@ Naming scheme for files is described in <https://solis.nso.edu/pubkeep/DATAINFO_
 If we are interested in Carrington rotations 2177–2186, we need to look at the date range 2016-05-10 to 2017-02-06.
 Links to the maps we require seem to be directly available at <https://magmap.nso.edu/solis/v9g-int-maj_dim-180_cmp-phi-kc.html>.
 
+As per <https://solis.nso.edu/pubkeep/DATAINFO_VSM.txt>, we need `kcv9g*t*_int-mas_dim-180.fits.gz`.
+These maps are in coordinates latitude vs longitude.
+An example of such a file is <https://magmap.nso.edu/solis//SV/v9g/201710/kcv9g171023/kcv9g171023t1526c2196_000_int-mas_dim-180.fits.gz>.
+
 # Miscellany
 ## Date for a given Carrington rotation
 Sunpy provides the function `sunpy.coordinates.sun.carrington_rotation_time`.
