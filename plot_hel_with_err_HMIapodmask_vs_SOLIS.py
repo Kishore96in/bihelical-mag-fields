@@ -11,25 +11,18 @@ from utils import jackknife, downsample_half, fig_saver
 from plot_hel_with_err import E0H1_dbl
 from plot_E0_twopeak import E0H1_SOLISdbl, E0H1_HMIdblapodmsk
 
-def plot_hel_with_err_compare(res_1, res_2):
-	fig,axs = plt.subplots(2, 2, sharex='col', sharey='row', gridspec_kw={'height_ratios': [2,1]})
+def plot_hel_with_err_compare(*res_list):
+	fig,axs = plt.subplots(2, len(res_list), sharex='col', sharey='row', gridspec_kw={'height_ratios': [2,1]})
 	
-	handles = signed_loglog_plot(res_1.k, res_1.k*res_1.nimH1, axs[0,0], {'label':"$-\mathrm{Im}(k\,H(k,K_1))$"})
-	h = axs[0,0].loglog(res_1.k, res_1.E0, label="$E(k,0)$")
-	handles.extend(h)
-	
-	axs[1,0].loglog(res_1.k, np.abs(res_1.nimH1)/res_1.nimH1_err, label="$-\mathrm{Im}(k H(k,K_1))$")
-	axs[1,0].loglog(res_1.k, res_1.E0/res_1.E0_err, label="$E(k,0)$")
-	
-	handles = signed_loglog_plot(res_2.k, res_2.k*res_2.nimH1, axs[0,1], {'label':"$-\mathrm{Im}(k\,H(k,K_1))$"})
-	h = axs[0,1].loglog(res_2.k, res_2.E0, label="$E(k,0)$")
-	handles.extend(h)
-	
-	axs[1,1].loglog(res_2.k, np.abs(res_2.nimH1)/res_2.nimH1_err, label="$-\mathrm{Im}(k H(k,K_1))$")
-	axs[1,1].loglog(res_2.k, res_2.E0/res_2.E0_err, label="$E(k,0)$")
-	
-	axs[0,0].set_title(res_1.title)
-	axs[0,1].set_title(res_2.title)
+	for i, res in enumerate(res_list):
+		handles = signed_loglog_plot(res.k, res.k*res.nimH1, axs[0,i], {'label':"$-\mathrm{Im}(k\,H(k,K_1))$"})
+		h = axs[0,i].loglog(res.k, res.E0, label="$E(k,0)$")
+		handles.extend(h)
+		
+		axs[1,i].loglog(res.k, np.abs(res.nimH1)/res.nimH1_err, label="$-\mathrm{Im}(k H(k,K_1))$")
+		axs[1,i].loglog(res.k, res.E0/res.E0_err, label="$E(k,0)$")
+		
+		axs[0,i].set_title(res.title)
 	
 	for ax in axs[1]:
 		ax.axhline(1, ls=':', c='k')
