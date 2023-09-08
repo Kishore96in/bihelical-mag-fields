@@ -2,6 +2,7 @@
 Classes to read HMI and SOLIS synoptic maps
 """
 
+import os
 import numpy as np
 import scipy.fft
 from astropy.io import fits
