@@ -10,7 +10,6 @@ Secondary checks:
 4. Do we recover the same helicity spectra from SOLIS and HMI?
 """
 
-import os
 import numpy as np
 import matplotlib.pyplot as plt
 
