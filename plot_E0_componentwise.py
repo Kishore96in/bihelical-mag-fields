@@ -10,9 +10,10 @@ from read_FITS import HMIreader
 from spectrum import calc_spec
 from utils import jackknife, fig_saver
 
-def E0rpm_list_from_CR_list(cr_list):
+def E0rpm_list_from_CR_list(cr_list, read=None):
 	L = np.array([2*np.pi*700,np.pi*700])
-	read = HMIreader()
+	if read is None:
+		read = HMIreader()
 	
 	E0r_list = []
 	E0p_list = []
@@ -44,8 +45,8 @@ def E0rpm_list_from_CR_list(cr_list):
 	
 	return k, E0r_list, E0p_list, E0mu_list
 
-def plot_Erpm_with_err(cr_list):
-	k, E0r_list, E0p_list, E0mu_list = E0rpm_list_from_CR_list(cr_list)
+def plot_Erpm_with_err(cr_list, read=None):
+	k, E0r_list, E0p_list, E0mu_list = E0rpm_list_from_CR_list(cr_list, read=read)
 	
 	E0r, E0r_err = jackknife(E0r_list, axis=0)
 	E0p, E0p_err = jackknife(E0p_list, axis=0)
