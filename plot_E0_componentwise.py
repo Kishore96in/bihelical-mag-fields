@@ -1,5 +1,5 @@
 """
-Motivated by observation of double-peaked magnetic spectra in the minimum between cycles 24--25, we now examine if all the three components of the magnetic field show the same behaviour.
+Motivated by observation of double-peaked magnetic spectra in the minimum between cycles 24--25, we now examine if all the three components of the magnetic field show the same behaviour in HMI maps.
 """
 
 import numpy as np
