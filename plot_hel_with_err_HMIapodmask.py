@@ -17,7 +17,7 @@ if __name__ == "__main__":
 	savedir = "plots/hel_with_err_HMIapodmask"
 	
 	save = fig_saver(savefig, savedir)
-	read = HMIreader_dblexcmsk(max_lat=50, threshold=200)
+	read = HMIreader_dblexcmsk(max_lat=60, threshold=200)
 	
 	cr_bins = np.arange(2097,2268,10)
 	for i in range(len(cr_bins)-1):

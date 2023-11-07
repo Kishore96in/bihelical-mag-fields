@@ -42,7 +42,7 @@ def plot_hel_with_err_compare(*res_list):
 if __name__ == "__main__":
 	savefig = True
 	savedir = "plots/hel_with_err_compare_HMIapodmask_SOLIS"
-	max_lat = 50 #For HMI apodization
+	max_lat = 60 #For HMI apodization
 	threshold = 200 #For HMI masking
 	
 	#TODO: In the SOLIS data which I have downloaded, CR 2153 and 2154 are missing. Why?
