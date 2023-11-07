@@ -3,13 +3,10 @@ Motivated by observation of double-peaked magnetic spectra in the minimum betwee
 """
 
 import numpy as np
-import matplotlib.pyplot as plt
 
-from plot_hel_with_err import real
 from plot_E0_twopeak import HMIreader_dblexcmsk
 from plot_E0_componentwise import plot_Erpm_with_err
-from spectrum import calc_spec
-from utils import jackknife, fig_saver
+from utils import fig_saver
 
 if __name__ == "__main__":
 	savefig = True
