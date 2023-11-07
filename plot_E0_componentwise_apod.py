@@ -13,7 +13,7 @@ if __name__ == "__main__":
 	savedir = "plots/Espec_componentwise_apod"
 	
 	save = fig_saver(savefig, savedir)
-	read = HMIreader_dblexcmsk(max_lat=60)
+	read = HMIreader_dblexc(max_lat=60)
 	
 	cr_bins = np.arange(2097,2268,10)
 	for i in range(len(cr_bins)-1):
