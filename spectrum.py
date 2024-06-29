@@ -54,7 +54,9 @@ class calc_spec():
 		H = np.zeros(nk, dtype=complex)
 		
 		E_integrand = np.einsum("ii...", Mij)/2
-		H_integrand = np.where(k_mag!=0, 1j*np.einsum("ii...", np.cross(k_vec, Mij, axis=0))/k_mag**2, 0)
+		
+		k_mag_inv = 1/np.where(k_mag!=0, k_mag, 1) #Prevent divide-by-zero warning.
+		H_integrand = 1j*np.einsum("ii...", np.cross(k_vec, Mij, axis=0))*k_mag_inv**2
 		
 		for k in range(nk):
 			#TODO: I guess ... below is not needed now (since E and H have only one axis), but does no harm.
