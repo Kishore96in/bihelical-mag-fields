@@ -63,13 +63,13 @@ def plot_Erpm_with_err(cr_list, read=None):
 	fig,axs = plt.subplots(2, 1, sharex=True, gridspec_kw={'height_ratios': [2,1]})
 	
 	axs[0].loglog(k, E0r, label="$E_r$")
-	axs[0].loglog(k, E0p, label="$E_\phi$")
-	axs[0].loglog(k, E0mu, label="$E_\mu$")
+	axs[0].loglog(k, E0p, label=r"$E_\phi$")
+	axs[0].loglog(k, E0mu, label=r"$E_\mu$")
 	axs[0].legend()
 	
 	axs[1].loglog(k, E0r/E0r_err, label="$E_r$")
-	axs[1].loglog(k, E0p/E0p_err, label="$E_\phi$")
-	axs[1].loglog(k, E0mu/E0mu_err, label="$E_\mu$")
+	axs[1].loglog(k, E0p/E0p_err, label=r"$E_\phi$")
+	axs[1].loglog(k, E0mu/E0mu_err, label=r"$E_\mu$")
 	axs[1].axhline(1, ls=':', c='k')
 	axs[1].set_ylabel("|data/error|")
 	axs[1].set_xlabel("k")

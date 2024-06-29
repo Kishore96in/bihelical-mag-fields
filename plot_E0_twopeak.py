@@ -121,18 +121,18 @@ if __name__ == "__main__":
 	#Compare HMI with SOLIS
 	fig,axs = plt.subplots(2, 2, sharex='col', sharey='row', gridspec_kw={'height_ratios': [2,1]})
 	
-	handles = signed_loglog_plot(r_h2.k, r_h2.k*r_h2.nimH1, axs[0,0], {'label':"$-\mathrm{Im}(k\,H(k,K_1))$"})
+	handles = signed_loglog_plot(r_h2.k, r_h2.k*r_h2.nimH1, axs[0,0], {'label':r"$-\mathrm{Im}(k\,H(k,K_1))$"})
 	h = axs[0,0].loglog(r_h2.k, r_h2.E0, label="$E(k,0)$")
 	handles.extend(h)
 	
-	axs[1,0].loglog(r_h2.k, np.abs(r_h2.nimH1)/r_h2.nimH1_err, label="$-\mathrm{Im}(k H(k,K_1))$")
+	axs[1,0].loglog(r_h2.k, np.abs(r_h2.nimH1)/r_h2.nimH1_err, label=r"$-\mathrm{Im}(k H(k,K_1))$")
 	axs[1,0].loglog(r_h2.k, r_h2.E0/r_h2.E0_err, label="$E(k,0)$")
 	
-	handles = signed_loglog_plot(r_s2.k, r_s2.k*r_s2.nimH1, axs[0,1], {'label':"$-\mathrm{Im}(k\,H(k,K_1))$"})
+	handles = signed_loglog_plot(r_s2.k, r_s2.k*r_s2.nimH1, axs[0,1], {'label':r"$-\mathrm{Im}(k\,H(k,K_1))$"})
 	h = axs[0,1].loglog(r_s2.k, r_s2.E0, label="$E(k,0)$")
 	handles.extend(h)
 	
-	axs[1,1].loglog(r_s2.k, np.abs(r_s2.nimH1)/r_s2.nimH1_err, label="$-\mathrm{Im}(k H(k,K_1))$")
+	axs[1,1].loglog(r_s2.k, np.abs(r_s2.nimH1)/r_s2.nimH1_err, label=r"$-\mathrm{Im}(k H(k,K_1))$")
 	axs[1,1].loglog(r_s2.k, r_s2.E0/r_s2.E0_err, label="$E(k,0)$")
 	
 	axs[0,0].set_title("HMI")
@@ -164,18 +164,18 @@ if __name__ == "__main__":
 	#Effect of apodization on HMI data
 	fig,axs = plt.subplots(2, 2, sharex='col', sharey='row', gridspec_kw={'height_ratios': [2,1]})
 	
-	handles = signed_loglog_plot(r_h2.k, r_h2.k*r_h2.nimH1, axs[0,0], {'label':"$-\mathrm{Im}(k\,H(k,K_1))$"})
+	handles = signed_loglog_plot(r_h2.k, r_h2.k*r_h2.nimH1, axs[0,0], {'label':r"$-\mathrm{Im}(k\,H(k,K_1))$"})
 	h = axs[0,0].loglog(r_h2.k, r_h2.E0, label="$E(k,0)$")
 	handles.extend(h)
 	
-	axs[1,0].loglog(r_h2.k, np.abs(r_h2.nimH1)/r_h2.nimH1_err, label="$-\mathrm{Im}(k H(k,K_1))$")
+	axs[1,0].loglog(r_h2.k, np.abs(r_h2.nimH1)/r_h2.nimH1_err, label=r"$-\mathrm{Im}(k H(k,K_1))$")
 	axs[1,0].loglog(r_h2.k, r_h2.E0/r_h2.E0_err, label="$E(k,0)$")
 	
-	handles = signed_loglog_plot(r_h2a.k, r_h2a.k*r_h2a.nimH1, axs[0,1], {'label':"$-\mathrm{Im}(k\,H(k,K_1))$"})
+	handles = signed_loglog_plot(r_h2a.k, r_h2a.k*r_h2a.nimH1, axs[0,1], {'label':r"$-\mathrm{Im}(k\,H(k,K_1))$"})
 	h = axs[0,1].loglog(r_h2a.k, r_h2a.E0, label="$E(k,0)$")
 	handles.extend(h)
 	
-	axs[1,1].loglog(r_h2a.k, np.abs(r_h2a.nimH1)/r_h2a.nimH1_err, label="$-\mathrm{Im}(k H(k,K_1))$")
+	axs[1,1].loglog(r_h2a.k, np.abs(r_h2a.nimH1)/r_h2a.nimH1_err, label=r"$-\mathrm{Im}(k H(k,K_1))$")
 	axs[1,1].loglog(r_h2a.k, r_h2a.E0/r_h2a.E0_err, label="$E(k,0)$")
 	
 	axs[0,0].set_title("Full")
@@ -194,18 +194,18 @@ if __name__ == "__main__":
 	#Effect of masking weak-field regions on HMI data
 	fig,axs = plt.subplots(2, 2, sharex='col', sharey='row', gridspec_kw={'height_ratios': [2,1]})
 	
-	handles = signed_loglog_plot(r_h2.k, r_h2.k*r_h2.nimH1, axs[0,0], {'label':"$-\mathrm{Im}(k\,H(k,K_1))$"})
+	handles = signed_loglog_plot(r_h2.k, r_h2.k*r_h2.nimH1, axs[0,0], {'label':r"$-\mathrm{Im}(k\,H(k,K_1))$"})
 	h = axs[0,0].loglog(r_h2.k, r_h2.E0, label="$E(k,0)$")
 	handles.extend(h)
 	
-	axs[1,0].loglog(r_h2.k, np.abs(r_h2.nimH1)/r_h2.nimH1_err, label="$-\mathrm{Im}(k H(k,K_1))$")
+	axs[1,0].loglog(r_h2.k, np.abs(r_h2.nimH1)/r_h2.nimH1_err, label=r"$-\mathrm{Im}(k H(k,K_1))$")
 	axs[1,0].loglog(r_h2.k, r_h2.E0/r_h2.E0_err, label="$E(k,0)$")
 	
-	handles = signed_loglog_plot(r_h2m.k, r_h2m.k*r_h2m.nimH1, axs[0,1], {'label':"$-\mathrm{Im}(k\,H(k,K_1))$"})
+	handles = signed_loglog_plot(r_h2m.k, r_h2m.k*r_h2m.nimH1, axs[0,1], {'label':r"$-\mathrm{Im}(k\,H(k,K_1))$"})
 	h = axs[0,1].loglog(r_h2m.k, r_h2m.E0, label="$E(k,0)$")
 	handles.extend(h)
 	
-	axs[1,1].loglog(r_h2m.k, np.abs(r_h2m.nimH1)/r_h2m.nimH1_err, label="$-\mathrm{Im}(k H(k,K_1))$")
+	axs[1,1].loglog(r_h2m.k, np.abs(r_h2m.nimH1)/r_h2m.nimH1_err, label=r"$-\mathrm{Im}(k H(k,K_1))$")
 	axs[1,1].loglog(r_h2m.k, r_h2m.E0/r_h2m.E0_err, label="$E(k,0)$")
 	
 	axs[0,0].set_title("Full")
@@ -224,18 +224,18 @@ if __name__ == "__main__":
 	#Effect of masking weak-field regions along with apodization on HMI data
 	fig,axs = plt.subplots(2, 2, sharex='col', sharey='row', gridspec_kw={'height_ratios': [2,1]})
 	
-	handles = signed_loglog_plot(r_h2.k, r_h2.k*r_h2.nimH1, axs[0,0], {'label':"$-\mathrm{Im}(k\,H(k,K_1))$"})
+	handles = signed_loglog_plot(r_h2.k, r_h2.k*r_h2.nimH1, axs[0,0], {'label':r"$-\mathrm{Im}(k\,H(k,K_1))$"})
 	h = axs[0,0].loglog(r_h2.k, r_h2.E0, label="$E(k,0)$")
 	handles.extend(h)
 	
-	axs[1,0].loglog(r_h2.k, np.abs(r_h2.nimH1)/r_h2.nimH1_err, label="$-\mathrm{Im}(k H(k,K_1))$")
+	axs[1,0].loglog(r_h2.k, np.abs(r_h2.nimH1)/r_h2.nimH1_err, label=r"$-\mathrm{Im}(k H(k,K_1))$")
 	axs[1,0].loglog(r_h2.k, r_h2.E0/r_h2.E0_err, label="$E(k,0)$")
 	
-	handles = signed_loglog_plot(r_h2am.k, r_h2am.k*r_h2am.nimH1, axs[0,1], {'label':"$-\mathrm{Im}(k\,H(k,K_1))$"})
+	handles = signed_loglog_plot(r_h2am.k, r_h2am.k*r_h2am.nimH1, axs[0,1], {'label':r"$-\mathrm{Im}(k\,H(k,K_1))$"})
 	h = axs[0,1].loglog(r_h2am.k, r_h2am.E0, label="$E(k,0)$")
 	handles.extend(h)
 	
-	axs[1,1].loglog(r_h2am.k, np.abs(r_h2am.nimH1)/r_h2am.nimH1_err, label="$-\mathrm{Im}(k H(k,K_1))$")
+	axs[1,1].loglog(r_h2am.k, np.abs(r_h2am.nimH1)/r_h2am.nimH1_err, label=r"$-\mathrm{Im}(k H(k,K_1))$")
 	axs[1,1].loglog(r_h2am.k, r_h2am.E0/r_h2am.E0_err, label="$E(k,0)$")
 	
 	axs[0,0].set_title("Full")

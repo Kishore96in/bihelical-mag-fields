@@ -56,11 +56,11 @@ def real(arr):
 def plot_hel_with_err(res):
 	fig,axs = plt.subplots(2, 1, sharex=True, gridspec_kw={'height_ratios': [2,1]})
 	
-	handles = signed_loglog_plot(res.k, res.k*res.nimH1, axs[0], {'label':"$-\mathrm{Im}(k\,H(k,K_1))$"})
+	handles = signed_loglog_plot(res.k, res.k*res.nimH1, axs[0], {'label':r"$-\mathrm{Im}(k\,H(k,K_1))$"})
 	h = axs[0].loglog(res.k, res.E0, label="$E(k,0)$")
 	handles.extend(h)
 	
-	axs[1].loglog(res.k, np.abs(res.nimH1)/res.nimH1_err, label="$-\mathrm{Im}(k H(k,K_1))$")
+	axs[1].loglog(res.k, np.abs(res.nimH1)/res.nimH1_err, label=r"$-\mathrm{Im}(k\,H(k,K_1))$")
 	axs[1].loglog(res.k, res.E0/res.E0_err, label="$E(k,0)$")
 	axs[1].axhline(1, ls=':', c='k')
 	axs[1].set_ylabel("|data/error|")

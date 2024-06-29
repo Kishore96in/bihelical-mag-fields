@@ -22,11 +22,11 @@ def plot_hel_with_err_compare(*res_list):
 	ymax = np.max(yvals)
 	
 	for i, res in enumerate(res_list):
-		handles = signed_loglog_plot(res.k, res.k*res.nimH1, axs[0,i], {'label':"$-\mathrm{Im}(k\,H(k,K_1))$"})
+		handles = signed_loglog_plot(res.k, res.k*res.nimH1, axs[0,i], {'label':r"$-\mathrm{Im}(k\,H(k,K_1))$"})
 		h = axs[0,i].loglog(res.k, res.E0, label="$E(k,0)$")
 		handles.extend(h)
 		
-		axs[1,i].loglog(res.k, np.abs(res.nimH1)/res.nimH1_err, label="$-\mathrm{Im}(k H(k,K_1))$")
+		axs[1,i].loglog(res.k, np.abs(res.nimH1)/res.nimH1_err, label=r"$-\mathrm{Im}(k H(k,K_1))$")
 		axs[1,i].loglog(res.k, res.E0/res.E0_err, label="$E(k,0)$")
 		
 		axs[0,i].set_title(res.title)
