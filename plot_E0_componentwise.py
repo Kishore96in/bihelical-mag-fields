@@ -5,10 +5,9 @@ Motivated by observation of double-peaked magnetic spectra in the minimum betwee
 import numpy as np
 import matplotlib.pyplot as plt
 
-from plot_hel_with_err import real
 from read_FITS import HMIreader
 from spectrum import calc_spec_G2 as calc_spec
-from utils import jackknife, fig_saver
+from utils import jackknife, fig_saver, real
 
 def E0rpm_list_from_CR_list(cr_list, read=None):
 	L = np.array([2*np.pi*700,np.pi*700])

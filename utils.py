@@ -3,6 +3,13 @@ import os
 import warnings
 import sys
 
+def test_small_im(arr):
+	assert max(np.abs(np.imag(arr)/np.real(arr))) < 1e-10
+
+def real(arr):
+	test_small_im(arr)
+	return np.real(arr)
+
 def jackknife(arr, axis):
 	"""
 	Jackknife estimate of the error in the mean of arr (along axis)

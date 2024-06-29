@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 from spectrum import calc_spec_G2 as calc_spec, signed_loglog_plot
 from read_FITS import HMIreader_dbl
-from utils import jackknife, downsample_half, fig_saver
+from utils import jackknife, downsample_half, fig_saver, real
 
 def E0H1_dbl(cr_list, read):
 	L = np.array([2*np.pi*700,2*np.pi*700]) #data will be doubled in the latitudinal direction.
@@ -45,13 +45,6 @@ class result():
 		self.E0_err = E0_err
 		self.nimH1 = nimH1
 		self.nimH1_err = nimH1_err
-
-def test_small_im(arr):
-	assert max(np.abs(np.imag(arr)/np.real(arr))) < 1e-10
-
-def real(arr):
-	test_small_im(arr)
-	return np.real(arr)
 
 def plot_hel_with_err(res):
 	fig,axs = plt.subplots(2, 1, sharex=True, gridspec_kw={'height_ratios': [2,1]})
