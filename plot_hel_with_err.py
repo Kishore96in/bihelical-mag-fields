@@ -25,7 +25,7 @@ def E0H1_dbl(cr_list, read):
 	E0_list = np.array(E0_list)
 	H1_list = np.array(H1_list)
 	
-	k, E0_list, H1_list = downsample_half(k, E0_list, H1_list, axis=1)
+	k, E0_list, H1_list = downsample_half(k, E0_list, H1_list, axis=1, calc_spec=calc_spec)
 	
 	E0, E0_err = jackknife(E0_list, axis=0)
 	nimH1, nimH1_err = jackknife(-np.imag(H1_list), axis=0)

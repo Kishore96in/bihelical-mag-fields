@@ -26,8 +26,8 @@ if __name__ == "__main__":
 		_, E0m, _ = calc_spec(B_vec_masked, K=np.array([0,0]), L=L)
 		_, _, H1m = calc_spec(B_vec_masked, K=np.array([0,2]), L=L, shift_onesided=0)
 		
-		_, E0, H1 = downsample_half(k, E0, H1, axis=0)
-		k, E0m, H1m = downsample_half(k, E0m, H1m, axis=0)
+		_, E0, H1 = downsample_half(k, E0, H1, axis=0, calc_spec=calc_spec)
+		k, E0m, H1m = downsample_half(k, E0m, H1m, axis=0, calc_spec=calc_spec)
 		
 		nimH1 = -np.imag(H1)
 		nimH1m = -np.imag(H1m)
