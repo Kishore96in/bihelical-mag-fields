@@ -68,14 +68,16 @@ class calc_spec():
 	def round(arr):
 		return np.round(arr)
 	
-	def scale_EH(self, E, H, scl=1):
+	@staticmethod
+	def scale_EH(E, H, scl=1):
 		"""
 		Dimensional scaling for E and H. The scaling here corresponds to E having units G^2.Mm^3
 		"""
 		return E/scl**3, H/scl**4
 
 class calc_spec_G2(calc_spec):
-	def scale_EH(self, E, H, scl=1):
+	@staticmethod
+	def scale_EH(E, H, scl=1):
 		"""
 		Dimensional scaling for E and H. The scaling here corresponds to E having units G^2
 		"""
