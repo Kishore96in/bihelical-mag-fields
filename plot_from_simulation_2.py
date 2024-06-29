@@ -9,7 +9,7 @@ import scipy.fft
 import os
 
 from spectrum import calc_spec_G2 as calc_spec, signed_loglog_plot
-from utils import fig_saver
+from utils import fig_saver, real
 
 savefig = True #whether to save plots
 simpath = "simulation/2"
@@ -50,7 +50,7 @@ axs[0].axhline(0, ls=':', c='k')
 
 handles = []
 handles.extend( signed_loglog_plot(k, k*np.real(H0av), axs[1], {'label':r"$\mathrm{Re}(k\,H(k,0))$"}) ) #for the K=0 mode, we want the real part
-handles.extend( axs[1].loglog(k, E0av, label="$E(k,0)$") )
+handles.extend( axs[1].loglog(k, real(E0av), label="$E(k,0)$") )
 axs[1].legend(handles=handles)
 axs[1].set_xlabel("k")
 
