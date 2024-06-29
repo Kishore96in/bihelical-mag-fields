@@ -70,7 +70,7 @@ class calc_spec():
 	
 	def scale_EH(self, E, H, scl=1):
 		"""
-		Dimensional scaling for E and H.
+		Dimensional scaling for E and H. The scaling here corresponds to E having units G^2.Mm^3
 		"""
 		return E/scl**3, H/scl**4
 
