@@ -74,6 +74,13 @@ class calc_spec():
 		"""
 		return E/scl**3, H/scl**4
 
+class calc_spec_G2(calc_spec):
+	def scale_EH(self, E, H, scl=1):
+		"""
+		Dimensional scaling for E and H. The scaling here corresponds to E having units G^2
+		"""
+		return E, H/scl
+
 def signed_loglog_plot(k, spec, ax, line_params=None):
 	where_pos = np.where(spec>=0)[0]
 	where_neg = np.where(spec<0)[0]
