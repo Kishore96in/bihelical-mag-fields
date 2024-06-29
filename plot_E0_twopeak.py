@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 
 from read_FITS import HMIreader, HMIreader_dbl, ExciseLatitudeMixin, MaskWeakMixin, SOLISreader_dbl, get_fname_SOLIS
 from plot_hel_with_err import E0H1_dbl, real, result
-from spectrum import calc_spec, signed_loglog_plot
+from spectrum import calc_spec_G2 as calc_spec, signed_loglog_plot
 from utils import jackknife, downsample_half, fig_saver
 
 class HMIreader_dblexc(ExciseLatitudeMixin, HMIreader_dbl):

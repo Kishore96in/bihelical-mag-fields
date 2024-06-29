@@ -8,7 +8,7 @@ import numpy as np
 import scipy.fft
 import os
 
-from spectrum import calc_spec, signed_loglog_plot
+from spectrum import calc_spec_G2 as calc_spec, signed_loglog_plot
 from utils import fig_saver
 
 savefig = True #whether to save plots

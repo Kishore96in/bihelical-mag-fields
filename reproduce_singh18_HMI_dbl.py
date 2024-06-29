@@ -7,7 +7,7 @@ The data are doubled in the latitudinal direction to allow application of the tw
 import numpy as np
 import matplotlib.pyplot as plt
 
-from spectrum import calc_spec, signed_loglog_plot
+from spectrum import calc_spec_G2 as calc_spec, signed_loglog_plot
 from read_FITS import HMIreader_dbl
 from utils import jackknife, downsample_half
 

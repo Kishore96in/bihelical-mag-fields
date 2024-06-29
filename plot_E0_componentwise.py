@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 from plot_hel_with_err import real
 from read_FITS import HMIreader
-from spectrum import calc_spec
+from spectrum import calc_spec_G2 as calc_spec
 from utils import jackknife, fig_saver
 
 def E0rpm_list_from_CR_list(cr_list, read=None):

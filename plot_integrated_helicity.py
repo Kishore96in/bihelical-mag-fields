@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 from scipy.integrate import trapezoid
 
-from spectrum import calc_spec, signed_loglog_plot
+from spectrum import calc_spec_G2 as calc_spec, signed_loglog_plot
 from read_FITS import HMIreader_dbl
 from utils import downsample_half, rebin, fig_saver
 

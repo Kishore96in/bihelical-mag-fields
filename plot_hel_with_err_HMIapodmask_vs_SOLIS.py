@@ -5,7 +5,7 @@ Similar to the plot produced by reproduce_singh18_HMI_dbl, but for different CR.
 import numpy as np
 import matplotlib.pyplot as plt
 
-from spectrum import calc_spec, signed_loglog_plot
+from spectrum import calc_spec_G2 as calc_spec, signed_loglog_plot
 from read_FITS import HMIreader_dbl
 from utils import jackknife, downsample_half, fig_saver
 from plot_hel_with_err import E0H1_dbl

@@ -9,7 +9,7 @@ NOTE: the one-sided shift used here produces the wrong sign of the helicity spec
 import numpy as np
 import matplotlib.pyplot as plt
 
-from spectrum import calc_spec, signed_loglog_plot
+from spectrum import calc_spec_G2 as calc_spec, signed_loglog_plot
 from read_IDL import get_B_vec
 from utils import jackknife
 

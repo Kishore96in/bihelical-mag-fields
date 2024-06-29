@@ -8,7 +8,7 @@ NOTE: the one-sided shift here produces the wrong sign of the helicity spectrum.
 import numpy as np
 import matplotlib.pyplot as plt
 
-from spectrum import calc_spec, signed_loglog_plot
+from spectrum import calc_spec_G2 as calc_spec, signed_loglog_plot
 from read_FITS import HMIreader
 from utils import jackknife
 
