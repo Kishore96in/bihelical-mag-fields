@@ -13,7 +13,7 @@ Secondary checks:
 import numpy as np
 import matplotlib.pyplot as plt
 
-from read_FITS import HMIreader, HMIreader_dbl, ExciseLatitudeMixin, MaskWeakMixin, SOLISreader_dbl, get_fname_SOLIS
+from read_FITS import HMIreader, HMIreader_dbl, ExciseLatitudeMixin, MaskWeakMixin, SOLISreader_dbl
 from plot_hel_with_err import E0H1_dbl, result
 from spectrum import calc_spec_G2 as calc_spec, signed_loglog_plot
 from utils import jackknife, downsample_half, fig_saver, real
@@ -78,7 +78,7 @@ def E0H1_SOLISdbl(cr_list):
 	E0_list = []
 	H1_list = []
 	for cr in cr_list:
-		B_vec = read(get_fname_SOLIS(cr))
+		B_vec = read(read.get_fname(cr))
 		k, E0, _ = calc_spec(B_vec, K=np.array([0,0]), L=L)
 		_, _, H1 = calc_spec(B_vec, K=np.array([0,2]), L=L, shift_onesided=0)
 		

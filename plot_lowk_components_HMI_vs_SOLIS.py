@@ -6,7 +6,7 @@ import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
-from read_FITS import HMIreader, SOLISreader, get_fname_SOLIS
+from read_FITS import HMIreader, SOLISreader
 from kishore_backpack.spectrum import filter_fourier
 from utils import fig_saver
 
@@ -20,8 +20,8 @@ if __name__ == "__main__":
 	read_h = HMIreader()
 	read_s = SOLISreader()
 	
-	Bvec_h = read_h.get_Brtp(f"images/hmi.b_synoptic_small.rebinned.{cr}")
-	Bvec_s = read_s.get_Brtp(get_fname_SOLIS(cr))
+	Bvec_h = read_h.get_Brtp(read_h.get_fname(cr))
+	Bvec_s = read_s.get_Brtp(read_s.get_fname(cr))
 	
 	Bvec_h_filt = filter_fourier(Bvec_h, 0, k_max, k_axes=[-1,-2], L=[2*np.pi*700, np.pi*700])
 	Bvec_s_filt = filter_fourier(Bvec_s, 0, k_max, k_axes=[-1,-2], L=[2*np.pi*700, np.pi*700])

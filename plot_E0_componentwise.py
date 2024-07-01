@@ -19,7 +19,7 @@ def E0rpm_list_from_CR_list(cr_list, read=None):
 	E0mu_list = []
 	for cr in cr_list:
 		#No need to double domain here, since we are only interested in the K=0 mode.
-		B_vec = read(f"images/hmi.b_synoptic_small.rebinned.{cr}")
+		B_vec = read(read.get_fname(cr))
 		
 		B_r = B_vec.copy()
 		B_p = B_vec.copy()

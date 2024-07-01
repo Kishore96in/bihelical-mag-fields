@@ -84,7 +84,36 @@ class ExciseLatitudeMixin():
 		lat = np.linspace(-90,90,n_lat)
 		return np.where(np.abs(lat) > self.max_lat, 0, data)
 
-class HMIreader(FITSreader):
+class m_get_fname_SOLIS():
+	self.img_loc = "images"
+	
+	def get_fname(cr):
+		"""
+		Get the filename of the FITS file for a given Carrington rotation.
+		
+		Arguments:
+			cr: int, Carrington rotation number
+		"""
+		
+		match = lambda f: f[-30:] == f"c{cr:04d}_000_int-mas_dim-180.fits" and f[:5] == "kcv9g"
+		files = [f for f in os.listdir(self.img_loc) if match(f)]
+		if len(files) > 1:
+			raise RuntimeError(f"Too many matches for {cr = }; {files = }")
+		return os.path.join(self.img_loc, files[0])
+
+class m_get_fname_HMI():
+	self.img_loc = "images"
+	
+	def get_fname(cr):
+		"""
+		Get the filename of the FITS file for a given Carrington rotation.
+		
+		Arguments:
+			cr: int, Carrington rotation number
+		"""
+		return os.path.join(self.img_loc, f"hmi.b_synoptic_small.rebinned.{cr}")
+
+class HMIreader(m_get_fname_HMI, FITSreader):
 	def _get_data(self, fname):
 		with fits.open(fname) as f:
 			hdu = f[0]
@@ -107,7 +136,7 @@ class HMIreader(FITSreader):
 class HMIreader_dbl(StackLatitudeMixin, HMIreader):
 	pass
 
-class SOLISreader(ExciseLatitudeMixin, FITSreader):
+class SOLISreader(ExciseLatitudeMixin, m_get_fname_SOLIS, FITSreader):
 	def get_Brtp(self, fname):
 		with fits.open(fname) as f:
 			hdu = f[0]
@@ -124,18 +153,3 @@ class SOLISreader(ExciseLatitudeMixin, FITSreader):
 
 class SOLISreader_dbl(StackLatitudeMixin, SOLISreader):
 	pass
-
-def get_fname_SOLIS(cr):
-	"""
-	Get the filename of the FITS file for a given Carrington rotation.
-	
-	Arguments:
-		cr: int, Carrington rotation number
-	"""
-	img_loc = "images_SOLIS"
-	
-	match = lambda f: f[-30:] == f"c{cr:04d}_000_int-mas_dim-180.fits" and f[:5] == "kcv9g"
-	files = [f for f in os.listdir(img_loc) if match(f)]
-	if len(files) > 1:
-		raise RuntimeError(f"Too many matches for {cr = }; {files = }")
-	return os.path.join(img_loc, files[0])

@@ -15,7 +15,7 @@ def E0H1_dbl(cr_list, read):
 	E0_list = []
 	H1_list = []
 	for cr in cr_list:
-		B_vec = read(f"images/hmi.b_synoptic_small.rebinned.{cr}")
+		B_vec = read(read.get_fname(cr))
 		k, E0, _ = calc_spec(B_vec, K=np.array([0,0]), L=L)
 		_, _, H1 = calc_spec(B_vec, K=np.array([0,2]), L=L, shift_onesided=0)
 		
