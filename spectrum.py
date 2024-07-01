@@ -81,7 +81,7 @@ class calc_spec_G2(calc_spec):
 	@staticmethod
 	def scale_EH(E, H, scl=1):
 		"""
-		Dimensional scaling for E and H. The scaling here corresponds to E having units G^2
+		Dimensional scaling for E and H. The scaling here corresponds to E having units G^2 (i.e. erg.cm^{-3})
 		"""
 		return E, H/scl
 
