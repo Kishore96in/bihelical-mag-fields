@@ -85,6 +85,14 @@ class calc_spec_G2(calc_spec):
 		"""
 		return E, H/scl
 
+class calc_spec_SI(calc_spec):
+	@staticmethod
+	def scale_EH(E, H, scl=1):
+		"""
+		Dimensional scaling for E and H. The scaling here corresponds to E having units J.m^{-3} (we assume that the magnetic field was given in Gauss, use the fact that G^2 = erg.cm^{-3}, and then recall that 1 erg.cm^{-3} = 1e-1 J.m^{-3}).
+		"""
+		return 1e-1*E, 1e-1*H/scl
+
 def signed_loglog_plot(k, spec, ax, line_params=None):
 	where_pos = np.where(spec>=0)[0]
 	where_neg = np.where(spec<0)[0]
