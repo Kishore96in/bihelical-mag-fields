@@ -1,0 +1,7 @@
+axes.formatter.use_mathtext:  True
+axes.formatter.limits: -3,4
+
+figure.constrained_layout.use: True
+figure.figsize: 4,3
+
+font.size: 12
