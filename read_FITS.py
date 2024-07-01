@@ -97,9 +97,13 @@ class m_get_fname_SOLIS():
 		
 		match = lambda f: f[-30:] == f"c{cr:04d}_000_int-mas_dim-180.fits" and f[:5] == "kcv9g"
 		files = [f for f in os.listdir(self.img_loc) if match(f)]
+		
 		if len(files) > 1:
 			raise RuntimeError(f"Too many matches for {cr = }; {files = }")
-		return os.path.join(self.img_loc, files[0])
+		elif len(files) == 0:
+			raise RuntimeError(f"No files found for {cr = }")
+		else:
+			return os.path.join(self.img_loc, files[0])
 
 class m_get_fname_HMI():
 	img_loc = "images"
