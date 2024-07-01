@@ -85,9 +85,9 @@ class ExciseLatitudeMixin():
 		return np.where(np.abs(lat) > self.max_lat, 0, data)
 
 class m_get_fname_SOLIS():
-	self.img_loc = "images"
+	img_loc = "images_SOLIS"
 	
-	def get_fname(cr):
+	def get_fname(self, cr):
 		"""
 		Get the filename of the FITS file for a given Carrington rotation.
 		
@@ -102,9 +102,9 @@ class m_get_fname_SOLIS():
 		return os.path.join(self.img_loc, files[0])
 
 class m_get_fname_HMI():
-	self.img_loc = "images"
+	img_loc = "images"
 	
-	def get_fname(cr):
+	def get_fname(self, cr):
 		"""
 		Get the filename of the FITS file for a given Carrington rotation.
 		
