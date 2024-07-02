@@ -1,20 +1,22 @@
 """
-Fourier-filter the HMI and SOLIs synoptic maps for a particular CR and see if they look similar.
+Fourier-filter the HMI and SOLIS synoptic maps for a particular CR and see if they look similar.
 """
 
 import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
-from read_FITS import HMIreader, SOLISreader
 from kishore_backpack.spectrum import filter_fourier
+
+from read_FITS import HMIreader, SOLISreader
 from utils import fig_saver
 
 if __name__ == "__main__":
 	cr = 2180
 	k_max = 1e-2
 	savefig = True
-	savedir=  "plots/test_twopeak"
+	savedir=  "plots/filtered_synoptic"
+	mpl.style.use("kishore.mplstyle")
 	
 	save = fig_saver(savefig, savedir)
 	read_h = HMIreader()
@@ -27,11 +29,10 @@ if __name__ == "__main__":
 	Bvec_s_filt = filter_fourier(Bvec_s, 0, k_max, k_axes=[-1,-2], L=[2*np.pi*700, np.pi*700])
 	
 	fig = plt.figure()
-	gs = mpl.gridspec.GridSpec(1,2, width_ratios=[0.95, 0.05])
-	gsl = mpl.gridspec.GridSpecFromSubplotSpec(2,1, subplot_spec=gs[0], hspace=0.5)
-	ax0 = fig.add_subplot(gsl[0])
-	ax1 = fig.add_subplot(gsl[1])
-	ax_cbar = fig.add_subplot(gs[1])
+	gs = mpl.gridspec.GridSpec(1,3, width_ratios=[0.475, 0.475, 0.05], figure=fig)
+	ax0 = fig.add_subplot(gs[0])
+	ax1 = fig.add_subplot(gs[1], sharex=ax0, sharey=ax0)
+	ax_cbar = fig.add_subplot(gs[2])
 	
 	vmax = max(np.max(np.abs(Bvec_h_filt)), np.max(np.abs(Bvec_s_filt)))
 	
@@ -41,23 +42,23 @@ if __name__ == "__main__":
 		'vmin': -vmax,
 		'vmax': vmax,
 		'cmap': 'bwr',
+		'aspect': 'auto',
 		}
 	
 	im0 = ax0.imshow(Bvec_h_filt[0], **im_kwargs)
 	ax0.set_title("HMI")
 	ax0.set_ylabel(r"$\lambda$ (degrees)")
+	ax0.set_xlabel(r"$\phi$ (degrees)")
 	
 	im1 = ax1.imshow(Bvec_s_filt[0], **im_kwargs)
 	ax1.set_title("SOLIS")
-	ax1.set_ylabel(r"$\lambda$ (degrees)")
+	plt.setp(ax1.get_yticklabels(), visible=False)
 	ax1.set_xlabel(r"$\phi$ (degrees)")
 	
 	c = fig.colorbar(im1, cax=ax_cbar)
-	c.set_label(r"$B_r$")
+	c.set_label(r"$B_r$ (G)")
 	
 	assert k_max == 1e-2
-	fig.suptitle(rf"CR: {cr:04d}, $0 \leq k < 10^{{-2}}$")
-	fig.set_size_inches(4,4)
-	fig.tight_layout()
+	fig.set_size_inches(5.4,2.3)
 	
-	save(fig, "synoptic_lowpass.pdf")
+	save(fig, f"synoptic_lowpass_cr_{cr}_kmax_{k_max}.pdf")
