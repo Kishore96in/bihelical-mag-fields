@@ -93,12 +93,12 @@ class calc_spec_SI(calc_spec):
 		"""
 		return 1e-1*E, 1e-1*H/scl
 
-def signed_loglog_plot(k, spec, ax, line_params=None, err=None):
+def signed_loglog_plot(k, spec, ax, line_params=None, err=None, **kwargs):
 	"""
 	Arguments:
 		k: numpy array. Horizontal coordinates
 		spec: numpy array. Vertical coordinates
-		line_params: dict. kwargs to be passed to ax.plot.
+		line_params: dict. kwargs to be passed to ax.plot. Usage of this is discouraged; just directly pass a kwarg instead.
 		err: numpy array. Error in spec. If this is passed, fill_between will be used to indicate the errors.
 	"""
 	where_pos = np.where(spec>=0)[0]
@@ -110,7 +110,7 @@ def signed_loglog_plot(k, spec, ax, line_params=None, err=None):
 	if line_params is None:
 		line_params = dict()
 	
-	[l1] = ax.loglog(k, spec, **line_params)
+	[l1] = ax.loglog(k, spec, **line_params, **kwargs)
 	
 	if err is not None:
 		le = ax.fill_between(
