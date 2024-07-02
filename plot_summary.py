@@ -31,7 +31,8 @@ if __name__ == "__main__":
 	
 	read_HMI = HMIreader_dbl()
 	read_HMIapod = HMIreader_dblexc(max_lat=60)
-	read_HMImask = HMIreader_dblmsk(threshold=200)
+	read_HMImask200 = HMIreader_dblmsk(threshold=200)
+	read_HMImask50 = HMIreader_dblmsk(threshold=50)
 	read_SOLIS = SOLISreader_dbl_exc(max_lat=60)
 	
 	cr_list_1 = list(range(2143, 2153)) #Near the maximum of cycle 24
@@ -45,12 +46,12 @@ if __name__ == "__main__":
 	
 	fig, ax = plt.subplots()
 	
-	for res, cr_list in [
-		(res_HMI_1, cr_list_1),
-		(res_HMI_2, cr_list_2),
-		(res_HMI_3, cr_list_3),
+	for res, cr_list, ls in [
+		(res_HMI_1, cr_list_1, '-'),
+		(res_HMI_2, cr_list_2, '-'),
+		(res_HMI_3, cr_list_3, '--'),
 		]:
-		errorfill(ax, res.k[1:], res.E0[1:], res.E0_err[1:], marker='', label=f"{min(cr_list)}–{max(cr_list)}")
+		errorfill(ax, res.k[1:], res.E0[1:], res.E0_err[1:], marker='', label=f"{min(cr_list)}–{max(cr_list)}", ls=ls)
 	
 	ax.set_yscale('log')
 	ax.set_xscale('log')
@@ -69,14 +70,16 @@ if __name__ == "__main__":
 	fig, ax = plt.subplots()
 	
 	res_HMIapod_3 = E0H1_dbl(cr_list_3, read_HMIapod)
-	res_HMImask_3 = E0H1_dbl(cr_list_3, read_HMImask)
+	res_HMImask200_3 = E0H1_dbl(cr_list_3, read_HMImask200)
+	res_HMImask50_3 = E0H1_dbl(cr_list_3, read_HMImask50)
 	
-	for res, label in [
-		(res_HMI_3, "full"),
-		(res_HMIapod_3, "apodized"),
-		(res_HMImask_3, "masked"),
+	for res, label, ls in [
+		(res_HMI_3, "full", '-'),
+		(res_HMIapod_3, r"$\left| \lambda \right| < 60^\circ$", '-'),
+		(res_HMImask200_3, r"$\left| \vec{B} \right| > 200$ G", ':'),
+		(res_HMImask50_3, r"$\left| \vec{B} \right| > 50$ G", '--'),
 		]:
-		errorfill(ax, res.k[1:], res.E0[1:], res.E0_err[1:], marker='', label=label)
+		errorfill(ax, res.k[1:], res.E0[1:], res.E0_err[1:], marker='', label=label, ls=ls)
 	
 	ax.set_yscale('log')
 	ax.set_xscale('log')
