@@ -125,10 +125,7 @@ def signed_loglog_plot(k, spec, ax, line_params=None, err=None):
 	l2 = ax.scatter(k[where_pos], spec[where_pos], **params_pos, label="$+$")
 	l3 = ax.scatter(k[where_neg], spec[where_neg], **params_neg, label="$-$")
 	
-	if err is None:
-		return [l1, l2, l3]
-	else:
-		return [l1, l2, l3, le]
+	return [l1, l2, l3]
 
 if __name__ == "__main__":
 	from read_FITS import HMIreader
