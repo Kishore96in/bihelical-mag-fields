@@ -81,19 +81,16 @@ if __name__ == "__main__":
 	ax.set_yscale('log')
 	ax.set_xscale('log')
 	ax.margins(x=0)
-	ax.set_title(f"{min(cr_list_3)}–{max(cr_list_3)}")
 	ax.legend()
 	
 	ax.set_xlabel("$k$ (Mm$^{-1}$)")
 	ax.set_ylabel("$E(k,0)$ (erg cm$^{-3}$)")
 	
-	save(fig, "HMI_apodization_masking_effect.pdf")
+	save(fig, f"HMI_apodization_masking_effect_cr_{min(cr_list_3)}-{max(cr_list_3)}.pdf")
 	
 	#Compare helicity spectra from apodized HMI and SOLIS data
 	res_SOLIS_1 = E0H1_dbl(cr_list_1, read_SOLIS)
-	#TODO: apodized or masked here?
 	res_HMIapod_1 = E0H1_dbl(cr_list_1, read_HMIapod)
-	# res_HMImask_1 = E0H1_dbl(cr_list_1, read_HMImask)
 	
 	fig, axs = plt.subplots(1,2, sharex=True, sharey=True)
 	
@@ -125,7 +122,7 @@ if __name__ == "__main__":
 		ax.set_title(title)
 	
 	axs[0].set_ylabel("$E(k,0)$ (erg cm$^{-3}$)")
-	fig.supxlabel("$k$ (Mm$^{-1}$)")
+	fig.supxlabel("$k$ (Mm$^{-1}$)", size='medium')
 	axs[0].margins(x=0)
 	
 	leg_l = axs[0].legend(handles=axs[0].handles_lines)
@@ -138,4 +135,4 @@ if __name__ == "__main__":
 	
 	fig.set_size_inches(5.4,3)
 	
-	save(fig, "compare_helspec_HMI_SOLIS.pdf")
+	save(fig, f"compare_helspec_HMI_SOLIS_cr_{min(cr_list_1)}-{max(cr_list_1)}.pdf")
