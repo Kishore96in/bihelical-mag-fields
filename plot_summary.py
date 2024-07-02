@@ -95,8 +95,8 @@ if __name__ == "__main__":
 	fig, axs = plt.subplots(1,2, sharex=True, sharey=True)
 	
 	for res, ax, title in [
-		(res_HMIapod_1, axs[0], "HMI, apodized"),
-		(res_SOLIS_1, axs[1], "SOLIS, apodized"),
+		(res_HMIapod_1, axs[0], "HMI"),
+		(res_SOLIS_1, axs[1], "SOLIS"),
 		]:
 		
 		l, *handles_pm = signed_loglog_plot(
