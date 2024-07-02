@@ -93,7 +93,14 @@ class calc_spec_SI(calc_spec):
 		"""
 		return 1e-1*E, 1e-1*H/scl
 
-def signed_loglog_plot(k, spec, ax, line_params=None):
+def signed_loglog_plot(k, spec, ax, line_params=None, err=None):
+	"""
+	Arguments:
+		k: numpy array. Horizontal coordinates
+		spec: numpy array. Vertical coordinates
+		line_params: dict. kwargs to be passed to ax.plot.
+		err: numpy array. Error in spec. If this is passed, fill_between will be used to indicate the errors.
+	"""
 	where_pos = np.where(spec>=0)[0]
 	where_neg = np.where(spec<0)[0]
 	spec = np.abs(spec)
@@ -103,11 +110,25 @@ def signed_loglog_plot(k, spec, ax, line_params=None):
 	if line_params is None:
 		line_params = dict()
 	
-	l1 = ax.loglog(k, spec, **line_params)[0]
+	[l1] = ax.loglog(k, spec, **line_params)
+	
+	if err is not None:
+		le = ax.fill_between(
+			k,
+			spec - err,
+			spec + err,
+			alpha = 0.25,
+			color = l1.get_color(),
+			linewidth = 0, #prevent an outline being drawn around the boundary of the region being filled.
+			)
+	
 	l2 = ax.scatter(k[where_pos], spec[where_pos], **params_pos, label="$+$")
 	l3 = ax.scatter(k[where_neg], spec[where_neg], **params_neg, label="$-$")
 	
-	return [l1, l2, l3]
+	if err is None:
+		return [l1, l2, l3]
+	else:
+		return [l1, l2, l3, le]
 
 if __name__ == "__main__":
 	from read_FITS import HMIreader
