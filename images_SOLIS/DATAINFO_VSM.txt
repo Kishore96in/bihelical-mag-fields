@@ -1,0 +1,258 @@
+
+                  NISP/SOLIS VSM Data Information
+               -------------------------------------
+
+
+VSM Filename Format:
+====================
+
+The VSM data files have the following general filename structures:
+
+
+ stimp<date>t<time>_<groupid>_<flav>.fts.gz
+
+and
+
+ stimp<date>t<time>_<flav>.fts.gz
+
+
+The first five characters (stimp) identify the site, obstype, instrument, obsmode, and processing level respectively.
+
+ |------ site ("k" = Kitt Peak)
+ ||----- obs type (bias,dark,flat, etc... see below)
+ |||---- instrument, always "v" for the VSM
+ ||||--- obs mode (6302l, 8542l, 1083i, 6302v ...  see below)
+ |||||-- processing level (0,1,2,3 ... see below)
+ stimp
+
+
+
+VSM Obstypes:
+=============
+The single character codes for all of the VSM obstypes are shown in the following table.
+
+Active Obstypes:
+Type character  Obs Type
+    "1"           dark
+    "2"           flat
+    "2"           scan-flat
+    "3"           area-scan
+    "4"           full-scan
+    "6"           snapshot
+    "7"           polar-cal
+    "8"           custom
+    "9"           sinlat/lon heliographic map
+    "a"           lat/lon heliographic map
+    "b"           sinlat/lon synoptic map
+    "c"           lat/lon synoptic map
+    "f"           statistical data
+
+Legacy Obstypes:
+Type character  Obs Type
+    "0"           bias
+    "d"           coslat polar projection synoptic map
+    "e"           sky frame image
+    "x"           drift-flat
+    "y"           sun
+    "z"           scan
+
+
+
+VSM Obsmodes:
+=============
+There are 4 active obsmodes for the VSM instrument.  The single
+character codes for all of the VSM obsmodes are shown in the following table.
+
+Currently active obsmodes:
+Mode character	Obs Mode
+    "2"          1083i
+    "7"          6302l
+    "8"          8542l
+    "9"          6302v
+
+
+
+VSM Processing Levels:
+======================
+VSM processing levels indicate the general progressive levels of data processing.  The valid
+VSM processing levels are listed below:
+
+Level Char           Description
+   "0"               Raw data (spectra)
+   "1"               Instrument-corrected data (image)
+   "2"               Geometry-corrected data (image)
+   "3"               Derived data
+   "4"               6302v quick-look level1 data (image)
+   "5"               6302v quick-look level2 data (image)
+   "6"               6302v quick-look level3 data
+   "g"               Level 3 Solis data processed by GONG pipeline
+   "s"               Cleaned spectra IV or IQUV (corresponds to level1 images)
+   "t"               Mapped cleaned spectra (corresponds to level2 images)
+
+
+
+Date and Time:
+==============
+
+In general, the date and time will be the UTC start date/time of the observation 
+of a given data parameter with the following format:
+ 
+  <date>t<time>
+  yymmddthhmmss
+
+  yy = 2-digit year
+  mm = month number
+  dd = day number
+  t  = fixed constant "t"
+  hh = UTC hour
+  mm = UTC minute
+  ss = UTC second 
+
+Synoptic and heliographic maps have the Carrington rotation integrated into the time field and
+the seconds are elided from the time field:
+
+  <date>t<time>c<carr>_<deg>
+
+  carr = 4 digit Carrington rotation
+  deg = degree offset into Carrington rotation
+
+
+Flavors:
+========
+The _<flav> portion of a VSM filename identifies additional information about the file, such
+as plot resolution (e.g. "_lr" = low resolution thumbnail) or image plane (e.g. _mag1).  A filename
+may contain more than one flavor.
+
+The following table itemizes many of the currently used flavors for VSM data:
+
+flavor     description
+------     ----------------------------------
+_hr        high-resolution
+_mr        medium-resolution
+_lr        low-resolution
+_ew        equivalent width
+_mag1      1st line (6301.5)
+_mag2      2nd line (6302.5)
+_cont      intensity
+_magcont   mag and intensity duo
+_ewcont    ew and intensity duo
+_x3d       x3d plot data
+_I         Stokes I parameter data
+_Q         Stokes Q parameter data
+_U         Stokes U parameter data
+_V         Stokes Y parameter data
+_mf1       1st line mean field
+_mf2       2nd line mean field
+_amf1      1st line absolute mean field
+_amf2      2nd line absolute mean field
+_FS        Field strength data
+_CONT      Intensity data
+_BLOS      Line-of-sight mag data
+_INC       Inclination
+_AZM       Azimuth
+_VER       Vertical field
+_HAZ       Horizontal azimuth
+_VINC      Vertical inclination
+_FF        Filling fraction
+_Jz        Current density
+_CHI2      CHI-2 error data
+_ARXXXXX   Active region NOAA number
+
+
+Synoptic Map Product Flavor Convention:
+=======================================
+  flavor     description
+  ------     ----------------------------------
+Main synoptic map products:
+NRT (Near real-time) maps
+  _syn-mas   polefilled NRT synoptic map FITS
+  _syn-maj   polefilled NRT synoptic map JPG
+Integral CR maps
+  _int-mas   polefilled integral Carrington rotation synoptic mas FITS
+  _int-maj   polefilled integral Carrington rotation synoptic map JPG
+
+Other synoptic map products: 
+NRT maps
+  _syn-man   normalized not-polefilled NRT synoptic map FITS
+  _syn-mau   unnormalized NRT synoptic map FITS (numerator)
+  _syn-maw   weight of NRT synoptic map FITS (denominator)
+  _syn-jas   polefilled NRT Janus synoptic map FITS
+  _syn-jaj   polefilled NRT Janus synoptic map JPG
+  _syn-mal   list of images contributing to NRT synoptic map TEXT
+Integral CR maps
+  _int-man   normalized not-polefilled integral Carrington rotation synoptic map FITS
+  _int-mau   unnormalized integral Carrington rotation synoptic map FITS (numerator)
+  _int-maw   weight of integral Carrington rotation synoptic map FITS (denominator)
+  _int-mal   list of images contributing to integral Carrington rotation synoptic map TEXT
+
+Resolution
+  _dim-180   low-resolution: 180x180 heliographic map or 180x360 synoptic map
+  _dim-900   high-resolution: 900x900 heliographic map or 900x1800 synoptic map
+
+Heliographic map products:
+  _map-mag   magnetic flux
+  _map-int   intensity
+  _map-abs   absolute value of magnetic flux
+  _map-wgt   weight map: pixel density
+  _reject    _reject is appended to all remap product names when the remap is rejected for exceeding the allowed threshold of zero-weight pixels
+
+Extra File Extensions:
+  *.queue  - zero-length queue marker file used by conductor for processing into a NRT synoptic map
+  *.reject - product associated with _map-mag product, reporting the number of zero-weight pixels that led to rejection
+
+
+
+Mean Field Time Series Parameters:
+==================================
+
+Because time series data do not reflect observations taken at a particular time and date, the
+<date>t<time> portions of their filenames are fixed at midnight, Jan 1, 1970, or
+"700101t000000".  The remaining components of the filenames are as described above.
+
+
+
+Example filenames:
+==================
+
+Name                                           Description
+---------------------------------------        -------------------------------------------------------------------------------
+k1v71120520t160936.fts.gz                      Level1 6302l dark from Kitt Peak on May 20, 2012
+
+k4v71120520t161458.fts.gz                      Level1 6302l full-scan data cube from Kitt Peak on May 20, 2012
+
+k4v71120520t161458_magcont_hr.jpg              Level1 6302l full-scan jpeg plot of mag and intensity from Kitt Peak on May 20, 2012
+
+k2v80110330t190202_oid113015116011902          Level 0 directory for 8542l flat from Kitt Peak on Mar 30, 2011
+
+k4v91121221t185240.fts.gz                      Level 1 6302v ME data cube from Kitt Peak on Dec 21, 2012
+
+k4v93121221t185240_v10_FF_hr.jpg               Level 1 6302v ME filling fraction high-res plot from Kitt Peak on Dec 21, 2012
+
+k4v94121221t185240.fts.gz                      Level 1 6302v quick-look data cube from Kitt Peak on Dec 21, 2012
+
+k4v95121221t185240.fts.gz                      Level 2 6302v quick-look data cube from Kitt Peak on Dec 21, 2012
+
+k4v96121221t185240_AR11633_v03_BLOS.jpg        Level 3 6302v ME LOS mag active region plot for NOAA11633 from Kitt Peak on Dec 21, 2012
+
+k4v9s130314t165533_oid113632800321655          Directory of cleaned spectra for 6302v obs from Kitt Peak on Mar 14, 2013
+
+kbv7g130423t1552c2136_222_syn-jas_dim-180.fits.gz    630.15 sinlat/lon polefilled NRT Janus 180x360 synoptic map
+  
+kcv7g130423t1552c2136_222_syn-man_dim-900.fits.gz    630.15 lat/lon normalized not-polefilled NRT  900x1800 synoptic map
+
+
+
+Navigating NISP Data Archive Directories:
+=========================================
+
+When browsing the VSM data manually via ftp://solis.nso.edu/pubkeep or https://solis.nso.edu/pubkeep, the data are stored using the NISP
+standard keep structure.  Using the above filename format nomenclature, a file may generically be found at:
+
+/imp/yyyymm/stimpyymmdd/<file>
+
+In this manner, filenames directly specify where the file itself is located in the archive.
+For example, the file k4v95121221t185240.fts.gz can be found at:
+
+/v95/201212/k4v95121221/k4v95121221t185240.fts.gz
+
+
