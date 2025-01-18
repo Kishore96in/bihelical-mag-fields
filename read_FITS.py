@@ -95,7 +95,8 @@ class RandomizeWeakMixin:
 		B_tra = B_vec - B_LOS*LOS_vec
 		
 		#randomly choose +-1 at each (lat,lon)
-		sign = np.random.Generator.integers(2, size=(n_lon, n_lat))*2 - 1
+		rng = np.random.default_rng()
+		sign = rng.integers(2, size=(n_lon, n_lat))*2 - 1
 		
 		#strong-field regions should not be changed
 		Bmag = np.sqrt(np.sum(B_vec**2, axis=0))
