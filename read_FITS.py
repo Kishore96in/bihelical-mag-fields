@@ -82,26 +82,26 @@ class RandomizeWeakMixin:
 		if not hasattr(self, "threshold"):
 			raise AttributeError("Set threshold to use this class.")
 		
-		_, _, n_lat = np.shape(B_vec)
+		_, n_lon, n_lat = np.shape(B_vec)
 		lat = np.linspace(-np.pi/2,np.pi/2,n_lat) #in radians
 		#Working in the limit where the observer is much further away from the Sun than the solar radius, we estimate the LOS direction as being parallel to the equatorial plane.
 		LOS_vec = np.array([
-			np.cos(lat),
-			np.zeros_like(lat),
-			-np.sin(lat),
-			]) # [r, phi, -theta]
+			np.cos(lat), #r component
+			np.zeros_like(lat), #phi component
+			-np.sin(lat), #-theta component
+			])[:,None,:]
 		
-		B_LOS = np.einsum('i...,i', B_vec, LOS_vec)
-		B_tra = B_vec - B_LOS*LOS_vec[:,None,None]
+		B_LOS = np.einsum('i...,i...', B_vec, LOS_vec)
+		B_tra = B_vec - B_LOS*LOS_vec
 		
 		#randomly choose +-1 at each (lat,lon)
-		sign = np.random.Generator.integers(2, size=B_vec.shape[1:])*2 - 1
+		sign = np.random.Generator.integers(2, size=(n_lon, n_lat))*2 - 1
 		
 		#strong-field regions should not be changed
 		Bmag = np.sqrt(np.sum(B_vec**2, axis=0))
 		sign = np.where(Bmag<self.threshold, sign, 1)
 		
-		return B_LOS*LOS_vec[:,None,None] + B_tra*sign[None,:,:]
+		return B_LOS*LOS_vec + B_tra*sign[None,:,:]
 
 class ExciseLatitudeMixin():
 	def apodize(self, data):
