@@ -74,6 +74,30 @@ class MaskWeakMixin():
 		Bmag = np.sqrt(np.sum(B_vec**2, axis=0, keepdims=True))
 		return np.where(Bmag>self.threshold, B_vec, 0)
 
+class RandomizeWeakMixin:
+	"""
+	To estimate the effect of the uncertainty in the sign of the transverse magnetic field, randomly flip the sign of the transverse field in the weak-field regions. We assume B_vec has array axes [vec_index, longitude, latitude].
+	"""
+	def mask(self, B_vec):
+		if not hasattr(self, "threshold"):
+			raise AttributeError("Set threshold to use this class.")
+		
+		lat = np.linspace(-np.pi/2,np.pi/2,n_lat) #in radians
+		#Working in the limit where the observer is much further away from the Sun than the solar radius, we estimate the LOS direction as being parallel to the equatorial plane.
+		LOS_vec = np.array([np.cos(lat), 0, -np.sin(lat)]) # [r, phi, -theta]
+		
+		B_LOS = np.einsum('i...,i', B_vec, LOS_vec)
+		B_tra = B_vec - B_LOS*LOS_vec[:,None,None]
+		
+		#randomly choose +-1 at each (lat,lon)
+		sign = np.random.Generator.integers(2, size=B_vec.shape[1:])*2 - 1
+		
+		#strong-field regions should not be changed
+		Bmag = np.sqrt(np.sum(B_vec**2, axis=0))
+		sign = np.where(Bmag<self.threshold, sign, 1)
+		
+		return B_LOS*LOS_vec[:,None,None] + B_tra*sign[None,:,:]
+
 class ExciseLatitudeMixin():
 	def apodize(self, data):
 		#Assumes the last axis is latitude, and that it extends from -90 to 90.
