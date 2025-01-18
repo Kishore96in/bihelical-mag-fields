@@ -99,7 +99,7 @@ class RandomizeWeakMixin:
 		
 		#strong-field regions should not be changed
 		Bmag = np.sqrt(np.sum(B_vec**2, axis=0))
-		sign = np.where(Bmag<self.threshold, sign, 1)
+		sign[Bmag>=self.threshold] = 1
 		
 		return B_LOS*LOS_vec + B_tra*sign[None,:,:]
 
