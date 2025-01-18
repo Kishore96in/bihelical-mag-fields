@@ -10,13 +10,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 
-#TODO: should add this to the repo when I commit this script. Perhaps it can go in utils.
 from kishore_backpack.plotting import errorfill
 
 from spectrum import signed_loglog_plot
 from read_FITS import HMIreader_dbl, SOLISreader_dbl as SOLISreader_dbl_exc, ExciseLatitudeMixin, MaskWeakMixin
 from utils import fig_saver
-
 from plot_hel_with_err import E0H1_dbl
 
 class HMIreader_dblexc(ExciseLatitudeMixin, HMIreader_dbl): pass
