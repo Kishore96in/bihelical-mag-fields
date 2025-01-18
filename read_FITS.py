@@ -85,7 +85,11 @@ class RandomizeWeakMixin:
 		_, _, n_lat = np.shape(B_vec)
 		lat = np.linspace(-np.pi/2,np.pi/2,n_lat) #in radians
 		#Working in the limit where the observer is much further away from the Sun than the solar radius, we estimate the LOS direction as being parallel to the equatorial plane.
-		LOS_vec = np.array([np.cos(lat), 0, -np.sin(lat)]) # [r, phi, -theta]
+		LOS_vec = np.array([
+			np.cos(lat),
+			np.zeros_like(lat),
+			-np.sin(lat),
+			]) # [r, phi, -theta]
 		
 		B_LOS = np.einsum('i...,i', B_vec, LOS_vec)
 		B_tra = B_vec - B_LOS*LOS_vec[:,None,None]
