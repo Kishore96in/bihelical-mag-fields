@@ -39,6 +39,15 @@ def trunc(arr, k, k_min, k_max):
 	ik_max = np.argmin(np.abs(k - k_max))
 	return arr[ik_min:ik_max]
 
+def sign_werr(H, Herr):
+	"""
+	Variant of np.sign that returns 0 if 0 is within the 1 sigma error region of H.
+	
+	H: np.ndarray.
+	Herr: np.ndarray. Same size as H. Error in H.
+	"""
+	return np.where(Herr < abs(H), np.sign(H), 0)
+
 @dataclass
 class res_for_kmax:
 	kmax: float
@@ -87,14 +96,12 @@ def calc_stats_for_kmax(kmax, cr_bins):
 		if not np.all(np.isclose(k_s, k_h)):
 			raise RuntimeError("Wavenumbers are unequal")
 		
-		sign_matches = (H_s*H_h >= 0)
 		corr_sign_list.append(
-			np.average(np.where(sign_matches, 1, 0)**2),
+			np.average(np.sign(H_s)*np.sign(H_h)),
 			)
 		
-		sign_matches_werr = (H_s*H_h >= 0) | (Herr_s > abs(H_s)) | (Herr_h > abs(H_h))
 		corr_sign_werr_list.append(
-			np.average(np.where(sign_matches_werr, 1, 0)**2),
+			np.average(sign_werr(H_s, Herr_s)*sign_werr(H_h, Herr_h)),
 			)
 		
 		frachel_h, frachelerr_h = calc_frachel(k_h, (H_h, Herr_h), (E_h, Eerr_h))
@@ -141,7 +148,7 @@ if __name__ == "__main__":
 		ax.plot(res.cr_labels, res.corr_sign_vs_cr, label=f"{res.kmax:.2f}")
 	ax.set_xlabel("Carrington rotation")
 	ax.set_ylabel(r"$\sigma_\mathrm{sign}$")
-	ax.set_ylim(0,1)
+	ax.set_ylim(-1,1)
 	ax.legend(title=r"$k_\mathrm{max}$")
 	save(fig, "corr_sign.pdf")
 	
@@ -150,7 +157,7 @@ if __name__ == "__main__":
 		ax.plot(res.cr_labels, res.corr_sign_werr_vs_cr, label=f"{res.kmax:.2f}")
 	ax.set_xlabel("Carrington rotation")
 	ax.set_ylabel(r"$\sigma_\mathrm{sign}$")
-	ax.set_ylim(0,1)
+	ax.set_ylim(-1,1)
 	ax.legend(title=r"$k_\mathrm{max}$")
 	save(fig, "corr_sign_werr.pdf")
 	
