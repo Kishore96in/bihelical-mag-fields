@@ -173,6 +173,10 @@ if __name__ == "__main__":
 	ax.legend(title=r"$k_\mathrm{max}$")
 	save(fig, "chi2r.pdf")
 	
+	ax.set_yscale('log')
+	ax.autoscale(enable=True, axis='y')
+	save(fig, "chi2r_log.pdf")
+	
 	fig, ax = plt.subplots()
 	for res in res_list:
 		ax.plot(res.cr_labels, res.pval_vs_cr, label=f"{res.kmax:.2f}")
