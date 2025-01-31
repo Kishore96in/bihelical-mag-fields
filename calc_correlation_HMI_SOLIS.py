@@ -1,7 +1,7 @@
 """
 Statistical measures of how well the signs of the helicity spectra calculated from HMI and SOLIS synoptic magnetograms are correlated.
 
-1. signed correlation coefficient (like Spearman; 1 if same sign at a particular wavenumber; else 0)
+1. sign correlation coefficient
 
 2. chi-squared estimator, which is then used to calculate a p value
 
