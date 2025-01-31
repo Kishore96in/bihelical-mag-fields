@@ -128,13 +128,11 @@ if __name__ == "__main__":
 	read_HMI = HMIreader_dblexc(max_lat=60)
 	read_SOLIS = SOLISreader_dbl_exc(max_lat=60)
 	
+	k_max_list = [np.inf, 1e-1, 2e-2]
 	#Just like Singh 2018, we exclude certain Carrington rotations.
 	cr_exclude = [2099, 2107, 2127, 2139, 2152, 2153, 2154, 2155, 2163, 2164, 2166, 2167]
-	cr_bins_bounds = np.arange(2097,2196,10)
-	k_max_list = [np.inf, 1e-1, 2e-2]
 	
-	n_bins = len(cr_bins_bounds)-1
-	cr_bins = [tuple(cr for cr in range(cr_bins_bounds[i], cr_bins_bounds[i+1]) if cr not in cr_exclude) for i in range(n_bins)]
+	cr_bins = [tuple(cr for cr in range(cr_ini, cr_ini+10) if cr not in cr_exclude) for cr_ini in range(2097,2186)]
 	
 	res_list = [calc_stats_for_kmax(kmax, cr_bins) for kmax in k_max_list]
 	
