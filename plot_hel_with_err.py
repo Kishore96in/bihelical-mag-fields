@@ -4,21 +4,26 @@ Similar to the plot produced by reproduce_singh18_HMI_dbl, but for different CR.
 
 import numpy as np
 import matplotlib.pyplot as plt
+import functools
 
 from spectrum import calc_spec_G2 as calc_spec, signed_loglog_plot
 from read_FITS import HMIreader_dbl
 from utils import jackknife, downsample_half, fig_saver, real
 
-def E0H1_dbl(cr_list, read):
-	L = np.array([2*np.pi*700,2*np.pi*700]) #data will be doubled in the latitudinal direction.
+@functools.cache
+def get_E0H1_single_cr(cr, read):
+	L = (2*np.pi*700,2*np.pi*700) #data will be doubled in the latitudinal direction.
+	B_vec = read(read.get_fname(cr))
+	k, E0, _ = calc_spec(B_vec, K=np.array([0,0]), L=L)
+	_, _, H1 = calc_spec(B_vec, K=np.array([0,2]), L=L, shift_onesided=0)
 	
+	return k, E0, H1
+
+def E0H1_dbl(cr_list, read):
 	E0_list = []
 	H1_list = []
 	for cr in cr_list:
-		B_vec = read(read.get_fname(cr))
-		k, E0, _ = calc_spec(B_vec, K=np.array([0,0]), L=L)
-		_, _, H1 = calc_spec(B_vec, K=np.array([0,2]), L=L, shift_onesided=0)
-		
+		k, E0, H1 = get_E0H1_single_cr(cr, read)
 		E0_list.append(E0)
 		H1_list.append(H1)
 	
