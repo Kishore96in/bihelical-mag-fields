@@ -13,15 +13,12 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 import scipy.stats
 from dataclasses import dataclass
-import functools
 
 from kishore_backpack.plotting import errorfill
 
 from read_FITS import HMIreader_dbl, SOLISreader_dbl as SOLISreader_dbl_exc, ExciseLatitudeMixin
 from utils import fig_saver
-from plot_hel_with_err import E0H1_dbl as E0H1_dbl_uncached
-
-E0H1_dbl = functools.cache(E0H1_dbl_uncached)
+from plot_hel_with_err import E0H1_dbl
 
 class HMIreader_dblexc(ExciseLatitudeMixin, HMIreader_dbl): pass
 
