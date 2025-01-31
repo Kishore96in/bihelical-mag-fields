@@ -157,6 +157,7 @@ if __name__ == "__main__":
 	fig, ax = plt.subplots()
 	for res in res_list:
 		ax.plot(res.cr_labels, res.chi2_vs_cr, label=f"{res.kmax:.2f}")
+	ax.set_ylim(bottom=0)
 	ax.set_xlabel("Carrington rotation")
 	ax.set_ylabel(r"$\chi^2$")
 	ax.legend(title=r"$k_\mathrm{max}$")
@@ -165,6 +166,8 @@ if __name__ == "__main__":
 	fig, ax = plt.subplots()
 	for res in res_list:
 		ax.plot(res.cr_labels, res.chi2r_vs_cr, label=f"{res.kmax:.2f}")
+	ax.axhline(1, ls=':', c='k')
+	ax.set_ylim(bottom=0)
 	ax.set_xlabel("Carrington rotation")
 	ax.set_ylabel(r"$\chi^2/n$")
 	ax.legend(title=r"$k_\mathrm{max}$")
@@ -173,8 +176,8 @@ if __name__ == "__main__":
 	fig, ax = plt.subplots()
 	for res in res_list:
 		ax.plot(res.cr_labels, res.pval_vs_cr, label=f"{res.kmax:.2f}")
+	# ax.set_yscale('log')
 	ax.set_xlabel("Carrington rotation")
 	ax.set_ylabel(r"$p$")
-	# ax.set_yscale('log')
 	ax.legend(title=r"$k_\mathrm{max}$")
 	save(fig, "pval.pdf")
