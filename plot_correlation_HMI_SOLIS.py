@@ -137,7 +137,7 @@ if __name__ == "__main__":
 	
 	k_max_list = [np.inf, 1e-1, 2e-2]
 	#Just like Singh 2018, we exclude certain Carrington rotations.
-	cr_exclude = [2099, 2107, 2127, 2139, 2152, 2153, 2154, 2155, 2163, 2164, 2166, 2167]
+	cr_exclude = [2099, 2107, 2127, 2139, 2152, 2153, 2154, 2155, 2163, 2164, 2166, 2167, 2192, 2196]
 	
 	cr_bins = [tuple(cr for cr in range(cr_ini, cr_ini+10) if cr not in cr_exclude) for cr_ini in range(2097,2186)]
 	
