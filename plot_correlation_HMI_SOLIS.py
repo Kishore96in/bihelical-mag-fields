@@ -15,6 +15,7 @@ import scipy.stats
 from dataclasses import dataclass
 
 from kishore_backpack.plotting import errorfill
+from kishore_backpack.average import smooth_boxcar
 
 from read_FITS import HMIreader_dbl, SOLISreader_dbl as SOLISreader_dbl_exc, ExciseLatitudeMixin
 from utils import fig_saver
@@ -177,6 +178,25 @@ if __name__ == "__main__":
 	ax.set_ylim(-1,1)
 	ax.legend()
 	save(fig, "corr_sign_werr.pdf")
+	
+	fig, ax = plt.subplots()
+	sm_hw = 4
+	for res, c in zip(res_list, c_list):
+		corr_sign_werr_vs_cr = smooth_boxcar(np.array(res.corr_sign_werr_vs_cr), sm_hw)[sm_hw:-sm_hw]
+		cr_labels = res.cr_labels[sm_hw:-sm_hw]
+		
+		ax.plot(
+			cr_labels,
+			corr_sign_werr_vs_cr,
+			label=f"$k < {res.kmax:.2f}$ Mm$^{{-1}}$",
+			color=c,
+			**kwargs,
+			)
+	ax.set_xlabel("Carrington rotation")
+	ax.set_ylabel(r"$\sigma_\mathrm{sign}$ (smoothed)")
+	ax.set_ylim(-1,1)
+	ax.legend()
+	save(fig, "corr_sign_werr_sm.pdf")
 	
 	fig, ax = plt.subplots()
 	for res, c in zip(res_list, c_list):
