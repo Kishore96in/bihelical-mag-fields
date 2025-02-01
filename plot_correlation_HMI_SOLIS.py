@@ -142,13 +142,15 @@ if __name__ == "__main__":
 	cr_bins = [tuple(cr for cr in range(cr_ini, cr_ini+10) if cr not in cr_exclude) for cr_ini in range(2097,2186)]
 	
 	res_list = [calc_stats_for_kmax(kmax, cr_bins) for kmax in k_max_list]
+	c_list = mpl.cm.copper(np.linspace(0,1,len(res_list)))
 	
 	fig, ax = plt.subplots()
-	for res in res_list:
+	for res, c in zip(res_list, c_list):
 		ax.plot(
 			res.cr_labels,
 			res.corr_sign_vs_cr,
 			label=f"$k < {res.kmax:.2f}$ Mm$^{{-1}}$",
+			color=c,
 			)
 	ax.set_xlabel("Carrington rotation")
 	ax.set_ylabel(r"$\sigma_\mathrm{sign}$")
@@ -157,11 +159,12 @@ if __name__ == "__main__":
 	save(fig, "corr_sign.pdf")
 	
 	fig, ax = plt.subplots()
-	for res in res_list:
+	for res, c in zip(res_list, c_list):
 		ax.plot(
 			res.cr_labels,
 			res.corr_sign_werr_vs_cr,
 			label=f"$k < {res.kmax:.2f}$ Mm$^{{-1}}$",
+			color=c,
 			)
 	ax.set_xlabel("Carrington rotation")
 	ax.set_ylabel(r"$\sigma_\mathrm{sign}$")
@@ -170,11 +173,12 @@ if __name__ == "__main__":
 	save(fig, "corr_sign_werr.pdf")
 	
 	fig, ax = plt.subplots()
-	for res in res_list:
+	for res, c in zip(res_list, c_list):
 		ax.plot(
 			res.cr_labels,
 			res.chi2_vs_cr,
 			label=f"$k < {res.kmax:.2f}$ Mm$^{{-1}}$",
+			color=c,
 			)
 	ax.set_ylim(bottom=0)
 	ax.set_xlabel("Carrington rotation")
@@ -183,11 +187,12 @@ if __name__ == "__main__":
 	save(fig, "chi2.pdf")
 	
 	fig, ax = plt.subplots()
-	for res in res_list:
+	for res, c in zip(res_list, c_list):
 		ax.plot(
 			res.cr_labels,
 			res.chi2r_vs_cr,
 			label=f"$k < {res.kmax:.2f}$ Mm$^{{-1}}$",
+			color=c,
 			)
 	ax.axhline(1, ls=':', c='k')
 	ax.set_ylim(bottom=0)
@@ -201,11 +206,12 @@ if __name__ == "__main__":
 	save(fig, "chi2r_log.pdf")
 	
 	fig, ax = plt.subplots()
-	for res in res_list:
+	for res, c in zip(res_list, c_list):
 		ax.plot(
 			res.cr_labels,
 			res.pval_vs_cr,
 			label=f"$k < {res.kmax:.2f}$ Mm$^{{-1}}$",
+			color=c,
 			)
 	# ax.set_yscale('log')
 	ax.set_xlabel("Carrington rotation")
