@@ -145,7 +145,11 @@ if __name__ == "__main__":
 	
 	fig, ax = plt.subplots()
 	for res in res_list:
-		ax.plot(res.cr_labels, res.corr_sign_vs_cr, label=f"$k < {res.kmax:.2f}$")
+		ax.plot(
+			res.cr_labels,
+			res.corr_sign_vs_cr,
+			label=f"$k < {res.kmax:.2f}$ Mm$^{{-1}}$",
+			)
 	ax.set_xlabel("Carrington rotation")
 	ax.set_ylabel(r"$\sigma_\mathrm{sign}$")
 	ax.set_ylim(-1,1)
@@ -154,7 +158,11 @@ if __name__ == "__main__":
 	
 	fig, ax = plt.subplots()
 	for res in res_list:
-		ax.plot(res.cr_labels, res.corr_sign_werr_vs_cr, label=f"$k < {res.kmax:.2f}$")
+		ax.plot(
+			res.cr_labels,
+			res.corr_sign_werr_vs_cr,
+			label=f"$k < {res.kmax:.2f}$ Mm$^{{-1}}$",
+			)
 	ax.set_xlabel("Carrington rotation")
 	ax.set_ylabel(r"$\sigma_\mathrm{sign}$")
 	ax.set_ylim(-1,1)
@@ -163,7 +171,11 @@ if __name__ == "__main__":
 	
 	fig, ax = plt.subplots()
 	for res in res_list:
-		ax.plot(res.cr_labels, res.chi2_vs_cr, label=f"$k < {res.kmax:.2f}$")
+		ax.plot(
+			res.cr_labels,
+			res.chi2_vs_cr,
+			label=f"$k < {res.kmax:.2f}$ Mm$^{{-1}}$",
+			)
 	ax.set_ylim(bottom=0)
 	ax.set_xlabel("Carrington rotation")
 	ax.set_ylabel(r"$\chi^2$")
@@ -172,7 +184,11 @@ if __name__ == "__main__":
 	
 	fig, ax = plt.subplots()
 	for res in res_list:
-		ax.plot(res.cr_labels, res.chi2r_vs_cr, label=f"$k < {res.kmax:.2f}$")
+		ax.plot(
+			res.cr_labels,
+			res.chi2r_vs_cr,
+			label=f"$k < {res.kmax:.2f}$ Mm$^{{-1}}$",
+			)
 	ax.axhline(1, ls=':', c='k')
 	ax.set_ylim(bottom=0)
 	ax.set_xlabel("Carrington rotation")
@@ -186,7 +202,11 @@ if __name__ == "__main__":
 	
 	fig, ax = plt.subplots()
 	for res in res_list:
-		ax.plot(res.cr_labels, res.pval_vs_cr, label=f"$k < {res.kmax:.2f}$")
+		ax.plot(
+			res.cr_labels,
+			res.pval_vs_cr,
+			label=f"$k < {res.kmax:.2f}$ Mm$^{{-1}}$",
+			)
 	# ax.set_yscale('log')
 	ax.set_xlabel("Carrington rotation")
 	ax.set_ylabel(r"$p$")
