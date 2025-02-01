@@ -70,7 +70,7 @@ def calc_stats_for_kmax(kmax, cr_bins):
 	pval_list = []
 	cr_labels = []
 	for cr_list in cr_bins:
-		cr_labels.append((cr_list[0] + cr_list[1])/2)
+		cr_labels.append(np.average(cr_list))
 		
 		res_h = E0H1_dbl(cr_list, read_HMI)
 		res_s = E0H1_dbl(cr_list, read_SOLIS)
