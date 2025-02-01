@@ -45,9 +45,8 @@ if __name__ == "__main__":
 	max_lat = 60 #For HMI apodization
 	threshold = 200 #For HMI masking
 	
-	#TODO: In the SOLIS data which I have downloaded, CR 2153 and 2154 are missing. Why?
 	#Just like Singh 2018, we exclude certain Carrington rotations.
-	cr_exclude = [2099, 2107, 2127, 2139, 2152, 2153, 2154, 2155, 2163, 2164, 2166, 2167]
+	cr_exclude = [2099, 2107, 2127, 2139, 2152, 2153, 2154, 2155, 2163, 2164, 2166, 2167, 2192, 2196]
 	cr_bins = list(np.arange(2097,2196,10))
 	
 	save = fig_saver(savefig, savedir)
