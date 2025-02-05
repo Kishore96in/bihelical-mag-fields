@@ -6,8 +6,9 @@ import os
 import numpy as np
 import scipy.fft
 from astropy.io import fits
+from abc import ABCMeta, abstractmethod
 
-class FITSreader():
+class FITSreader(ABCMeta):
 	"""
 	Intended to be used like
 	```
@@ -19,6 +20,7 @@ class FITSreader():
 		for key, value in kwargs.items():
 			setattr(self, key, value)
 	
+	@abstractmethod
 	def read(self, fname):
 		"""
 		Read B_vector from FITS files (synoptic vector magnetograms) and return it as an array. A pseudo-Cartesian coordinate system is used, where we map r,phi,mu=cos(theta) to x,y,z (a right-handed coordinate system).
