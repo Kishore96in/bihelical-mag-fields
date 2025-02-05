@@ -51,6 +51,7 @@ def sign_werr(H, Herr):
 
 @dataclass
 class res_for_kmax:
+	kmin: float
 	kmax: float
 	corr_sign_vs_cr: list
 	corr_sign_werr_vs_cr: list
@@ -59,11 +60,13 @@ class res_for_kmax:
 	pval_vs_cr: list
 	cr_labels: list
 
-def calc_stats_for_kmax(kmax, cr_bins):
+def calc_stats_for_kmax(k_bounds, cr_bins):
 	"""
-	kmax: float
+	k_bounds: tuple of float: (k,min, kmax)
 	cr_bins: iterable of tuples; outer iterable indexes the bins, while the inner tuple is the list of CRs in each bin
 	"""
+	kmin, kmax = k_bounds
+	
 	corr_sign_list = []
 	corr_sign_werr_list = []
 	chi2_list = []
@@ -76,7 +79,7 @@ def calc_stats_for_kmax(kmax, cr_bins):
 		res_h = E0H1_dbl(cr_list, read_HMI)
 		res_s = E0H1_dbl(cr_list, read_SOLIS)
 		
-		k_min = max(res_h.k[1], res_s.k[1]) #k[0]==0, so we ignore that
+		k_min = max(res_h.k[1], res_s.k[1], kmin) #k[0]==0, so we ignore that
 		k_max = min(res_h.k[-1], res_s.k[-1], kmax)
 		
 		trunc_h = lambda arr: trunc(arr, res_h.k[1:], k_min, k_max)
@@ -117,6 +120,7 @@ def calc_stats_for_kmax(kmax, cr_bins):
 		pval_list.append(1-rv.cdf(chi2))
 	
 	return res_for_kmax(
+		kmin = k_min,
 		kmax = k_max,
 		corr_sign_vs_cr = corr_sign_list,
 		corr_sign_werr_vs_cr = corr_sign_werr_list,
@@ -136,13 +140,13 @@ if __name__ == "__main__":
 	read_HMI = HMIreader_dblexc(max_lat=60)
 	read_SOLIS = SOLISreader_dbl_exc(max_lat=60)
 	
-	k_max_list = [np.inf, 1e-1, 2e-2]
+	k_bounds_list = [(0,np.inf), (0,1e-1), (0,2e-2)]
 	#Just like Singh 2018, we exclude certain Carrington rotations.
 	cr_exclude = [2099, 2107, 2127, 2139, 2152, 2153, 2154, 2155, 2163, 2164, 2166, 2167, 2192, 2196]
 	
 	cr_bins = [tuple(cr for cr in range(cr_ini, cr_ini+10) if cr not in cr_exclude) for cr_ini in range(2097,2186)]
 	
-	res_list = [calc_stats_for_kmax(kmax, cr_bins) for kmax in k_max_list]
+	res_list = [calc_stats_for_kmax(k_bounds, cr_bins) for k_bounds in k_bounds_list]
 	c_list = mpl.cm.copper(np.linspace(0,1,len(res_list)))
 	kwargs = {
 		'marker': 'o',
