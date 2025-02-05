@@ -6,9 +6,9 @@ import os
 import numpy as np
 import scipy.fft
 from astropy.io import fits
-from abc import ABCMeta, abstractmethod
+from abc import ABC, abstractmethod
 
-class FITSreader(ABCMeta):
+class FITSreader(ABC):
 	"""
 	Intended to be used like
 	```
