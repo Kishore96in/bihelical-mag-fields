@@ -59,7 +59,7 @@ class Calver64:
 
 if __name__ == "__main__":
 	savefig = True
-	savedir = "plots/correlation"
+	savedir = "plots/calibration_info/HMI"
 	mpl.style.use("kishore.mplstyle")
 	img_loc = pathlib.Path("images")
 	cr_list = list(range(2097,2196))
@@ -75,7 +75,10 @@ if __name__ == "__main__":
 				Calver64(hdu.header['CALVER64']),
 				)
 	
-	fig,ax = plt.subplots()
-	ax.plot(cr_list, [c.nonlin for c in calver_list])
+	attr_names = ["nonlin", "lookup", "psf", "flat_field"]
+	fig,axs = plt.subplots(nrows=len(attr_names), sharex=True)
+	for i, name in enumerate(attr_names):
+		axs[i].plot(cr_list, [getattr(c, name) for c in calver_list])
+		axs[i].set_ylabel(name)
 	
 	plt.show()
