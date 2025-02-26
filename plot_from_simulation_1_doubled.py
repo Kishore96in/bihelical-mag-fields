@@ -5,56 +5,32 @@ Test the two-scale method on a simulation where the sign of helicity flips acros
 import matplotlib.pyplot as plt
 import pencil as pc
 import numpy as np
-import scipy.fft
 import os
 
-from spectrum import calc_spec_G2 as calc_spec, signed_loglog_plot
-from utils import fig_saver, rebin, real
+from spectrum import signed_loglog_plot
+from utils import fig_saver, real
+from plot_from_simulations import SpecFromSim
 
 savefig = True #whether to save plots
 simpath = "simulation/1"
 savedir = os.path.join(simpath, "plots") #Where to save plots
-iter_list = None
 
 save = fig_saver(savefig, savedir)
 
 sim = pc.sim.get(quiet=True, path=simpath)
-av = pc.read.aver(quiet=True, iter_list=iter_list, datadir=sim.datadir, simdir=sim.path)
-grid = pc.read.grid(trim=True, quiet=True, datadir=sim.datadir)
+av = pc.read.aver(quiet=True, datadir=sim.datadir, simdir=sim.path)
+grid = sim.grid
 
-res = {}
-varname = "var.h5"
-var = pc.read.var(sim=sim, var_file=varname, trimall=True, quiet=True, magic='bb')
-res[varname] = []
-for ix in np.round(np.linspace(0,sim.dim.nx-1,7))[:-1].astype(int):
-	Bvec = var.bb[:,:,:,ix]
-	Bvec = np.swapaxes(Bvec, 1,2)
-	
-	if not sim.dim.nz%2 == 0:
-		raise RuntimeError("nz is odd.")
-	nzb2 = int(sim.dim.nz/2)
-	Bvec = np.concatenate((Bvec[..., nzb2:], Bvec, Bvec[..., :nzb2]), axis=2) #double along the z direction
-	Bvec = np.concatenate((Bvec, Bvec), axis=1) #double along the y direction
-	
-	Bvec_fft = scipy.fft.fft2(Bvec, norm='forward', axes=(-2,-1))
-	
-	L = [2*grid.Ly, 2*grid.Lz]
-	k, E0, _ = calc_spec(Bvec_fft, K=np.array([0,0]), L=L)
-	_, _, H1 = calc_spec(Bvec_fft, K=np.array([0,2]), L=L, shift_onesided=0)
-	
-	res[varname].append({'k':k, 'E0': E0, 'H1': H1})
+spec = SpecFromSim(
+	sim,
+	double_domain = True,
+	shift_onesided = 0,
+	var_file="var.h5",
+	)
 
-H1av = np.average(np.array([d['H1'] for d in res['var.h5']]), axis=0)
-E0av = np.average(np.array([d['E0'] for d in res['var.h5']]), axis=0)
-k = res['var.h5'][0]['k']
-
-#Now rebin in k-space to get rid of the extra k-vectors that arise due to doubling.
-k_old = k
-dk = k_old[1] - k_old[0] #assumes k are equispaced.
-k = k_old[::2]
-bin_bounds = np.linspace(-dk,k_old[-1]+dk,len(k)+1)
-H1av = rebin(k_old, H1av, bin_bounds)
-E0av = rebin(k_old, E0av, bin_bounds)
+H1av = spec.H1av
+E0av = spec.E0av
+k = spec.k
 
 fig,axs = plt.subplots(ncols=2)
 
