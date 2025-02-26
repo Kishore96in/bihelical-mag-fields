@@ -49,7 +49,6 @@ E0av = np.average(np.array([d['E0'] for d in res['var.h5']]), axis=0)
 k = res['var.h5'][0]['k']
 
 #Now rebin in k-space to get rid of the extra k-vectors that arise due to doubling.
-#TODO: I do this because otherwise, E(k) has some zero values. Unclear why; need to think. But I don't think rebinning should be necessary (or should it?)! I think it may be fine; the symmetry ensures
 k_old = k
 dk = k_old[1] - k_old[0] #assumes k are equispaced.
 k = k_old[::2]
