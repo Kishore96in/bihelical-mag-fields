@@ -1,0 +1,86 @@
+"""
+Statistical measures of how well the signs of the helicity spectra calculated from HMI and SOLIS synoptic magnetograms are correlated.
+
+1. signed correlation coefficient (like Spearman; 1 if same sign at a particular wavenumber; else 0)
+
+2. chi-squared estimator, which is then used to calculate a p value
+
+Also computes the above in restricted wavenumber bands, to check if perhaps, e.g., the helicity spectrum at large wavenumbers is more reliable.
+"""
+
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib as mpl
+import scipy.stats
+from dataclasses import dataclass
+
+from kishore_backpack.plotting import errorfill
+from kishore_backpack.average import smooth_boxcar
+
+from read_FITS import HMIreader_dbl, SOLISreader_dbl as SOLISreader_dbl_exc, ExciseLatitudeMixin
+from utils import fig_saver
+from plot_hel_with_err import E0H1_dbl
+from plot_correlation_HMI_SOLIS import calc_frachel, trunc, sign_werr, calc_stats_for_kmax
+
+class HMIreader_dblexc(ExciseLatitudeMixin, HMIreader_dbl): pass
+
+if __name__ == "__main__":
+	savefig = True
+	savedir = "plots/correlation_apj"
+	mpl.style.use("kishore_apj.mplstyle")
+	
+	save = fig_saver(savefig, savedir)
+	
+	read_HMI = HMIreader_dblexc(max_lat=60)
+	read_SOLIS = SOLISreader_dbl_exc(max_lat=60)
+	
+	k_bounds_list = [(0,np.inf), (0,1e-1), (0,2e-2)]
+	#Just like Singh 2018, we exclude certain Carrington rotations.
+	cr_exclude = [2099, 2107, 2127, 2139, 2152, 2153, 2154, 2155, 2163, 2164, 2166, 2167, 2192, 2196]
+	
+	cr_bins = [tuple(cr for cr in range(cr_ini, cr_ini+10) if cr not in cr_exclude) for cr_ini in range(2097,2186)]
+	
+	res_list = [calc_stats_for_kmax(k_bounds, cr_bins, read_HMI, read_SOLIS) for k_bounds in k_bounds_list]
+	c_list = mpl.cm.copper(np.linspace(0,1,len(res_list)))
+	kwargs = {
+		'marker': 'o',
+		'markersize': 3,
+		}
+	
+	fig, ax = plt.subplots()
+	sm_hw = 4
+	for res, c in zip(res_list, c_list):
+		corr_sign_werr_vs_cr = smooth_boxcar(np.array(res.corr_sign_werr_vs_cr), sm_hw)[sm_hw:-sm_hw]
+		cr_labels = res.cr_labels[sm_hw:-sm_hw]
+		
+		ax.plot(
+			cr_labels,
+			corr_sign_werr_vs_cr,
+			label=f"{res.kmax:.2f}",
+			color=c,
+			**kwargs,
+			)
+	ax.set_xlabel("Carrington rotation")
+	ax.set_ylabel(r"$\sigma_\mathrm{sign}$ (smoothed)")
+	ax.set_ylim(-1,1)
+	ax.legend(title=r"$k_\mathrm{max}$ (Mm$^{{-1}}$)")
+	save(fig, "corr_sign_werr_sm.pdf")
+	
+	fig, ax = plt.subplots()
+	for res, c in zip(res_list, c_list):
+		ax.plot(
+			res.cr_labels,
+			res.chi2r_vs_cr,
+			label=f"{res.kmax:.2f}",
+			color=c,
+			**kwargs,
+			)
+	ax.axhline(1, ls=':', c='k')
+	
+	ax.set_yscale('log')
+	ax.autoscale(enable=True, axis='y')
+	
+	ax.set_xlabel("Carrington rotation")
+	ax.set_ylabel(r"$\chi^2/n$")
+	ax.legend(title=r"$k_\mathrm{max}$ (Mm$^{{-1}}$)")
+	save(fig, "chi2r_log.pdf")
