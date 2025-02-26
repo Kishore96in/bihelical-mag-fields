@@ -60,7 +60,7 @@ class res_for_kmax:
 	pval_vs_cr: list
 	cr_labels: list
 
-def calc_stats_for_kmax(k_bounds, cr_bins):
+def calc_stats_for_kmax(k_bounds, cr_bins, read_HMI, read_SOLIS):
 	"""
 	k_bounds: tuple of float: (k,min, kmax)
 	cr_bins: iterable of tuples; outer iterable indexes the bins, while the inner tuple is the list of CRs in each bin
@@ -146,7 +146,7 @@ if __name__ == "__main__":
 	
 	cr_bins = [tuple(cr for cr in range(cr_ini, cr_ini+10) if cr not in cr_exclude) for cr_ini in range(2097,2186)]
 	
-	res_list = [calc_stats_for_kmax(k_bounds, cr_bins) for k_bounds in k_bounds_list]
+	res_list = [calc_stats_for_kmax(k_bounds, cr_bins, read_HMI, read_SOLIS) for k_bounds in k_bounds_list]
 	c_list = mpl.cm.copper(np.linspace(0,1,len(res_list)))
 	kwargs = {
 		'marker': 'o',
