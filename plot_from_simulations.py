@@ -13,7 +13,7 @@ from spectrum import calc_spec_G2 as calc_spec, signed_loglog_plot
 from utils import fig_saver, real, rebin
 
 class SpecFromSim:
-	def __init__(self, sim, double_domain):
+	def __init__(self, sim, double_domain=False, shift_onesided=0):
 		var = sim.var
 		grid = sim.grid
 		
@@ -32,13 +32,23 @@ class SpecFromSim:
 			Bvec_fft = scipy.fft.fft2(Bvec, norm='forward', axes=(-2,-1))
 			
 			L = [grid.Ly, grid.Lz]
-			k, E0, H0 = calc_spec(Bvec_fft, K=np.array([0,0]), L=L)
+			k, E0, H0 = calc_spec(
+				Bvec_fft,
+				K=np.array([0,0]),
+				L=L,
+				)
 			
 			if double_domain:
 				K = 2
 			else:
 				K = 1
-			_, _, H1 = calc_spec(Bvec_fft, K=np.array([0,K]), L=L)
+			
+			_, _, H1 = calc_spec(
+				Bvec_fft,
+				K=np.array([0,K]),
+				L=L,
+				shift_onesided=shift_onesided,
+				)
 			
 			res.append({'k':k, 'E0': E0, 'H0': H0, 'H1': H1})
 		
@@ -63,7 +73,15 @@ class SpecFromSim:
 		self.H1av = H1av
 		self.E0av = E0av
 
-def plot(sim, figname, H_getter, H_label, saver, double_domain=False):
+def plot(
+	sim,
+	figname,
+	H_getter,
+	H_label,
+	saver,
+	double_domain=False,
+	shift_onesided=0,
+	):
 	"""
 	Arguments:
 		sim: Pencil simulation object
@@ -71,8 +89,14 @@ def plot(sim, figname, H_getter, H_label, saver, double_domain=False):
 		H_getter: Function that takes in a SpecFromSim object and returns the part of the helicity spectrum that should be plotted
 		H_label: label to use for the helicity spectrum in the plot
 		saver: utils.fig_saver instance
+		double_domain: bool
+		shift_onesided: int
 	"""
-	spec = SpecFromSim(sim, double_domain=double_domain)
+	spec = SpecFromSim(
+		sim,
+		double_domain = double_domain,
+		shift_onesided = shift_onesided,
+		)
 	
 	av = sim.av
 	grid = sim.grid
@@ -133,6 +157,7 @@ if __name__ == "__main__":
 		lambda spec: -spec.k*np.imag(spec.H1av),
 		r"$-\mathrm{Im}(k\,\widetilde{H}(k,K_1))$",
 		saver,
+		shift_onesided=1,
 		)
 	
 	#sign flip of helicity with domain doubling
