@@ -128,7 +128,7 @@ def plot(
 	axs[1].legend(handles=handles)
 	axs[1].set_xlabel("k")
 	
-	fig.set_size_inches(3.3,3.5) #NOTE: ApJ linewidth is 3.3 inches in twocolumn layout.
+	fig.set_size_inches(3,3.5) #NOTE: ApJ linewidth is 3.3 inches in twocolumn layout.
 	saver(fig, figname)
 
 if __name__ == "__main__":
