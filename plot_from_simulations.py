@@ -13,7 +13,16 @@ from spectrum import calc_spec_G2 as calc_spec, signed_loglog_plot
 from utils import fig_saver, real, rebin
 
 class SpecFromSim:
-	def __init__(self, sim, double_domain=False, shift_onesided=0):
+	def __init__(self, sim, double_domain=False, shift_onesided=0, var_file=''):
+		if not hasattr(sim, 'var'):
+			sim.var = pc.read.var(
+				sim=sim,
+				var_file=var_file,
+				trimall=True,
+				quiet=True,
+				magic=['bb'],
+				)
+		
 		var = sim.var
 		grid = sim.grid
 		
@@ -79,8 +88,7 @@ def plot(
 	H_getter,
 	H_label,
 	saver,
-	double_domain=False,
-	shift_onesided=0,
+	**kwargs,
 	):
 	"""
 	Arguments:
@@ -92,11 +100,7 @@ def plot(
 		double_domain: bool
 		shift_onesided: int
 	"""
-	spec = SpecFromSim(
-		sim,
-		double_domain = double_domain,
-		shift_onesided = shift_onesided,
-		)
+	spec = SpecFromSim(sim, **kwargs)
 	
 	av = sim.av
 	grid = sim.grid
@@ -148,6 +152,7 @@ if __name__ == "__main__":
 		lambda spec: spec.k*np.real(spec.H0av),
 		r"$\mathrm{Re}(k\,\widetilde{H}(k,0))$",
 		saver,
+		var_file=varname,
 		)
 	
 	#sign flip of helicity, BPS17 method
@@ -158,6 +163,7 @@ if __name__ == "__main__":
 		r"$-\mathrm{Im}(k\,\widetilde{H}(k,K_1))$",
 		saver,
 		shift_onesided=1,
+		var_file=varname,
 		)
 	
 	#sign flip of helicity with domain doubling
@@ -168,4 +174,5 @@ if __name__ == "__main__":
 		r"$-\mathrm{Im}(k\,\widetilde{H}(k,K_1))$",
 		saver,
 		double_domain=True,
+		var_file=varname,
 		)
