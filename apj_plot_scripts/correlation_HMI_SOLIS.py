@@ -31,6 +31,10 @@ def add_time_axis_from_cr(ax):
 	# https://stackoverflow.com/questions/39920252/second-plot-axis-with-different-units-on-same-data-in-matplotlib/64922723#64922723
 	ax_date = ax.twiny()
 	
+	#Reduce the maximum number of ticks to avoid overlapping labels.
+	loc = mpl.dates.AutoDateLocator(minticks=3, maxticks=5)
+	ax_date.xaxis.set_major_locator(loc)
+	
 	def date_xlim_from_cr(ax):
 		time_for_cr = lambda cr: sunpy.coordinates.sun.carrington_rotation_time(cr).to_datetime()
 		xmin, xmax = ax.get_xlim()
