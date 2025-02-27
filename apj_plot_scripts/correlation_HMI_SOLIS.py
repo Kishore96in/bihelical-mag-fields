@@ -48,6 +48,7 @@ if __name__ == "__main__":
 	savefig = True
 	savedir = root/"plots/correlation_apj"
 	mpl.style.use(root/"kishore_apj.mplstyle")
+	mpl.rcParams['figure.figsize'] = (3.3,2.8) #A bit more height since we have two x-axes
 	
 	save = fig_saver(savefig, savedir)
 	
