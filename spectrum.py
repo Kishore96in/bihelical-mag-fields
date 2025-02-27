@@ -182,7 +182,7 @@ if __name__ == "__main__":
 	
 	plt.show()
 
-def fourier(a, k_axes):
+def _fourier(a, k_axes):
 	"""
 	Calculate fourier transform over the required axes
 	"""
@@ -192,7 +192,7 @@ def fourier(a, k_axes):
 		ft = scipy.fft.fft(ft, axis=ax)/n[ax]
 	return ft
 
-def inv_fourier(a, k_axes):
+def _inv_fourier(a, k_axes):
 	"""
 	Inverse of fourier
 	"""
@@ -201,6 +201,45 @@ def inv_fourier(a, k_axes):
 	for ax in k_axes:
 		ft = scipy.fft.ifft(ft, axis=ax)*n[ax]
 	return ft
+
+def _generate_wavevectors(n, k_axes):
+	"""
+	Find the wavevector corresponding to each point in the multidimensional Fourier transform of an array.
+	E.g. if
+	```
+	#len(np.shape(a)) == 3
+	ft = fourier(a, [0,1,2])
+	k = generate_wavevectors(np.array(np.shape(a), dtype=int), [0,1,2])
+	```
+	ft[i,j,k] corresponds to wavevector k[:,i,j,k]
+	
+	The returned array needs to be multiplied by 2pi/{Lx,Ly,Lz} to get the actual wavevectors.
+	"""
+	ki = []
+	for ax in k_axes:
+		ki.append( np.roll( np.arange(np.ceil(-n[ax]/2),np.ceil(n[ax]/2)), int(np.ceil(n[ax]/2)) ) )
+	
+	ki_arr = np.meshgrid(*ki, indexing='ij')
+	
+	return np.array(ki_arr)
+
+def _generate_wavenumbers(n, k_axes, L):
+	"""
+	NOTE: In Pencil code (power_spectrum.f90), the following just seems to be calculated as k=nint(sqrt(kx(ikx+ipx*nx)**2+ky(iky+ipy*ny)**2+kz(ikz+ipz*nz)**2)) (i.e. without accounting for having different L along each direction)
+	
+	See commit 4b324bd9aee20c0c62b936352748763bba48caa0 (in Pencil git repo), which suggests the one in Pencil is wrong for non-cubical boxes.
+		Author: Axel Brandenburg <brandenb@nordita.org>
+		Date:   Tue Mar 14 14:57:15 2006 +0000
+		In power_spectrum.f90; made kx,ky,kz going only in integers. Works only
+		for cubes, but now it works at least for Lx,Ly,Lz different from 2*pi,
+		which was a problem for all interstellar runs.
+	
+	Recall that along each axis, the spacing between Fourier modes is 2*pi/L[i]. We choose min(L) below to ensure that we use the coarsest Fourier-binning among the given axes.
+	"""
+	ki_arr = _generate_wavevectors(n, k_axes)
+	k_arr = np.round(np.min(L)*np.sqrt(np.sum([ (ki_arr[i]/L[i])**2 for i in range(len(k_axes))], axis=0)))
+	
+	return k_arr
 
 def filter_fourier(
 	a,
@@ -256,12 +295,12 @@ def filter_fourier(
 	L = L[sort]
 	k_axes = k_axes[sort]
 	
-	k_arr = (2*np.pi/min(L))*generate_wavenumbers(n, k_axes, L)
+	k_arr = (2*np.pi/min(L))*_generate_wavenumbers(n, k_axes, L)
 	k_arr = k_arr[tuple([None]*(len(n)-len(k_axes)) + [slice(None)]*len(k_axes))] #Broadcast so it is compatible with the input array 'a'
 	
-	a_ft = fourier(a, k_axes)
+	a_ft = _fourier(a, k_axes)
 	a_ft_filt = np.where(np.logical_and(k_arr>=k_min, k_arr<k_max), a_ft, 0)
-	a_filt = inv_fourier(a_ft_filt, k_axes)
+	a_filt = _inv_fourier(a_ft_filt, k_axes)
 	
 	if np.isrealobj(a):
 		#Try to cast to real if the input array was real.
