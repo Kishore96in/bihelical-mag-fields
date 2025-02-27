@@ -6,8 +6,7 @@ import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
-from kishore_backpack.spectrum import filter_fourier
-
+from spectrum import filter_fourier
 from read_FITS import HMIreader, SOLISreader
 from utils import fig_saver
 

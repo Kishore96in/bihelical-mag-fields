@@ -11,8 +11,7 @@ import pathlib
 root = pathlib.Path(__file__).parent.parent
 sys.path.append(str(root))
 
-from kishore_backpack.spectrum import filter_fourier
-
+from spectrum import filter_fourier
 from read_FITS import HMIreader, SOLISreader
 from utils import fig_saver
 

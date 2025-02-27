@@ -19,11 +19,9 @@ import matplotlib as mpl
 import scipy.stats
 from dataclasses import dataclass
 
-from kishore_backpack.plotting import errorfill
-from kishore_backpack.average import smooth_boxcar
 
 from read_FITS import HMIreader_dbl, SOLISreader_dbl as SOLISreader_dbl_exc, ExciseLatitudeMixin
-from utils import fig_saver
+from utils import fig_saver, smooth_boxcar
 from plot_hel_with_err import E0H1_dbl
 from plot_correlation_HMI_SOLIS import calc_frachel, trunc, sign_werr, calc_stats_for_kmax
 
