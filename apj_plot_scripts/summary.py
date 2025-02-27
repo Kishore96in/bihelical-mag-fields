@@ -62,7 +62,7 @@ if __name__ == "__main__":
 	ax.margins(x=0)
 	
 	ax.set_xlabel("$k$ (Mm$^{-1}$)")
-	ax.set_ylabel("$E(k,0)$ (erg cm$^{-3}$)")
+	ax.set_ylabel(r"$\widetilde{E}(k,0)$ (erg cm$^{-3}$)")
 	
 	ylim = ax.get_ylim()
 	ax.set_ylim(ylim[0]/(ylim[1]/ylim[0])**0.5, ylim[1])
@@ -90,7 +90,7 @@ if __name__ == "__main__":
 	ax.legend()
 	
 	ax.set_xlabel("$k$ (Mm$^{-1}$)")
-	ax.set_ylabel("$E(k,0)$ (erg cm$^{-3}$)")
+	ax.set_ylabel(r"$\widetilde{E}(k,0)$ (erg cm$^{-3}$)")
 	
 	save(fig, f"HMI_apodization_masking_effect_cr_{min(cr_list_3)}-{max(cr_list_3)}.pdf")
 	
@@ -109,7 +109,7 @@ if __name__ == "__main__":
 			res.k[1:],
 			(res.k*res.nimH1)[1:],
 			err = (res.k*res.nimH1_err)[1:],
-			label = r"$-\mathrm{Im}(k\,H(k,K_1))$",
+			label = r"$-\mathrm{Im}(k\,\widetilde{H}(k,K_1))$",
 			ax = ax,
 			)
 		
@@ -119,7 +119,7 @@ if __name__ == "__main__":
 			res.E0[1:],
 			res.E0_err[1:],
 			marker='',
-			label="$E(k,0)$",
+			label=r"$\widetilde{E}(k,0)$",
 			)
 		
 		ax.handles_lines = [l, ef.line] #Store for later
@@ -127,7 +127,7 @@ if __name__ == "__main__":
 		
 		ax.set_title(title)
 	
-	axs[0].set_ylabel("$E(k,0)$ (erg cm$^{-3}$)")
+	axs[0].set_ylabel(r"$\widetilde{E}(k,0)$ (erg cm$^{-3}$)")
 	fig.supxlabel("$k$ (Mm$^{-1}$)", size='medium')
 	axs[0].margins(x=0)
 	

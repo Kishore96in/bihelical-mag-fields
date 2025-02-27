@@ -46,7 +46,7 @@ if __name__ == "__main__":
 			)
 		
 	axs[0].legend()
-	axs[0].set_ylabel(r"$-\mathrm{Im}(k\,H(k,K_1))$ (erg cm$^{-3}$)")
+	axs[0].set_ylabel(r"$-\mathrm{Im}(k\,\widetilde{H}(k,K_1))$ (erg cm$^{-3}$)")
 	fig.supxlabel("$k$ (Mm$^{-1}$)", size='medium')
 	axs[0].margins(x=0)
 	
