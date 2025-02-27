@@ -142,6 +142,103 @@ def downsample_half(k, E, H, calc_spec, axis=0):
 	
 	return k, *calc_spec.scale_EH(E,H,2)
 
+class ErrorFill():
+	"""
+	Attributes:
+		line: the plotted line corresponding to the data
+	"""
+	def __init__(self, line):
+		self.line = line
+
+def errorfill(ax, x, y, yerr, marker = 'o', **kwargs):
+	"""
+	Uses fill_between to display errorbars in a nicer way than plt.errorbar.
+	
+	Arguments:
+		ax: matplotlib.axes.Axes instance
+		x: 1D array of float
+		y: 1D array of float, same size as x
+		yerr: 1D or 2D array of float, with the last dimension having the same size as x. If a 2D array, the first row is the - error, and the second row is the + error.
+	
+	Returns an ErrorFill instance.
+	"""
+	y = np.array(y)
+	yerr = np.array(yerr)
+	
+	if yerr.ndim == 0:
+		yerr_minus = np.full_like(x, yerr)
+		yerr_plus = np.full_like(x, yerr)
+	elif yerr.ndim == 1:
+		yerr_minus = yerr
+		yerr_plus = yerr
+	elif yerr.ndim == 2:
+		yerr_minus = yerr[0]
+		yerr_plus = yerr[1]
+		
+		if len(yerr_minus) != len(x):
+			raise ValueError(f"Dimensions of yerr {yerr.shape} and x {np.shape(x)} are not compatible.")
+	else:
+		raise ValueError(f"Cannot handle yerr with {yerr.ndim} dimensions")
+	
+	if len(x) == 1:
+		#fill_between will not display the error bounds if the data series is only one element long. Fall back to errorbar for that case.
+		warnings.warn("Falling back to plt.errorbar for single point.")
+		
+		l = ax.errorbar(
+			x,
+			y,
+			yerr = [yerr_minus, yerr_plus],
+			marker = marker,
+			**kwargs,
+			)
+		
+		return ErrorFill(l.lines[0])
+	else:
+		[l] = ax.plot(
+			x,
+			y,
+			marker = marker,
+			**kwargs,
+			)
+		
+		ax.fill_between(
+			x,
+			y - yerr_minus,
+			y + yerr_plus,
+			alpha = 0.25,
+			color = l.get_color(),
+			linewidth = 0, #prevent an outline being drawn around the boundary of the region being filled.
+			)
+		
+		return ErrorFill(l)
+
+def smooth_boxcar(arr, l, axis=0):
+	"""
+	Smooth arr along axis with a boxcar profile of width 2l+1
+	
+	Arguments:
+		arr: numpy array
+		l: int
+		axis: int
+	"""
+	if np.shape(arr)[axis] < l:
+		raise ValueError(f"Given array is too small for boxcar of requested width (axis length {np.shape(arr)[axis]} < boxcar half-width {l})")
+	
+	arr = np.swapaxes(arr, axis, 0)
+	
+	smoothed = arr.copy()
+	norm = np.ones_like(arr) #Keep track of what number to divide by at the end
+	for i in range(1,l+1):
+		smoothed[i:] += arr[:-i]
+		norm[i:] += 1
+		
+		smoothed[:-i] += arr[i:]
+		norm[:-i] += 1
+	
+	smoothed = smoothed/norm
+	smoothed = np.swapaxes(smoothed, axis, 0)
+	return smoothed
+
 if __name__ == "__main__":
 	from termcolor import cprint
 	

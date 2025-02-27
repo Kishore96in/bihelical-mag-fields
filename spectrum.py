@@ -181,3 +181,90 @@ if __name__ == "__main__":
 	fig.tight_layout()
 	
 	plt.show()
+
+def fourier(a, k_axes):
+	"""
+	Calculate fourier transform over the required axes
+	"""
+	n = np.array(np.shape(a), dtype=int)
+	ft = a
+	for ax in k_axes:
+		ft = scipy.fft.fft(ft, axis=ax)/n[ax]
+	return ft
+
+def inv_fourier(a, k_axes):
+	"""
+	Inverse of fourier
+	"""
+	n = np.array(np.shape(a), dtype=int)
+	ft = a
+	for ax in k_axes:
+		ft = scipy.fft.ifft(ft, axis=ax)*n[ax]
+	return ft
+
+def filter_fourier(
+	a,
+	k_min,
+	k_max,
+	k_axes,
+	L=None,
+	validate_input=True,
+	):
+	"""
+	Given a field a, filter it by removing all Fourier modes outside the semi-open interval [k_min,k_max).
+	
+	Arguments:
+		a: numpy array
+		k_min: float, smallest wavenumber to allow
+		k_max: float, largest wavenumber to allow
+		k_axes: list, axes of a which should be Fourier-transformed
+		L: list, domain size along the directions given by k_axes (default: 2pi)
+	
+	Returns:
+		a_filt: filtered array of same shape as a.
+	"""
+	if L is None:
+		#Length of the domain. Important in case grid spacing is different in different directions.
+		L = np.full(len(k_axes), 2*np.pi)
+	
+	#Cast the passed arguments to the correct types.
+	k_axes = np.array(k_axes, dtype=int)
+	L = np.array(L)
+	
+	if validate_input:
+		for ax in k_axes:
+			try:
+				np.shape(a)[ax]
+			except IndexError:
+				raise RuntimeError("Specified axis {} does not exist".format(ax))
+		if len(L) != len(k_axes):
+			raise RuntimeError("L and k_axes should be of same length")
+	
+	"""
+	Transpose array such that k_axes are contiguous, increasing, and at the end of the array.
+	This is an assumption we make for easy vectorization (see the broadcasting of k_arr).
+	"""
+	n = np.array(np.shape(a), dtype=int)
+	newaxes = list(range(len(n)))
+	sort = np.argsort(k_axes)
+	for k in k_axes[sort]:
+		if k < 0:
+			k = len(n) + k
+		newaxes.remove(k)
+		newaxes.append(k)
+	a = np.transpose(a, axes=newaxes)
+	L = L[sort]
+	k_axes = k_axes[sort]
+	
+	k_arr = (2*np.pi/min(L))*generate_wavenumbers(n, k_axes, L)
+	k_arr = k_arr[tuple([None]*(len(n)-len(k_axes)) + [slice(None)]*len(k_axes))] #Broadcast so it is compatible with the input array 'a'
+	
+	a_ft = fourier(a, k_axes)
+	a_ft_filt = np.where(np.logical_and(k_arr>=k_min, k_arr<k_max), a_ft, 0)
+	a_filt = inv_fourier(a_ft_filt, k_axes)
+	
+	if np.isrealobj(a):
+		#Try to cast to real if the input array was real.
+		a_filt = np.real_if_close(a_filt)
+	
+	return np.transpose(a_filt, axes=newaxes)
