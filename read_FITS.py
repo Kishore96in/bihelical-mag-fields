@@ -2,6 +2,10 @@
 Classes to read HMI and SOLIS synoptic maps
 """
 
+import sys
+import pathlib
+root = pathlib.Path(__file__).parent #location of the root of this git repo
+
 import os
 import numpy as np
 import scipy.fft
@@ -120,7 +124,7 @@ class ExciseLatitudeMixin():
 		return np.where(np.abs(lat) > self.max_lat, 0, data)
 
 class m_get_fname_SOLIS():
-	img_loc = "images_SOLIS"
+	img_loc = root/"images_SOLIS"
 	
 	def get_fname(self, cr):
 		"""
@@ -141,7 +145,7 @@ class m_get_fname_SOLIS():
 			return os.path.join(self.img_loc, files[0])
 
 class m_get_fname_HMI():
-	img_loc = "images"
+	img_loc = root/"images"
 	
 	def get_fname(self, cr):
 		"""
