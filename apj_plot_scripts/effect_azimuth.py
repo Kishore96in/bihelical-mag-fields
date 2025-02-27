@@ -6,8 +6,8 @@ The idea is that we compare the helicity spectra in two different 'realizations'
 
 import sys
 import pathlib
-root = pathlib.Path(__file__).parent
-sys.path.append(str(root/".."))
+root = pathlib.Path(__file__).parent.parent
+sys.path.append(str(root))
 
 import numpy as np
 import matplotlib.pyplot as plt
