@@ -83,7 +83,7 @@ if __name__ == "__main__":
 			**kwargs,
 			)
 	ax.set_xlabel("Carrington rotation")
-	ax_date.set_xlabel("Date")
+	ax_date.set_xlabel("Year")
 	ax.set_ylabel(r"$\sigma_\mathrm{sign}$ (smoothed)")
 	ax.set_ylim(-1,1)
 	ax.legend(title=r"$k_\mathrm{max}$ (Mm$^{{-1}}$)")
@@ -106,7 +106,7 @@ if __name__ == "__main__":
 	ax.autoscale(enable=True, axis='y')
 	
 	ax.set_xlabel("Carrington rotation")
-	ax_date.set_xlabel("Date")
+	ax_date.set_xlabel("Year")
 	ax.set_ylabel(r"$\chi^2/n$")
 	ax.legend(title=r"$k_\mathrm{max}$ (Mm$^{{-1}}$)")
 	save(fig, "chi2r_log.pdf")
