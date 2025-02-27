@@ -6,6 +6,11 @@ Plots that summarize the important findings.
 3. Even after apodizing, the helicity spectra from HMI and SOLIS disagree at large k.
 """
 
+import sys
+import pathlib
+root = pathlib.Path(__file__).parent
+sys.path.append(str(root/".."))
+
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
@@ -22,8 +27,8 @@ class HMIreader_dblmsk(MaskWeakMixin, HMIreader_dbl): pass
 
 if __name__ == "__main__":
 	savefig = True
-	savedir = "plots/summary_apj"
-	mpl.style.use("kishore_apj.mplstyle")
+	savedir = root/"plots/summary_apj"
+	mpl.style.use(root/"kishore_apj.mplstyle")
 	
 	save = fig_saver(savefig, savedir)
 	

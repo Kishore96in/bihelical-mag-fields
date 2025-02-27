@@ -4,6 +4,11 @@ Check how the 180 degree azimuth ambiguity affects the helicity spectrum.
 The idea is that we compare the helicity spectra in two different 'realizations' of the same magnetograms. These realizations only differ in that the sign of the transverse component of the magnetic field in the weak-field regions (randomly flipped).
 """
 
+import sys
+import pathlib
+root = pathlib.Path(__file__).parent
+sys.path.append(str(root/".."))
+
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
@@ -17,8 +22,8 @@ class HMIreader_dbl_randazi(RandomizeWeakMixin, HMIreader_dbl): pass
 
 if __name__ == "__main__":
 	savefig = True
-	savedir = "plots/azimuth_apj"
-	mpl.style.use("kishore_apj.mplstyle")
+	savedir = root/"plots/azimuth_apj"
+	mpl.style.use(root/"kishore_apj.mplstyle")
 	
 	save = fig_saver(savefig, savedir)
 	

@@ -8,6 +8,11 @@ Statistical measures of how well the signs of the helicity spectra calculated fr
 Also computes the above in restricted wavenumber bands, to check if perhaps, e.g., the helicity spectrum at large wavenumbers is more reliable.
 """
 
+import sys
+import pathlib
+root = pathlib.Path(__file__).parent
+sys.path.append(str(root/".."))
+
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
@@ -26,8 +31,8 @@ class HMIreader_dblexc(ExciseLatitudeMixin, HMIreader_dbl): pass
 
 if __name__ == "__main__":
 	savefig = True
-	savedir = "plots/correlation_apj"
-	mpl.style.use("kishore_apj.mplstyle")
+	savedir = root/"plots/correlation_apj"
+	mpl.style.use(root/"kishore_apj.mplstyle")
 	
 	save = fig_saver(savefig, savedir)
 	
