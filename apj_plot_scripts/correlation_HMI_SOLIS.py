@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 import scipy.stats
 from dataclasses import dataclass
-
+import sunpy.coordinates
 
 from read_FITS import HMIreader_dbl, SOLISreader_dbl as SOLISreader_dbl_exc, ExciseLatitudeMixin
 from utils import fig_saver, smooth_boxcar
@@ -26,6 +26,19 @@ from plot_hel_with_err import E0H1_dbl
 from plot_correlation_HMI_SOLIS import calc_frachel, trunc, sign_werr, calc_stats_for_kmax
 
 class HMIreader_dblexc(ExciseLatitudeMixin, HMIreader_dbl): pass
+
+def add_time_axis_from_cr(ax):
+	# https://stackoverflow.com/questions/39920252/second-plot-axis-with-different-units-on-same-data-in-matplotlib/64922723#64922723
+	ax_date = ax.twiny()
+	
+	def date_xlim_from_cr(ax):
+		time_for_cr = lambda cr: sunpy.coordinates.sun.carrington_rotation_time(cr).to_datetime()
+		xmin, xmax = ax.get_xlim()
+		ax_date.set_xlim(time_for_cr(xmin), time_for_cr(xmax))
+	
+	ax.callbacks.connect('xlim_changed', date_xlim_from_cr)
+	
+	return ax_date
 
 if __name__ == "__main__":
 	savefig = True
@@ -51,6 +64,8 @@ if __name__ == "__main__":
 		}
 	
 	fig, ax = plt.subplots()
+	ax_date = add_time_axis_from_cr(ax)
+	
 	sm_hw = 4
 	for res, c in zip(res_list, c_list):
 		corr_sign_werr_vs_cr = smooth_boxcar(np.array(res.corr_sign_werr_vs_cr), sm_hw)[sm_hw:-sm_hw]
@@ -64,12 +79,15 @@ if __name__ == "__main__":
 			**kwargs,
 			)
 	ax.set_xlabel("Carrington rotation")
+	ax_date.set_xlabel("Date")
 	ax.set_ylabel(r"$\sigma_\mathrm{sign}$ (smoothed)")
 	ax.set_ylim(-1,1)
 	ax.legend(title=r"$k_\mathrm{max}$ (Mm$^{{-1}}$)")
 	save(fig, "corr_sign_werr_sm.pdf")
 	
 	fig, ax = plt.subplots()
+	ax_date = add_time_axis_from_cr(ax)
+	
 	for res, c in zip(res_list, c_list):
 		ax.plot(
 			res.cr_labels,
@@ -84,6 +102,7 @@ if __name__ == "__main__":
 	ax.autoscale(enable=True, axis='y')
 	
 	ax.set_xlabel("Carrington rotation")
+	ax_date.set_xlabel("Date")
 	ax.set_ylabel(r"$\chi^2/n$")
 	ax.legend(title=r"$k_\mathrm{max}$ (Mm$^{{-1}}$)")
 	save(fig, "chi2r_log.pdf")
