@@ -7,12 +7,17 @@ import pencil as pc
 import numpy as np
 import os
 
+import sys
+import pathlib
+root = pathlib.Path(__file__).parent.parent
+sys.path.append(str(root))
+
 from spectrum import signed_loglog_plot
 from utils import fig_saver, real
 from plot_from_simulations import SpecFromSim
 
 savefig = True #whether to save plots
-simpath = "simulation/2"
+simpath = "2"
 savedir = os.path.join(simpath, "plots") #Where to save plots
 
 save = fig_saver(savefig, savedir)

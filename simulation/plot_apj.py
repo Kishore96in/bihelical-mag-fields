@@ -2,6 +2,11 @@
 All plots that test the application of the two-scale method to simulations, with the figure sizes modified to suit ApJ.
 """
 
+import sys
+import pathlib
+root = pathlib.Path(__file__).parent.parent
+sys.path.append(str(root))
+
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import pencil as pc
@@ -132,14 +137,14 @@ def plot(
 	saver(fig, figname)
 
 if __name__ == "__main__":
-	mpl.style.use("kishore_apj.mplstyle")
+	mpl.style.use(root/"kishore_apj.mplstyle")
 	varname = "var.h5" #Name of snapshot to use
 	saver = fig_saver(
 		savefig=True,
-		savedir="plots/check_helspec_from_sims", #Where to save plots
+		savedir=root/"plots/check_helspec_from_sims", #Where to save plots
 		)
-	sim_1 = pc.sim.get(quiet=True, path="simulation/1")
-	sim_2 = pc.sim.get(quiet=True, path="simulation/2")
+	sim_1 = pc.sim.get(quiet=True, path="1")
+	sim_2 = pc.sim.get(quiet=True, path="2")
 	
 	for sim in [sim_1, sim_2]:
 		sim.av = pc.read.aver(quiet=True, datadir=sim.datadir, simdir=sim.path)
