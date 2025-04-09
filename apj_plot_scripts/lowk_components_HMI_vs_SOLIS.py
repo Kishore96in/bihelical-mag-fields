@@ -16,7 +16,7 @@ from read_FITS import HMIreader, SOLISreader
 from utils import fig_saver
 
 if __name__ == "__main__":
-	cr = 2180
+	cr = 2195
 	k_max = 1e-2
 	savefig = True
 	savedir=  root/"plots/filtered_synoptic_apj"
