@@ -118,7 +118,7 @@ def plot(
 	axs[0].set_xlim(min(grid.z), max(grid.z))
 	axs[0].axhline(0, ls=':', c='k')
 	
-	handes_H = signed_loglog_plot(
+	handles_H = signed_loglog_plot(
 		spec.k,
 		H_getter(spec),
 		axs[1],
