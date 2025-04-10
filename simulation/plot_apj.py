@@ -95,7 +95,7 @@ def stacked_legend(ax, kwargs_top, kwargs_bot):
 	
 	l1 = ax.legend(loc="lower left", **kwargs_bot)
 	
-	tb_l1 = leg_1.get_tightbbox().transformed(trans.inverted())
+	tb_l1 = l1.get_tightbbox().transformed(trans.inverted())
 	_, ymax_l1 = tb_l1.corners()[1]
 	
 	l2 = ax.legend(
