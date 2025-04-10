@@ -118,19 +118,25 @@ def plot(
 	axs[0].set_xlim(min(grid.z), max(grid.z))
 	axs[0].axhline(0, ls=':', c='k')
 	
-	handles = []
-	handles.extend(signed_loglog_plot(
+	handes_H = signed_loglog_plot(
 		spec.k,
 		H_getter(spec),
 		axs[1],
 		{'label':H_label},
-		))
-	handles.extend(axs[1].loglog(
+		)
+	handles_E = axs[1].loglog(
 		spec.k,
 		real(spec.E0av),
 		label=r"$\widetilde{E}(k,0)$",
-		))
-	axs[1].legend(handles=handles)
+		)
+	leg_1 = axs[1].legend(handles=handles_E, loc="lower left")
+	tb_l1 = leg_1.get_tightbbox().transformed(ax.transAxes.inverted())
+	_, ymax_l1 = tbb_l1.corners()[1]
+	leg_2 = axs[1].legend(handles=handles_H, loc="lower left", bbox_to_anchor=(0,ymax_l1), bbox_transform=ax.transAxes)
+	
+	axs[1].add_artist(leg_1)
+	axs[1].add_artist(leg_2)
+	
 	axs[1].set_xlabel("k")
 	
 	fig.set_size_inches(3,3.5) #NOTE: ApJ linewidth is 3.3 inches in twocolumn layout.
