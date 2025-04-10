@@ -109,6 +109,20 @@ def stacked_legend(ax, kwargs_top, kwargs_bot):
 	
 	ax.figure.canvas.mpl_connect('resize_event', adjust_stacked_legend_position)
 
+def stacked_legend_2coltop(ax, kwargs_top, kwargs_bot):
+	h = kwargs_top.pop('handles')
+	if len(h) != 3:
+		raise ValueError
+	labels = [handle.get_label() for handle in h]
+	
+	[dummy] = ax.plot(np.nan, np.nan, '-', color='none')
+	labels.insert(1, "")
+	h.insert(1, dummy)
+	
+	kwargs_top.update({'handles': h, 'labels': labels, 'ncols': 2})
+	
+	stacked_legend(ax, kwargs_top, kwargs_bot)
+
 def plot(
 	sim,
 	figname,
@@ -152,7 +166,7 @@ def plot(
 		label=r"$\widetilde{E}(k,0)$",
 		)
 	
-	stacked_legend(
+	stacked_legend_2coltop(
 		axs[1],
 		kwargs_top={'handles': handles_H, 'title': H_label},
 		kwargs_bot={'handles': handles_E},
