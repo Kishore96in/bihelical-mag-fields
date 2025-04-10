@@ -131,7 +131,7 @@ def plot(
 		)
 	leg_1 = axs[1].legend(handles=handles_E, loc="lower left")
 	tb_l1 = leg_1.get_tightbbox().transformed(axs[1].transAxes.inverted())
-	_, ymax_l1 = tbb_l1.corners()[1]
+	_, ymax_l1 = tb_l1.corners()[1]
 	leg_2 = axs[1].legend(handles=handles_H, loc="lower left", bbox_to_anchor=(0,ymax_l1), bbox_transform=ax.transAxes)
 	
 	axs[1].add_artist(leg_1)
