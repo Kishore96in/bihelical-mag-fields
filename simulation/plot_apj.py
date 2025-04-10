@@ -87,6 +87,27 @@ class SpecFromSim:
 		self.H1av = H1av
 		self.E0av = E0av
 
+def stacked_legend(ax, kwargs_top, kwargs_bot):
+	"""
+	Add two legends to the lower left corner of ax, with one on top of the other.
+	"""
+	trans = ax.transAxes
+	
+	l1 = ax.legend(loc="lower left", **kwargs_bot)
+	
+	tb_l1 = l1.get_tightbbox().transformed(trans.inverted())
+	_, ymax_l1 = tb_l1.corners()[1]
+	
+	l2 = ax.legend(
+		loc="lower left",
+		bbox_to_anchor=(0,ymax_l1),
+		bbox_transform=trans,
+		**kwargs_top,
+		)
+	
+	ax.add_artist(l1)
+	ax.add_artist(l2)
+
 def plot(
 	sim,
 	figname,
@@ -122,20 +143,19 @@ def plot(
 		spec.k,
 		H_getter(spec),
 		axs[1],
-		{'label':H_label},
+		{'label':"abs"},
 		)
 	handles_E = axs[1].loglog(
 		spec.k,
 		real(spec.E0av),
 		label=r"$\widetilde{E}(k,0)$",
 		)
-	leg_1 = axs[1].legend(handles=handles_E, loc="lower left")
-	tb_l1 = leg_1.get_tightbbox().transformed(axs[1].transAxes.inverted())
-	_, ymax_l1 = tb_l1.corners()[1]
-	leg_2 = axs[1].legend(handles=handles_H, loc="lower left", bbox_to_anchor=(0,ymax_l1), bbox_transform=axs[1].transAxes)
 	
-	axs[1].add_artist(leg_1)
-	axs[1].add_artist(leg_2)
+	stacked_legend(
+		axs[1],
+		kwargs_top={'handles': handles_H, 'title': H_label},
+		kwargs_bot={'handles': handles_E},
+		)
 	
 	axs[1].set_xlabel("k")
 	
