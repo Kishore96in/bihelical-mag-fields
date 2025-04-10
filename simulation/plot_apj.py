@@ -91,22 +91,23 @@ def stacked_legend(ax, kwargs_top, kwargs_bot):
 	"""
 	Add two legends to the lower left corner of ax, with one on top of the other.
 	"""
-	trans = ax.transAxes
-	
 	l1 = ax.legend(loc="lower left", **kwargs_bot)
+	l2 = ax.legend(loc="lower left", **kwargs_top)
 	
-	tb_l1 = l1.get_tightbbox().transformed(trans.inverted())
-	_, ymax_l1 = tb_l1.corners()[1]
-	
-	l2 = ax.legend(
-		loc="lower left",
-		bbox_to_anchor=(0,ymax_l1),
-		bbox_transform=trans,
-		**kwargs_top,
-		)
+	def adjust_stacked_legend_position(*args, **kwargs):
+		"""
+		Place l2 just above l1.
+		"""
+		trans = ax.transAxes
+		tb = l1.get_tightbbox().transformed(trans.inverted())
+		_, ymax_l1 = tb.corners()[1]
+		l2.set_bbox_to_anchor((0,ymax_l1), transform=trans)
 	
 	ax.add_artist(l1)
 	ax.add_artist(l2)
+	adjust_stacked_legend_position()
+	
+	ax.figure.canvas.mpl_connect('resize_event', adjust_stacked_legend_position)
 
 def plot(
 	sim,
