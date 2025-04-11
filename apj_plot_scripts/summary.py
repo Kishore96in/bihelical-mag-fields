@@ -49,7 +49,7 @@ if __name__ == "__main__":
 	read_SOLIS_noexc = SOLISreader_dbl_noexc()
 	
 	cr_list_1 = list(range(2142, 2152)) #Near the maximum of cycle 24
-	cr_list_2 = list(range(2187, 2197)) #Between the peaks of cycles 24 and 25
+	cr_list_2 = list(range(2186, 2196)) #Between the peaks of cycles 24 and 25
 	cr_list_3 = list(range(2197, 2207)) #Between the peaks of cycles 24 and 25 # NOTE: no SOLIS magnetograms in this interval
 	
 	def filt_for_SOLIS(crs):
