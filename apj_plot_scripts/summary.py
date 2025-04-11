@@ -98,17 +98,18 @@ if __name__ == "__main__":
 	res_HMIapod_1 = E0H1_dbl(cr_list_1, read_HMIapod)
 	
 	fig, axs = plt.subplots(1,2, sharex=True, sharey=True)
+	H_label = r"$-\mathrm{Im}(k\,\widetilde{H}(k,K_1))$"
 	
 	for res, ax, title in [
 		(res_HMIapod_1, axs[0], "HMI"),
 		(res_SOLIS_1, axs[1], "SOLIS"),
 		]:
 		
-		l, *handles_pm = signed_loglog_plot(
+		handles_H = signed_loglog_plot(
 			res.k[1:],
 			(res.k*res.nimH1)[1:],
 			err = (res.k*res.nimH1_err)[1:],
-			label = r"$-\mathrm{Im}(k\,\widetilde{H}(k,K_1))$",
+			label = "abs",
 			ax = ax,
 			)
 		
@@ -121,8 +122,9 @@ if __name__ == "__main__":
 			label=r"$\widetilde{E}(k,0)$",
 			)
 		
-		ax.handles_lines = [l, ef.line] #Store for later
-		ax.handles_pm = handles_pm
+		#Store for later
+		ax.handles_E = [ef.line]
+		ax.handles_H = handles_H
 		
 		ax.set_title(title)
 	
@@ -130,9 +132,13 @@ if __name__ == "__main__":
 	fig.supxlabel("$k$ (Mm$^{-1}$)", size='medium')
 	axs[0].margins(x=0)
 	
-	leg_l = axs[0].legend(handles=axs[0].handles_lines)
-	leg_pm = axs[-1].legend(handles=axs[-1].handles_pm)
-	# axs[0].add_artist(leg_l) #Restore the legend which matplotlib helpfully removed (needed if you want both legends on the same axes)
+	leg_E = axs[-1].legend(handles=axs[-1].handles_E)
+	
+	ax = axs[0]
+	h_abs, *h_pm = ax.handles_H
+	[h_dum] = ax.plot([], [], linestyle='-', color='none', label=" ")
+	handles = [h_abs, h_dum, *h_pm] #insert a blank entry to keep + and - in the same column when ncols=2
+	leg_H = ax.legend(handles=handles, labels=[h.get_label() for h in handles], title=H_label, ncols=2)
 	
 	fig.set_size_inches(6.5,2.7)
 	
