@@ -43,6 +43,7 @@ if __name__ == "__main__":
 			(res.k*res.nimH1)[1:],
 			err = (res.k*res.nimH1_err)[1:],
 			ax = ax,
+			label = "abs",
 			)
 		
 	axs[0].legend()
