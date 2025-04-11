@@ -47,7 +47,11 @@ if __name__ == "__main__":
 		crs.append(cr)
 		calver_list.append(CalibrationInfoSOLIS(filename))
 	
-	fig,ax = plt.subplots()
-	ax.plot(crs, [str(c.camtype) for c in calver_list])
+	attr_names = ["ver0", "idlver_lev2", "idlver_normalize"]
+	fig,axs = plt.subplots(nrows=len(attr_names), sharex=True, squeeze=False)
+	axs = axs[:,0] #only one column always.
+	for i, name in enumerate(attr_names):
+		axs[i].plot(crs, [getattr(c, name) for c in calver_list])
+		axs[i].set_ylabel(name)
 	
 	plt.show()
