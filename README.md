@@ -2,9 +2,9 @@
 
 ## Plots for the ApJ paper
 * `simulation/plot_apj.py`: figures 1,2,3
-* `apj_plot_scripts/summary.py`: figures 4,6,7
-* `lowk_components_HMI_vs_SOLIS.py`: figure 5
-* `apj_plot_scripts/correlation_HMI_SOLIS.py`: figures 8,9
+* `apj_plot_scripts/summary.py`: figures 4,5,7,8
+* `lowk_components_HMI_vs_SOLIS.py`: figure 6
+* `apj_plot_scripts/correlation_HMI_SOLIS.py`: figure 9
 * `apj_plot_scripts/effect_azimuth.py`: figure 10
 
 ## Utilities
