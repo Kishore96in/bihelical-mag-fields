@@ -38,7 +38,7 @@ if __name__ == "__main__":
 	read_HMImask50 = HMIreader_dblmsk(threshold=50)
 	read_SOLIS = SOLISreader_dbl_exc(max_lat=60)
 	
-	cr_list_1 = list(range(2143, 2153)) #Near the maximum of cycle 24
+	cr_list_1 = list(range(2142, 2152)) #Near the maximum of cycle 24
 	cr_list_2 = list(range(2187, 2197)) #Between the peaks of cycles 24 and 25
 	cr_list_3 = list(range(2197, 2207)) #Between the peaks of cycles 24 and 25 # NOTE: no SOLIS magnetograms in this interval
 	
