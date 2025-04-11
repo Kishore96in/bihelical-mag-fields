@@ -13,6 +13,7 @@ def real(arr):
 def jackknife(arr, axis):
 	"""
 	Jackknife estimate of the error in the mean of arr (along axis)
+	This function assumes arr is real.
 	
 	Arguments:
 		arr: numpy array
