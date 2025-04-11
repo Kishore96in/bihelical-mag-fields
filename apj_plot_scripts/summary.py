@@ -17,13 +17,22 @@ import matplotlib as mpl
 
 
 from spectrum import signed_loglog_plot
-from read_FITS import HMIreader_dbl, SOLISreader_dbl as SOLISreader_dbl_exc, ExciseLatitudeMixin, MaskWeakMixin
+from read_FITS import (
+	HMIreader_dbl,
+	SOLISreader_dbl as SOLISreader_dbl_exc,
+	ExciseLatitudeMixin,
+	MaskWeakMixin,
+	StackLatitudeMixin,
+	SOLISreader_noexc,
+	)
 from utils import fig_saver, errorfill
 from plot_hel_with_err import E0H1_dbl
 from config import cr_SOLIS_bad
 
 class HMIreader_dblexc(ExciseLatitudeMixin, HMIreader_dbl): pass
 class HMIreader_dblmsk(MaskWeakMixin, HMIreader_dbl): pass
+
+class SOLISreader_dbl_noexc(StackLatitudeMixin, SOLISreader_noexc): pass
 
 if __name__ == "__main__":
 	savefig = True
@@ -37,6 +46,7 @@ if __name__ == "__main__":
 	read_HMImask200 = HMIreader_dblmsk(threshold=200)
 	read_HMImask50 = HMIreader_dblmsk(threshold=50)
 	read_SOLIS = SOLISreader_dbl_exc(max_lat=60)
+	read_SOLIS_noexc = SOLISreader_dbl_noexc()
 	
 	cr_list_1 = list(range(2142, 2152)) #Near the maximum of cycle 24
 	cr_list_2 = list(range(2187, 2197)) #Between the peaks of cycles 24 and 25
@@ -74,6 +84,29 @@ if __name__ == "__main__":
 	ax.set_ylim(ylim[0]/(ylim[1]/ylim[0])**0.5, ylim[1])
 	
 	save(fig, "HMI_energy_spectra.pdf")
+	
+	#Compare HMI and SOLIS energy spectra
+	res_SOLIS_2_noexc = E0H1_dbl(filt_for_SOLIS(cr_list_2), read_SOLIS_noexc)
+	fig, ax = plt.subplots()
+	
+	for res, cr_list, name  in [
+		(res_HMI_2, cr_list_1, "HMI"),
+		(res_SOLIS_2_noexc, cr_list_2, 'SOLIS'),
+		]:
+		errorfill(ax, res.k[1:], res.E0[1:], res.E0_err[1:], marker='', label=name)
+	
+	ax.set_yscale('log')
+	ax.set_xscale('log')
+	ax.legend()
+	ax.margins(x=0)
+	
+	ax.set_xlabel("$k$ (Mm$^{-1}$)")
+	ax.set_ylabel(r"$\widetilde{E}(k,0)$ (erg cm$^{-3}$)")
+	
+	ylim = ax.get_ylim()
+	ax.set_ylim(ylim[0]/(ylim[1]/ylim[0])**0.5, ylim[1])
+	
+	save(fig, "HMI_energy_spectrum_vs_SOLIS.pdf")
 	
 	#Compare unapodized, apodized, and masked HMI spectra
 	fig, ax = plt.subplots()
