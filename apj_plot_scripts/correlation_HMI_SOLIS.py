@@ -24,6 +24,7 @@ from read_FITS import HMIreader_dbl, SOLISreader_dbl as SOLISreader_dbl_exc, Exc
 from utils import fig_saver, smooth_boxcar
 from plot_hel_with_err import E0H1_dbl
 from plot_correlation_HMI_SOLIS import calc_frachel, trunc, sign_werr, calc_stats_for_kmax
+from config import cr_SOLIS_bad as cr_exclude
 
 class HMIreader_dblexc(ExciseLatitudeMixin, HMIreader_dbl): pass
 
@@ -56,8 +57,6 @@ if __name__ == "__main__":
 	read_SOLIS = SOLISreader_dbl_exc(max_lat=60)
 	
 	k_bounds_list = [(0,np.inf), (0,1e-1), (0,2e-2)]
-	#Just like Singh 2018, we exclude certain Carrington rotations.
-	cr_exclude = [2099, 2107, 2127, 2139, 2152, 2153, 2154, 2155, 2163, 2164, 2166, 2167, 2192, 2196]
 	
 	cr_bins = [tuple(cr for cr in range(cr_ini, cr_ini+10) if cr not in cr_exclude) for cr_ini in range(2097,2186)]
 	

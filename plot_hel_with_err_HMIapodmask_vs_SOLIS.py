@@ -10,6 +10,7 @@ from read_FITS import HMIreader_dbl
 from utils import jackknife, downsample_half, fig_saver
 from plot_hel_with_err import E0H1_dbl
 from plot_E0_twopeak import E0H1_SOLISdbl, E0H1_HMIdblapodmsk, E0H1_HMIdbl
+from config import cr_SOLIS_bad as cr_exclude
 
 def plot_hel_with_err_compare(*res_list):
 	fig,axs = plt.subplots(2, len(res_list), sharex='col', sharey='row', gridspec_kw={'height_ratios': [2,1]})
@@ -45,12 +46,11 @@ if __name__ == "__main__":
 	max_lat = 60 #For HMI apodization
 	threshold = 200 #For HMI masking
 	
-	#Just like Singh 2018, we exclude certain Carrington rotations.
-	cr_exclude = [2099, 2107, 2127, 2139, 2152, 2153, 2154, 2155, 2163, 2164, 2166, 2167, 2192, 2196]
 	cr_bins = list(np.arange(2097,2196,10))
 	
 	save = fig_saver(savefig, savedir)
 	for i in range(len(cr_bins)-1):
+		#NOTE that like Singh 2018, we exclude certain Carrington rotations.
 		cr_list = [cr for cr in range(cr_bins[i], cr_bins[i+1]) if cr not in cr_exclude]
 		figname = f"{cr_bins[i]:04d}-{cr_bins[i+1]-1:04d}.pdf"
 		
