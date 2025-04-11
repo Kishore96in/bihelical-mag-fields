@@ -20,6 +20,7 @@ from spectrum import signed_loglog_plot
 from read_FITS import HMIreader_dbl, SOLISreader_dbl as SOLISreader_dbl_exc, ExciseLatitudeMixin, MaskWeakMixin
 from utils import fig_saver, errorfill
 from plot_hel_with_err import E0H1_dbl
+from config import cr_SOLIS_bad
 
 class HMIreader_dblexc(ExciseLatitudeMixin, HMIreader_dbl): pass
 class HMIreader_dblmsk(MaskWeakMixin, HMIreader_dbl): pass
@@ -40,6 +41,12 @@ if __name__ == "__main__":
 	cr_list_1 = list(range(2143, 2153)) #Near the maximum of cycle 24
 	cr_list_2 = list(range(2187, 2197)) #Between the peaks of cycles 24 and 25
 	cr_list_3 = list(range(2197, 2207)) #Between the peaks of cycles 24 and 25 # NOTE: no SOLIS magnetograms in this interval
+	
+	def filt_for_SOLIS(crs):
+		"""
+		Given a list of Carrington rotation numbers, return the subset for which the SOLIS magnetograms are good
+		"""
+		return [cr for cr in crs if cr not in cr_SOLIS_bad]
 	
 	#Plot HMI energy spectra from different Carrington rotations
 	res_HMI_1 = E0H1_dbl(cr_list_1, read_HMI)
@@ -94,7 +101,8 @@ if __name__ == "__main__":
 	save(fig, f"HMI_apodization_masking_effect_cr_{min(cr_list_3)}-{max(cr_list_3)}.pdf")
 	
 	#Compare helicity spectra from apodized HMI and SOLIS data
-	res_SOLIS_1 = E0H1_dbl(cr_list_1, read_SOLIS)
+	#NOTE that some SOLIS magnetograms are excluded as in Singh 2018
+	res_SOLIS_1 = E0H1_dbl(filt_for_SOLIS(cr_list_1), read_SOLIS)
 	res_HMIapod_1 = E0H1_dbl(cr_list_1, read_HMIapod)
 	
 	fig, axs = plt.subplots(1,2, sharex=True, sharey=True)
